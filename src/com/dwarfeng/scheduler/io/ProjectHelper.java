@@ -64,16 +64,127 @@ public final class ProjectHelper {
 		filePool = new HashMap<Project, File>();
 	}
 	
-	public static enum Operate{
+	/**
+	 * 压缩/解压模式锁代表的枚举。
+	 * @author DwArFeng
+	 * @since 1.8
+	 */
+	public static enum OPERATE{
 		/**代表前台操作（如压缩、解压）的标记*/
 		FOREGROUND,
 		/**代表后台操作（如压缩、解压）的标记*/
 		BACKGROUND
 	}
-	/**代表过程在前台运行*/
-	public final static int FOREGROUND = 0;
-	/**代表过程在后台运行*/
-	public final static int BACKGROUND = 1;
+	
+	private static enum Version{
+		
+		W0_0_0("0.0.0",new W2SF(){
+			@Override
+			public Project loadStruct(ZipFile file) throws ZipException, IOException, DocumentException {
+				return W2SFCommonFunc.loadStruct0_0_0(file);
+			}
+			
+			@Override
+			public void saveStruct(Project project, ZipOutputStream zout) throws IOException {
+				W2SFCommonFunc.saveStruct0_0_0(project, zout);
+			}
+
+			@Override
+			public void unzipFile(Project project, ZipFile file, Scpath scpath) throws ZipException, IOException {
+				W2SFCommonFunc.unzipFile0_0_0(project, file, scpath);
+			}
+
+			@Override
+			public void zipFile(Project project, Scpath scpath, ZipOutputStream zout) throws IOException {
+				W2SFCommonFunc.zipFile0_0_0(project, scpath, zout);
+			}
+
+			@Override
+			public Scpath getScpathLastVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathLastVersion0_0_0(scpath);
+			}
+
+			@Override
+			public Scpath getScpathThisVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathThisVersion0_0_0(scpath);
+			}
+		}),
+		W0_1_0("0.1.0",new W2SF(){
+			@Override
+			public Project loadStruct(ZipFile file) throws ZipException, IOException,DocumentException {
+				return W2SFCommonFunc.loadStruct0_1_0(file);
+			}
+
+			@Override
+			public void saveStruct(Project project, ZipOutputStream zout)throws IOException {
+				W2SFCommonFunc.saveStruct0_1_0(project, zout);
+			}
+
+			@Override
+			public void unzipFile(Project project, ZipFile file, Scpath scpath)throws ZipException, IOException {
+				W2SFCommonFunc.unzipFile0_0_0(project, file, scpath);
+			}
+
+			@Override
+			public void zipFile(Project project, Scpath scpath, ZipOutputStream zout)throws IOException {
+				W2SFCommonFunc.zipFile0_0_0(project, scpath, zout);
+			}
+
+			@Override
+			public Scpath getScpathLastVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathLastVersion0_0_0(scpath);
+			}
+
+			@Override
+			public Scpath getScpathThisVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathThisVersion0_0_0(scpath);
+			}
+		}),
+		W0_2_0("0.2.0",new W2SF(){
+			@Override
+			public Project loadStruct(ZipFile file) throws ZipException, IOException,DocumentException {
+				return W2SFCommonFunc.loadStruct0_2_0(file);
+			}
+
+			@Override
+			public void saveStruct(Project project, ZipOutputStream zout)throws IOException {
+				W2SFCommonFunc.saveStruct0_0_0(project, zout);
+				//TODO
+			}
+
+			@Override
+			public void unzipFile(Project project, ZipFile file, Scpath scpath)throws ZipException, IOException {
+				W2SFCommonFunc.unzipFile0_0_0(project, file, scpath);
+				//TODO
+			}
+
+			@Override
+			public void zipFile(Project project, Scpath scpath, ZipOutputStream zout)throws IOException {
+				W2SFCommonFunc.zipFile0_0_0(project, scpath, zout);
+				//TODO
+			}
+
+			@Override
+			public Scpath getScpathLastVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathLastVersion0_0_0(scpath);
+				//TODO
+			}
+
+			@Override
+			public Scpath getScpathThisVersion(Scpath scpath) {
+				return W2SFCommonFunc.getScpathThisVersion0_0_0(scpath);
+				//TODO
+			}
+		});
+		
+		private final String version;
+		private final W2SF w2sf;
+		
+		private Version(String version,W2SF w2sf){
+			this.version = version;
+			this.w2sf = w2sf;
+		}
+	}
 	/**最新的存档版本号*/
 	public final static String LAST_ZIP_VERSION = "0.1.0";
 	/**工程文件与Pfr对应的映射池*/
@@ -296,7 +407,7 @@ public final class ProjectHelper {
 	 * @return 根据压缩文件路径读取出的工程文件。
 	 * @throws ProjectCantConstructException 
 	 */
-	public static Project loadProject(String zipPathname,Operate type) throws ProjectCantConstructException{
+	public static Project loadProject(String zipPathname,OPERATE type) throws ProjectCantConstructException{
 		//生成ZipFile，并且无论如何，该文件都要被关闭。
 		ZipFile zipFile = null;
 		try{
@@ -326,7 +437,7 @@ public final class ProjectHelper {
 			 * 
 			 */
 			try{
-				if(type == Operate.FOREGROUND){
+				if(type == OPERATE.FOREGROUND){
 					//循环解压所有的路径的指示文件。
 					for(Scpath scpath:project.getScpaths()){
 						w2sf.unzipFile(project, zipFile, scpath);
@@ -361,10 +472,10 @@ public final class ProjectHelper {
 	 * 将指定的工程文件以指定的版本按照指定的存储方法存储到指定的压缩文件中。
 	 * @param project 指定的工程。
 	 * @param version 指定的版本号。
-	 * @param type 操作方式，只能为{@linkplain Operate#FOREGROUND} 和 {@linkplain Operate#BACKGROUND}中的一个。
+	 * @param type 操作方式，只能为{@linkplain OPERATE#FOREGROUND} 和 {@linkplain OPERATE#BACKGROUND}中的一个。
 	 * @throws ProjectCantConstructException 工程无法构建异常。
 	 */
-	public static void saveProject(Project project,String version,Operate type) throws ProjectCantConstructException{
+	public static void saveProject(Project project,String version,OPERATE type) throws ProjectCantConstructException{
 		//声明压缩文件输出流
 		ZipOutputStream zout = null;
 		try{
@@ -389,7 +500,7 @@ public final class ProjectHelper {
 			 * 
 			 */
 			try{
-				if(type == Operate.FOREGROUND){
+				if(type == OPERATE.FOREGROUND){
 					//循环压缩所有文件
 					for(Scpath scpath:project.getScpaths()){
 						w2sf.zipFile(project, scpath, zout);
@@ -423,10 +534,10 @@ public final class ProjectHelper {
 	/**
 	 * 将指定的工程文件按照最新的版本以指定的存储方法存储到指定的压缩文件中。
 	 * @param project 指定的工程。
-	 * @param type 操作方式，只能为{@linkplain Operate#FOREGROUND} 和 {@linkplain Operate#BACKGROUND}中的一个。
+	 * @param type 操作方式，只能为{@linkplain OPERATE#FOREGROUND} 和 {@linkplain OPERATE#BACKGROUND}中的一个。
 	 * @throws ProjectCantConstructException 文件无法构建异常。
 	 */ 
-	public static void saveProject(Project project ,Operate type) throws ProjectCantConstructException{
+	public static void saveProject(Project project ,OPERATE type) throws ProjectCantConstructException{
 		saveProject(project, LAST_ZIP_VERSION, type);
 	}
 	
@@ -450,15 +561,11 @@ public final class ProjectHelper {
 	 * @return 与版本对应的通信方法。
 	 * @throws IllegalArgumentException 版本非法或不可读取。
 	 */
-	private static W2SF getW2sf(String version){
-		switch (version) {
-			case "0.0.0":
-				return new W0_0_0();
-			case "0.1.0":
-				return new W0_1_0();
-			default:
-				throw new IllegalArgumentException("Can't identify the version name : " + version);
+	private static W2SF getW2sf(String versionString){
+		for(Version version:Version.values()){
+			if(version.version.equals(versionString)) return version.w2sf;
 		}
+		throw new IllegalArgumentException("Bad version");
 	}
 	
 	private ProjectHelper() {
@@ -1420,72 +1527,4 @@ final class W2SFCommonFunc{
 	private W2SFCommonFunc(){
 		//禁止外部实例化
 	}
-}
-
-class W0_0_0 implements W2SF{
-
-	@Override
-	public Project loadStruct(ZipFile file) throws ZipException, IOException, DocumentException {
-		return W2SFCommonFunc.loadStruct0_0_0(file);
-	}
-	
-	@Override
-	public void saveStruct(Project project, ZipOutputStream zout) throws IOException {
-		W2SFCommonFunc.saveStruct0_0_0(project, zout);
-	}
-
-	@Override
-	public void unzipFile(Project project, ZipFile file, Scpath scpath) throws ZipException, IOException {
-		W2SFCommonFunc.unzipFile0_0_0(project, file, scpath);
-	}
-
-	@Override
-	public void zipFile(Project project, Scpath scpath, ZipOutputStream zout) throws IOException {
-		W2SFCommonFunc.zipFile0_0_0(project, scpath, zout);
-	}
-
-	@Override
-	public Scpath getScpathLastVersion(Scpath scpath) {
-		return W2SFCommonFunc.getScpathLastVersion0_0_0(scpath);
-	}
-
-	@Override
-	public Scpath getScpathThisVersion(Scpath scpath) {
-		return W2SFCommonFunc.getScpathThisVersion0_0_0(scpath);
-	}
-	
-}
-
-class W0_1_0 implements W2SF{
-
-	@Override
-	public Project loadStruct(ZipFile file) throws ZipException, IOException,DocumentException {
-		return W2SFCommonFunc.loadStruct0_1_0(file);
-	}
-
-	@Override
-	public void saveStruct(Project project, ZipOutputStream zout)throws IOException {
-		W2SFCommonFunc.saveStruct0_1_0(project, zout);
-	}
-
-	@Override
-	public void unzipFile(Project project, ZipFile file, Scpath scpath)throws ZipException, IOException {
-		W2SFCommonFunc.unzipFile0_0_0(project, file, scpath);
-	}
-
-	@Override
-	public void zipFile(Project project, Scpath scpath, ZipOutputStream zout)throws IOException {
-		W2SFCommonFunc.zipFile0_0_0(project, scpath, zout);
-	}
-
-	@Override
-	public Scpath getScpathLastVersion(Scpath scpath) {
-		return W2SFCommonFunc.getScpathLastVersion0_0_0(scpath);
-	}
-
-	@Override
-	public Scpath getScpathThisVersion(Scpath scpath) {
-		return W2SFCommonFunc.getScpathThisVersion0_0_0(scpath);
-	}
-	
 }

@@ -313,7 +313,7 @@ public class Scheduler {
 	
 	/**
 	 * 读取指定路径的工程文档。
-	 * <p> 在程序中读取工程，该方法要优先于{@linkplain ProjectHelper#loadProject(String, com.dwarfeng.scheduler.io.ProjectHelper.Operate)}
+	 * <p> 在程序中读取工程，该方法要优先于{@linkplain ProjectHelper#loadProject(String, com.dwarfeng.scheduler.io.ProjectHelper.OPERATE)}
 	 * 因为该方法的异常判断更为全面。
 	 * @param pathname 指定的路径。
 	 * @return 读取的工程。
@@ -323,7 +323,7 @@ public class Scheduler {
 		CT.trace("正在读取文件");
 		Project project = null;
 		try{
-			project = ProjectHelper.loadProject(pathname, ProjectHelper.Operate.FOREGROUND);
+			project = ProjectHelper.loadProject(pathname, ProjectHelper.OPERATE.FOREGROUND);
 			CT.trace("文件读取成功");
 //			this.frontProject = project;
 //			this.zipPathname = pathname;
@@ -347,7 +347,7 @@ public class Scheduler {
 		if(project == null) return;
 		CT.trace("正在将工程压缩存储");
 		try{
-			ProjectHelper.saveProject(project,ProjectHelper.Operate.FOREGROUND);
+			ProjectHelper.saveProject(project,ProjectHelper.OPERATE.FOREGROUND);
 		}catch(ProjectCantConstructException e){
 			CT.trace("工程存储失败");
 		}
@@ -396,7 +396,7 @@ public class Scheduler {
 		AppearanceInfo appearanceSet = null;
 		try{
 			if(frontProject != null){
-				ProjectHelper.saveProject(frontProject, getLastPath(),ProjectHelper.Operate.FOREGROUND);
+				ProjectHelper.saveProject(frontProject, getLastPath(),ProjectHelper.OPERATE.FOREGROUND);
 			}
 			if(schedulerGui != null){
 				appearanceSet = schedulerGui.getAppearanceInfo();
