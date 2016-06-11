@@ -4,7 +4,8 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dwarfeng.func.io.CT;
+import javax.swing.JLabel;
+
 import com.dwarfeng.scheduler.io.Scpath;
 import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
@@ -17,43 +18,101 @@ import com.dwarfeng.scheduler.typedef.abstruct.Scpathable;
  * @author DwArFeng
  * @since 1.8
  */
-@SuppressWarnings("unused")
 public final class Project extends AbstractObjectInProjectTree{
 	
-	private static final long serialVersionUID = 6999230758242017223L;
+	/**
+	 * 工程对象的构造器。
+	 * @author DwArFeng
+	 * @since 1.8
+	 */
+	public static class Productor{
+		private TagMap tagMap = new TagMap();
+		private NotebookCol notebookCol = new NotebookCol();
+		private ImprovisedPlain improvisedPlain = new ImprovisedPlain();
+		
+		/**
+		 * 生成一个默认的工程对象构造器。
+		 */
+		public Productor(){
+			//Do nothing
+		}
+		
+		/**
+		 * 定义工程对象的标签映射。
+		 * @param tagMap 工程对象的标签映射。
+		 * @return 构造器自身。
+		 */
+		public Productor tagMap(TagMap tagMap){
+			if(tagMap != null) this.tagMap = tagMap;
+			return this;
+		}
+		
+		/**
+		 * 定义工程对象的所有笔记本。
+		 * @param notebookCol 工程对象的所有笔记本。
+		 * @return 构造器自身。
+		 */
+		public Productor notebookCol(NotebookCol notebookCol){
+			if(notebookCol != null) this.notebookCol = notebookCol;
+			return this;
+		}
+		
+		/**
+		 * 定义工程对象的即兴计划。
+		 * @param improvisedPlain 工程对象的即兴计划。
+		 * @return 构造器自身。
+		 */
+		public Productor improvisedPlain(ImprovisedPlain improvisedPlain){
+			if(improvisedPlain != null) this.improvisedPlain = improvisedPlain;
+			return this;
+		}
+		
+		/**
+		 * 由工程对象构造器构造工程对象。
+		 * @return 构造出的工程对象。
+		 */
+		public Project product(){
+			return new Project(tagMap, notebookCol,improvisedPlain);
+		}
+	}
+	
+	/**
+	 * 代表着工程对象中所有子节点的枚举。
+	 * @author DwArFeng
+	 * @since 1.8
+	 */
+	public static enum CHILD{
+		
+		/**代表所有笔记本的字段*/
+		NOTEBOOK_COL(0),
+		/**代表即兴计划的字段*/
+		IMPROVISED_PLAIN(1);
+		
+		private int index;
+		
+		private CHILD(int index){
+			this.index = index;
+		}
+		private int getIndex(){
+			return this.index;
+		}
+	}
 
-	/**所有笔记树的序列值*/
-	public final static int NOTEBOOKCOL_INDEX = 0;
-
-	/**工程类的写锁定*/
+	/*工程类的写锁定*/
 	//private boolean writeLocked;
 	/**工程中的标签-ID映射*/
 	private TagMap tagMap;
 	
-	/**
-	 * 生成一个默认的工程。
-	 * <p> 默认的工程没有任何的内容。
-	 * <p> 该方法经常在新建工程文件的时候使用。
-	 */
-	public Project() {
-		this(null,null);
-	}
-	
-	/**
-	 * 生成一个具有指定的Tag-ID映射表，指定的笔记本合集的工程实例。
-	 * @param tagMap 指定的Tag-ID映射表。
-	 * @param notebookCol 指定的笔记本合集。
-	 */
-	public Project(TagMap tagMap,NotebookCol notebookCol){
+	private Project(TagMap tagMap,NotebookCol notebookCol,ImprovisedPlain improvisedPlain){
 		//调用父类方法
 		super(true);
-		//实现入口处的成员变量。
-		this.tagMap = tagMap == null ? new TagMap() : tagMap;
+		//初始化标签地图
+		this.tagMap = tagMap;
 		this.tagMap.setRootProject(this);
-		//初始化全部笔记本选项。
-		NotebookCol notebookCol2 = new NotebookCol();
-		if(notebookCol != null) notebookCol2 = notebookCol;
-		insert((ObjectInProjectTree)notebookCol2,NOTEBOOKCOL_INDEX);
+		//初始化全部笔记本
+		insert((ObjectInProjectTree)notebookCol,CHILD.NOTEBOOK_COL.getIndex());
+		//初始化即兴计划
+		insert((ObjectInProjectTree)improvisedPlain,CHILD.IMPROVISED_PLAIN.getIndex());
 		//TODO 随着功能的完善进行增加
 	}
 
@@ -74,8 +133,8 @@ public final class Project extends AbstractObjectInProjectTree{
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 返回工程中的标签映射。
+	 * @return 返回的标签映射。
 	 */
 	public TagMap getTagMap(){
 		return this.tagMap;
@@ -99,6 +158,15 @@ public final class Project extends AbstractObjectInProjectTree{
 		return pi;
 	}
 
+	/**
+	 * 返回工程对象的一个子节点。
+	 * @param child 子节点的枚举。
+	 * @return 指定的子节点。
+	 */
+	public ObjectInProject getChildFrom(CHILD child){
+		return getChildAt(child.getIndex());
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getOtherObjectInProjects()
@@ -108,6 +176,15 @@ public final class Project extends AbstractObjectInProjectTree{
 		Set<ObjectInProject> set = new HashSet<ObjectInProject>();
 		set.add(tagMap);
 		return set;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#renderLabel(javax.swing.JLabel)
+	 */
+	@Override
+	public void renderLabel(JLabel label) {
+		//Do nothing
 	}
 	
 	

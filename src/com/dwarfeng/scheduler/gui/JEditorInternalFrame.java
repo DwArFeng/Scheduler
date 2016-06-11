@@ -16,9 +16,9 @@ import javax.swing.event.InternalFrameEvent;
  * @author DwArFeng
  * @since 1.8
  */
-public class JEditorInternalFrame extends JInternalFrame {
+public final class JEditorInternalFrame extends JInternalFrame {
 	
-	private static final long serialVersionUID = -3972410732763811844L;
+	private static final long serialVersionUID = 8939280630554793866L;
 	
 	/**Ö¸ÏòµÄ±à¼­Æ÷*/
 	private AbstractEditor editor;

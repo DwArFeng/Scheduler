@@ -62,7 +62,7 @@ public class JTagManager extends JDialog {
 	 */
 	public JTagManager(Frame owner,Project project) {
 		super(owner,true);
-		this.project = project == null ? new Project() : project;
+		this.project = project == null ? new Project.Productor().product() : project;
 		init();
 	}
 

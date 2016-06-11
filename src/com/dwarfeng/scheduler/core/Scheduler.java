@@ -1,6 +1,7 @@
 package com.dwarfeng.scheduler.core;
 
 import java.io.File;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -16,6 +17,7 @@ import com.dwarfeng.scheduler.io.ProjectHelper;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.typedef.ProjectCantConstructException;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 
@@ -89,9 +91,9 @@ public class Scheduler {
 	 * 
 	 */
 	/**长版本号，用于显示在程序自述或者其他的地方*/
-	private final String longVersion = "alpha_0.2.2_20160610_build_A";
+	private final String longVersion = "alpha_0.3.0";
 	/**短版本号，用于显示在标题位置*/
-	private final String shortVersion = "alpha_0.2.2";
+	private final String shortVersion = "alpha_0.3.0";
 	/**默认的工作路径*/
 	private final String workspacePath;
 	/**默认的工程文档目录*/
@@ -358,6 +360,14 @@ public class Scheduler {
 	public void disposeEditor(Project project){
 		if(project == null) return;
 		schedulerGui.getDesktopPane().disposeEditor(project);
+	}
+	
+	/**
+	 * 关闭指定可编辑对象在桌面面板上的编辑器。
+	 * @param editable 指定的可编辑对象。
+	 */
+	public void disposeEditor(Editable editable){
+		schedulerGui.getDesktopPane().disposeEditor(editable);
 	}
 	
 	/**

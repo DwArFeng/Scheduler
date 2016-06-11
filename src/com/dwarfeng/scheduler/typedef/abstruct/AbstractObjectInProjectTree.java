@@ -11,7 +11,7 @@ import com.dwarfeng.scheduler.project.Project;
 
 public abstract class AbstractObjectInProjectTree extends DefaultMutableTreeNode implements ObjectInProjectTree{
 
-	private static final long serialVersionUID = -5132830759460781354L;
+	private static final long serialVersionUID = -7182285771248611368L;
 
 	/**
 	 * 
@@ -99,7 +99,11 @@ public abstract class AbstractObjectInProjectTree extends DefaultMutableTreeNode
 	public ObjectInProjectTree getChildAt(int childIndex){
 		return (ObjectInProjectTree) super.getChildAt(childIndex);
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#remove(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
+	 */
 	@Override
 	public void remove(ObjectInProjectTree child) {
 		remove((MutableTreeNode)child);

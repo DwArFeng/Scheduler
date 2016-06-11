@@ -17,15 +17,17 @@ import com.dwarfeng.scheduler.typedef.desint.Editable;
  * @author DwArFeng
  * @since 1.8
  */
-public class JDesktopPaneS extends JDesktopPane {
+public final class JDesktopPaneS extends JDesktopPane {
 	
-	private static final long serialVersionUID = 4664112960116299189L;
+	private static final long serialVersionUID = -5236836764050479585L;
+	
 	/**
 	 * 生成一个默认的桌面面板。
 	 */
 	public JDesktopPaneS() {
 		super();
 	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.Container#add(java.awt.Component)
@@ -80,6 +82,22 @@ public class JDesktopPaneS extends JDesktopPane {
 	}
 	
 	/**
+	 * 关闭某个可编辑对象的编辑窗口。
+	 * @param editable 指定的可编辑对象。
+	 */
+	public void disposeEditor(Editable editable){
+		for(JEditorInternalFrame frame:getEditorInternalFrames()){
+			if(frame.getEditable().equals(editable)){
+				frame.setVisible(false);
+			}
+		}
+		for(JEditorInternalFrame frame:getEditorInternalFrames()){
+			if(frame.getEditable().equals(editable)){
+				frame.dispose();
+			}
+		}
+	}
+	/**
 	 * 释放所有的指定工程下的编辑器。
 	 * @param project 指定的工程。
 	 */
@@ -116,6 +134,7 @@ public class JDesktopPaneS extends JDesktopPane {
 		}
 		return editorFrames;
 	}
+	
 	/**
 	 * 返回桌面面板是否已经拥有了指定的编辑对象。
 	 * @param editable 指定的可编辑对象。

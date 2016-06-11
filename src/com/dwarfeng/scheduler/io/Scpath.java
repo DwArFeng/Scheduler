@@ -6,22 +6,31 @@ package com.dwarfeng.scheduler.io;
  * @author DwArFeng
  * @since 1.8
  */
-public class Scpath{
+public final class Scpath{
 	
 	private String fileName;
 	
 	/**
-	 * 
-	 * @param fileName
+	 * 生成一个指定的工程路径。
+	 * <p> 表示某个路径从该工程的工作目录开始指向文件的相对路径。
+	 * @param fileName 工程路径的路径。
 	 */
 	public Scpath(String fileName) {
 		this.fileName = fileName;
 	}
 	
+	/**
+	 * 返回该工程路径的路径。
+	 * @return 路径。
+	 */
 	public String getPathName(){
 		return this.fileName;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object object){
 		if(object == this) return true;
@@ -30,11 +39,19 @@ public class Scpath{
 		return ((Scpath) object).getPathName().equals(fileName);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode(){
 		return fileName.hashCode()*17;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		return this.getPathName();

@@ -6,6 +6,7 @@ import com.dwarfeng.scheduler.project.Project;
 /**
  * 抽象附件。
  * <p> 最大化的实现了附件的方法。
+ * XXX 可以尝试最大化的封装load和save方法。
  * @author DwArFeng
  * @since 1.8
  */

@@ -1,0 +1,84 @@
+Plant Simulation Student Download - Welcome
+ 
+
+Dear Student,
+
+Thank you for registering for the Plant Simulation Student Download. Click on the following download link: http://dl2.industrysoftware.automation.siemens.com/tecnomatix/PlantSimulationSetup.msi
+
+*For optimal download results, save the file to your local disk.
+
+Please note that Plant Simulation can be installed only on a Windows PC.
+
+License File
+The unique Plant Simulation Student license file can be found here: http://dl2.industrysoftware.automation.siemens.com/tecnomatix/PlantSimStudent.lic.zip
+
+To apply the license file, first save the above electronic ZIP file to a convenient location. Extract the PlantSimStudent.lic file from the ZIP file. Make sure that you maintain the filename PlantSimStudent.lic. Complete the installation of Plant Simulation, if you haven't done so yet.
+
+Apply the license by launching Plant Simulation. Click on File -> Preferences. Select the License tab. Select License Type: Student. Then browse to your license file in the License file field. Click OK. This should register your license file.
+
+Support
+Please join our Tecnomatix community where you can ask installation and technical questions, share ideas and discuss Plant Simulation with other academic users. Membership is free, so sign up today and join in on the discussions.
+
+Using the student license the maximum number of objects that you can use in your model file is 80. If your School, College, or University is interested in using Plant Simulation within their curriculum please ask them to contact the Siemens PLM Software GO PLM Program.
+
+Siemens PLM Software: Proud to be supporting students of all ages in industrial and manufacturing engineering related fields.
+
+Solve the manufacturing challenges of the future,
+
+Ralf Tobel,
+Director, R&D
+Tecnomatix Plant Simulation
+Manufacturing Engineering Software Solutions, Siemens PLM Software
+
+©¤©¤©¤©¤©¤
+
+PLM Academic News
+  
+
+May 2016
+
+The Siemens PLM Software academic newsletter provides news and information on our work with academia and industry to develop a stronger pipeline of engineering and digital manufacturing talent.
+
+Learning Advantage online training now FREE for all students and educators at our academic partners
+
+Siemens PLM Software is very pleased to announce that Learning Advantage will be available for free to all students and educators using our academic software.
+
+Read More ?
+
+ 
+
+
+
+Hyped up for Hyperloop
+
+Forget trains, planes and automobiles, the next mode of transportation is heading our way.  Elon Musk has challenged students to design  Hyperloop travel in a cool new competition.
+
+Read More ?
+
+ 
+
+
+
+Greenpower launches in China 
+
+Greenpower heads East in the latest expansion step for this design-build-race electric car challenge.
+
+Read More ?
+
+ 
+
+
+
+AerosPACE fosters aerospace engineering talent 
+
+Students from eight universities across the U.S. came together recently to collaboratively design-build-test and fly an innovative aerospace product using cutting-edge materials and multi-user CAD platforms.
+
+Read More ?
+
+ 
+
+
+
+Learn best practices from leading universities around the globe
+
+Read how different universities in Poland, Russia and China are employing Siemens tools for teaching and research.

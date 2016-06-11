@@ -23,6 +23,11 @@ public abstract class TextAttachment extends AbstractAttachment {
 	/**使用的编辑包*/
 	protected EditorKit kit;
 	
+	/**
+	 * 生成一个具有指定工程路径，指定文本编辑包的文本附件。
+	 * @param scpath 指定的工程路径。
+	 * @param kit 指定的文本包。
+	 */
 	public TextAttachment(Scpath scpath,EditorKit kit) {
 		super(scpath);
 		if(kit == null) throw new NullPointerException("EditorKit can't be null");
@@ -37,10 +42,14 @@ public abstract class TextAttachment extends AbstractAttachment {
 		return kit;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.Attachment#load()
+	 */
 	@Override
 	public void load() throws Exception {
-		Document document = (Document) getEditorKit().createDefaultDocument();
-		InputStream win = null;
+		
+		InputStream in = null;
 		
 		try{
 			//读取语句
@@ -48,17 +57,17 @@ public abstract class TextAttachment extends AbstractAttachment {
 			
 			//初始化输入流。
 			try {
-				win = ProjectHelper.getInputStream(getRootProject(), getScpath());
+				in = ProjectHelper.getInputStream(getRootProject(), getScpath());
 			} catch (Exception e) {
 				e.printStackTrace();
 				CT.trace("由于某些原因，无法成功的构建工作路径输入流");
 				throw e;
 			}
 			
-			
 			//读取文件。
 			try {
-				getEditorKit().read(win, document, 0);
+				Document document = createDefaultObject();
+				getEditorKit().read(in, document, 0);
 				setAttachObject(document);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -68,10 +77,13 @@ public abstract class TextAttachment extends AbstractAttachment {
 			
 			CT.trace("文件读取完成");
 			
+		}catch(Exception e){
+			setAttachObject(createDefaultObject());
+			throw e;
 		}finally{
-			if(win != null){
+			if(in != null){
 				try{
-					win.close();
+					in.close();
 				}catch(IOException e){
 					e.printStackTrace();
 					CT.trace("由于某些原因，文件输出流无法关闭");
@@ -80,8 +92,13 @@ public abstract class TextAttachment extends AbstractAttachment {
 		}		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.Attachment#save()
+	 */
 	@Override
 	public void save() throws Exception {
+		
 		OutputStream wout = null;
 		
 		try{
@@ -119,9 +136,20 @@ public abstract class TextAttachment extends AbstractAttachment {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractAttachment#getAttachObject()
+	 */
 	@Override
 	public Document getAttachObject() {
 		return (Document) super.getAttachObject();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.Attachment#createDefaultObject()
+	 */
+	@Override
+	public abstract Document createDefaultObject();
 
 }

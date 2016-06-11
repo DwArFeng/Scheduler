@@ -277,7 +277,7 @@ public final class ProjectHelper {
 		Project project = null;
 		Pfr pfr = null;
 		try{
-			project = new Project();
+			project = new Project.Productor().product();
 			pfr = new Pfr();
 			pfrPool.put(project, pfr);
 			filePool.put(project, file);
@@ -842,7 +842,7 @@ final class W2SFCommonFunc{
 		//解析文件
 		TagMap tagMap = unconstructTagsXML0_0_0(tagElement);
 		NotebookCol notebookCol = unconstructNotebooks0_0_0(notebooksElement);
-		return new Project(tagMap,notebookCol);
+		return new Project.Productor().tagMap(tagMap).notebookCol(notebookCol).product();
 	}
 	
 	/**
@@ -858,7 +858,7 @@ final class W2SFCommonFunc{
 		//构造XML信息
 		Document tagsXML = DocumentHelper.createDocument(constructTagsXML0_0_0(project.getTagMap()));
 		Document notesbooksXML = DocumentHelper.createDocument(constructNotebooksXML0_0_0(
-				(NotebookCol) project.getChildAt(Project.NOTEBOOKCOL_INDEX))
+				(NotebookCol) project.getChildFrom(Project.CHILD.NOTEBOOK_COL))
 		);
 		tagsXML.setXMLEncoding("UTF-8");
 		notesbooksXML.setXMLEncoding("UTF-8");
@@ -988,7 +988,7 @@ final class W2SFCommonFunc{
 		//解析文件
 		TagMap tagMap = unconstructTagsXML0_0_0(tagElement);
 		NotebookCol notebookCol = unconstructNotebooks0_1_0(notebooksElement);
-		return new Project(tagMap,notebookCol);
+		return new Project.Productor().tagMap(tagMap).notebookCol(notebookCol).product();
 	}
 	
 	/**
@@ -1004,7 +1004,7 @@ final class W2SFCommonFunc{
 		//构造XML信息
 		Document tagsXML = DocumentHelper.createDocument(constructTagsXML0_0_0(project.getTagMap()));
 		Document notesbooksXML = DocumentHelper.createDocument(constructNotebooksXML0_1_0(
-				(NotebookCol) project.getChildAt(Project.NOTEBOOKCOL_INDEX))
+				(NotebookCol) project.getChildFrom(Project.CHILD.NOTEBOOK_COL))
 		);
 		tagsXML.setXMLEncoding("UTF-8");
 		notesbooksXML.setXMLEncoding("UTF-8");

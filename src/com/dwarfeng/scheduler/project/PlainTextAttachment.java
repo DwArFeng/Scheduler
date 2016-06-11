@@ -35,6 +35,10 @@ public class PlainTextAttachment extends TextAttachment{
 		return (DefaultEditorKit) super.getEditorKit();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.Attachment#createDefaultObject()
+	 */
 	@Override
 	public PlainDocument createDefaultObject() {
 		return (PlainDocument) getEditorKit().createDefaultDocument();

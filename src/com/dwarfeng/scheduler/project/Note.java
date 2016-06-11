@@ -215,6 +215,7 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 	 */
 	@Override
 	public void delete(){
+		Scheduler.getInstance().disposeEditor(this);
 		removeFromParent();
 	}
 	
