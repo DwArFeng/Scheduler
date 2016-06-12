@@ -130,7 +130,9 @@ public final class XmlAttachment extends AbstractAttachment {
 	 */
 	@Override
 	public Document createDefaultObject() {
-		return DocumentHelper.createDocument();
+		Document document =  DocumentHelper.createDocument();
+		document.setXMLEncoding("UTF-8");
+		return document;
 	}
 
 	/*

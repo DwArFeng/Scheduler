@@ -412,6 +412,7 @@ public class SchedulerGui extends JFrame {
 					if(path != null){
 						Object obj = path.getLastPathComponent();
 						if(obj instanceof PopupInTree){
+							if(((PopupInTree) obj).getJPopupMenu(projectTree) != null)
 							showMenu(e,((PopupInTree) obj).getJPopupMenu(projectTree));
 						}
 					}
@@ -577,10 +578,15 @@ public class SchedulerGui extends JFrame {
 									Project project = Scheduler.getInstance().createNewProject(file);
 									//再显示为前台
 									Scheduler.getInstance().setFrontProject(project);
-									//保存上一个工程
+									//释放上一个工程的编辑窗口
 									Scheduler.getInstance().disposeEditor(fp);
-									//如果新建的文件路径正好是当前工程的路径，则根本不需要保存当前的文档
-									if(!ProjectHelper.getProjectFile(fp).equals(file)) Scheduler.getInstance().saveProject(fp);
+									//如果新建的文件路径正好是当前工程的路径，则根本不需要保存当前的文档，否则保存
+									if(		
+										fp == null ||
+										!ProjectHelper.getProjectFile(fp).equals(file)
+									)
+									Scheduler.getInstance().saveProject(fp);
+									//关闭上一个工程。
 									Scheduler.getInstance().closeProject(fp);
 									//保存当前工程
 									Scheduler.getInstance().saveProject(project);
@@ -625,7 +631,7 @@ public class SchedulerGui extends JFrame {
 										}
 									}
 									//先加载工程
-									Project project = Scheduler.getInstance().loadProject(file.getAbsolutePath());
+									Project project = Scheduler.getInstance().loadProject(file);
 									//将工程显示在前台
 									Scheduler.getInstance().setFrontProject(project);
 									//关闭上一个工程

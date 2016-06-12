@@ -28,7 +28,7 @@ public final class Project extends AbstractObjectInProjectTree{
 	public static class Productor{
 		private TagMap tagMap = new TagMap();
 		private NotebookCol notebookCol = new NotebookCol();
-		private ImprovisedPlain improvisedPlain = new ImprovisedPlain();
+		private ImprovisedPlainCol improvisedPlain = new ImprovisedPlainCol();
 		
 		/**
 		 * 生成一个默认的工程对象构造器。
@@ -62,7 +62,7 @@ public final class Project extends AbstractObjectInProjectTree{
 		 * @param improvisedPlain 工程对象的即兴计划。
 		 * @return 构造器自身。
 		 */
-		public Productor improvisedPlain(ImprovisedPlain improvisedPlain){
+		public Productor improvisedPlain(ImprovisedPlainCol improvisedPlain){
 			if(improvisedPlain != null) this.improvisedPlain = improvisedPlain;
 			return this;
 		}
@@ -81,16 +81,16 @@ public final class Project extends AbstractObjectInProjectTree{
 	 * @author DwArFeng
 	 * @since 1.8
 	 */
-	public static enum CHILD{
+	public enum ChildType{
 		
 		/**代表所有笔记本的字段*/
 		NOTEBOOK_COL(0),
 		/**代表即兴计划的字段*/
-		IMPROVISED_PLAIN(1);
+		IMPROVISED_PLAIN_COL(1);
 		
 		private int index;
 		
-		private CHILD(int index){
+		private ChildType(int index){
 			this.index = index;
 		}
 		private int getIndex(){
@@ -103,16 +103,16 @@ public final class Project extends AbstractObjectInProjectTree{
 	/**工程中的标签-ID映射*/
 	private TagMap tagMap;
 	
-	private Project(TagMap tagMap,NotebookCol notebookCol,ImprovisedPlain improvisedPlain){
+	private Project(TagMap tagMap,NotebookCol notebookCol,ImprovisedPlainCol improvisedPlain){
 		//调用父类方法
 		super(true);
 		//初始化标签地图
 		this.tagMap = tagMap;
 		this.tagMap.setRootProject(this);
 		//初始化全部笔记本
-		insert((ObjectInProjectTree)notebookCol,CHILD.NOTEBOOK_COL.getIndex());
+		insert((ObjectInProjectTree)notebookCol,ChildType.NOTEBOOK_COL.getIndex());
 		//初始化即兴计划
-		insert((ObjectInProjectTree)improvisedPlain,CHILD.IMPROVISED_PLAIN.getIndex());
+		insert((ObjectInProjectTree)improvisedPlain,ChildType.IMPROVISED_PLAIN_COL.getIndex());
 		//TODO 随着功能的完善进行增加
 	}
 
@@ -163,7 +163,7 @@ public final class Project extends AbstractObjectInProjectTree{
 	 * @param child 子节点的枚举。
 	 * @return 指定的子节点。
 	 */
-	public ObjectInProject getChildFrom(CHILD child){
+	public ObjectInProject getChildFrom(ChildType child){
 		return getChildAt(child.getIndex());
 	}
 	

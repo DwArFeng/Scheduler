@@ -10,7 +10,6 @@ public interface Attachment extends ObjectInProject,Scpathable{
 	
 	/**
 	 * 读取附件指向的文档。
-	 * @throws Exception 出现异常。
 	 */
 	public void load() throws Exception;
 	

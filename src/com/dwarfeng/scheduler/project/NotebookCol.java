@@ -51,6 +51,11 @@ public class NotebookCol extends AbstractObjectInProjectTree implements PopupInT
 			}
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#insert(javax.swing.tree.MutableTreeNode, int)
+	 */
 	@Override
 	public void insert(MutableTreeNode newChild, int childIndex) {
 		//只能插入笔记本
@@ -58,6 +63,10 @@ public class NotebookCol extends AbstractObjectInProjectTree implements PopupInT
 		super.insert(newChild, childIndex);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.funcint.PopupInTree#getJPopupMenu(com.dwarfeng.scheduler.gui.JProjectTree)
+	 */
 	@Override
 	public JPopupMenu getJPopupMenu(JProjectTree jProjectTree) {
 		JPopupMenu popup = new JPopupMenu();

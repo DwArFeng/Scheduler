@@ -2,7 +2,7 @@
 
 <appearance>
   <frame extension="6" width="800" height="600"/>
-  <console visible="true" height="312"/>
+  <console visible="true" height="166"/>
   <pTree visible="true" width="218"/>
   <param visible="false" width="150"/>
   <fPanel visible="false"/>
