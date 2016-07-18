@@ -3,6 +3,7 @@ package com.dwarfeng.scheduler.typedef.abstruct;
 import java.util.Enumeration;
 import java.util.Set;
 
+import javax.swing.JLabel;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -52,4 +53,10 @@ public interface ObjectInProjectTree extends ObjectInProject,TreeNode{
 	 * @return 此节点除自身以外，还额外包含的所有<code>ObjectInProject</code>。
 	 */
 	public Set<ObjectInProject> getOtherObjectInProjects();
+	
+	/**
+	 * 根据原先的渲染的标签样式来补充渲染自己的独特样式的标签。
+	 * @param label 原样式的标签。
+	 */
+	public void renderLabel(JLabel label);
 }

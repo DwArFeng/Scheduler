@@ -1,7 +1,6 @@
 package com.dwarfeng.scheduler.gui;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -14,9 +13,9 @@ import java.util.Stack;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -24,12 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.dwarfeng.scheduler.core.Scheduler;
-import com.dwarfeng.scheduler.project.Note;
-import com.dwarfeng.scheduler.project.Notebook;
-import com.dwarfeng.scheduler.project.NotebookCol;
-import com.dwarfeng.scheduler.project.PlainNote;
 import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.project.RTFNote;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
@@ -45,38 +39,7 @@ public class JProjectTree extends JTree {
 		super();
 		init();
 	}
-
-//	public JProjectTree(Object[] value) {
-//		super(value);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public JProjectTree(Vector<?> value) {
-//		super(value);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public JProjectTree(Hashtable<?, ?> value) {
-//		super(value);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public JProjectTree(TreeNode root) {
-//		super(root);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public JProjectTree(TreeModel newModel) {
-//		super(newModel);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public JProjectTree(TreeNode root, boolean asksAllowsChildren) {
-//		super(root, asksAllowsChildren);
-//		// TODO Auto-generated constructor stub
-//	}
-
-
+	
 	/**
 	 * 获得指向的主界面。
 	 * @return 指向的主界面。
@@ -287,37 +250,25 @@ class PathBetweenNodesEnumeration implements Enumeration<ObjectInProjectTree>{
 
 
 
-
-class ProjectTreeRender extends DefaultTreeCellRenderer{
+/**
+ * 负责渲染工程树的工程树渲染类。
+ * @author DwArFeng
+ * @since 1.8
+ */
+final class ProjectTreeRender extends DefaultTreeCellRenderer{
 	
-	private static final long serialVersionUID = -7941207932391169324L;
+	private static final long serialVersionUID = -8326159993695572250L;
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.tree.DefaultTreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)
+	 */
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
-		super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-		this.setIconTextGap(8);
-		if(value instanceof NotebookCol){
-			this.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebookCollection.png")));
-			this.setFont(new Font("SansSerif", Font.BOLD, 14));
-			this.setText("所有笔记本");
-		}
-		if(value instanceof Notebook){
-			this.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebook.png")));
-			this.setFont(new Font("SansSerif", Font.PLAIN, 12));
-			this.setText((String) ((Notebook) value).getParam(Notebook.NAME));
-		}
-		if(value instanceof RTFNote){
-			this.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/rtfNote.png")));
-			this.setFont(new Font("SansSerif", Font.PLAIN, 12));
-			this.setText((String) ((Note) value).getParam(Note.NAME));
-		}
-		if(value instanceof PlainNote){
-			this.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/plainNote.png")));
-			this.setFont(new Font("SansSerif", Font.PLAIN, 12));
-			this.setText((String) ((Note) value).getParam(Note.NAME));
-		}
-		return this;
+		JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+		if(value instanceof ObjectInProjectTree) ((ObjectInProjectTree) value).renderLabel(label);
+		return label;
 	}
 }

@@ -1,5 +1,6 @@
 package com.dwarfeng.scheduler.project;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -7,6 +8,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
@@ -32,7 +35,7 @@ import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 public class Notebook extends AbstractSerialParamableTreeNode 
 	implements PopupInTree,Deleteable,Moveable{
 	
-	private static final long serialVersionUID = 6523774284338795747L;
+	private static final long serialVersionUID = 5827781121824663050L;
 	
 	/**
 	 * 生成一个默认的笔记本。
@@ -205,6 +208,18 @@ public class Notebook extends AbstractSerialParamableTreeNode
 	@Override
 	public Set<ObjectInProject> getOtherObjectInProjects() {
 		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#renderLabel(javax.swing.JLabel)
+	 */
+	@Override
+	public void renderLabel(JLabel label) {
+		label.setIconTextGap(8);		
+		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebook.png")));
+		label.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		label.setText((String) (getParam(Notebook.NAME)));
 	}
 	
 }

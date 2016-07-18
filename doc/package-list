@@ -5,3 +5,6 @@ com.dwarfeng.scheduler.info
 com.dwarfeng.scheduler.io
 com.dwarfeng.scheduler.project
 com.dwarfeng.scheduler.typedef
+com.dwarfeng.scheduler.typedef.abstruct
+com.dwarfeng.scheduler.typedef.desint
+com.dwarfeng.scheduler.typedef.funcint

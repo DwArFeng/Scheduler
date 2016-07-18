@@ -16,9 +16,9 @@ import javax.swing.event.InternalFrameEvent;
  * @author DwArFeng
  * @since 1.8
  */
-public class JEditorInternalFrame extends JInternalFrame {
+public final class JEditorInternalFrame extends JInternalFrame {
 	
-	private static final long serialVersionUID = -3972410732763811844L;
+	private static final long serialVersionUID = 8939280630554793866L;
 	
 	/**指向的编辑器*/
 	private AbstractEditor editor;
@@ -31,7 +31,7 @@ public class JEditorInternalFrame extends JInternalFrame {
 	public JEditorInternalFrame(String title ,Editable editable) throws Exception {
 		super(title == null || title == "" ? "未命名" : title);
 		//editable不能为null
-		if(editable == null) throw new NullPointerException("Editable can't be null");
+		if(editable == null || editable.getEditor() == null) throw new NullPointerException("Editable can't be null");
 		//初始化自身变量
 		this.editor = editable.getEditor();
 		//初始化自身属性

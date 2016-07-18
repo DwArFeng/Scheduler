@@ -1,11 +1,14 @@
 package com.dwarfeng.scheduler.project;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.tree.MutableTreeNode;
@@ -26,7 +29,7 @@ import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
  */
 public class NotebookCol extends AbstractObjectInProjectTree implements PopupInTree{
 	
-	private static final long serialVersionUID = 5955486917051297791L;
+	private static final long serialVersionUID = -19553197501386083L;
 
 	/**
 	 * 生成一个默认的，不含有笔记本元素的笔记本集合。
@@ -48,6 +51,11 @@ public class NotebookCol extends AbstractObjectInProjectTree implements PopupInT
 			}
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#insert(javax.swing.tree.MutableTreeNode, int)
+	 */
 	@Override
 	public void insert(MutableTreeNode newChild, int childIndex) {
 		//只能插入笔记本
@@ -55,6 +63,10 @@ public class NotebookCol extends AbstractObjectInProjectTree implements PopupInT
 		super.insert(newChild, childIndex);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.funcint.PopupInTree#getJPopupMenu(com.dwarfeng.scheduler.gui.JProjectTree)
+	 */
 	@Override
 	public JPopupMenu getJPopupMenu(JProjectTree jProjectTree) {
 		JPopupMenu popup = new JPopupMenu();
@@ -89,8 +101,24 @@ public class NotebookCol extends AbstractObjectInProjectTree implements PopupInT
 		return popup;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getOtherObjectInProjects()
+	 */
 	@Override
 	public Set<ObjectInProject> getOtherObjectInProjects() {
 		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#renderLabel(javax.swing.JLabel)
+	 */
+	@Override
+	public void renderLabel(JLabel label) {
+		label.setIconTextGap(8);
+		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebookCollection.png")));
+		label.setFont(new Font("SansSerif", Font.BOLD, 14));
+		label.setText("所有笔记本");
 	}
 }

@@ -112,20 +112,28 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 		return attachment.getAttachObject();
 	}
 
-	public void setDocument(Document document) {
-			attachment.setAttachObject(document);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.desint.Editable#save()
+	 */
 	@Override
 	public void save() throws Exception {
 		attachment.save();		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.desint.Editable#release()
+	 */
 	@Override
 	public void release() {
 		attachment.release();		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#setParent(javax.swing.tree.MutableTreeNode)
+	 */
 	@Override
 	public void setParent(MutableTreeNode newParent){
 		super.setParent(newParent);
@@ -215,6 +223,7 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 	 */
 	@Override
 	public void delete(){
+		Scheduler.getInstance().disposeEditor(this);
 		removeFromParent();
 	}
 	

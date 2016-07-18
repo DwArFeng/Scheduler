@@ -1,6 +1,8 @@
 package com.dwarfeng.scheduler.core;
 
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -13,9 +15,14 @@ import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
 import com.dwarfeng.scheduler.io.ProjectHelper;
+import com.dwarfeng.scheduler.io.Scpath;
 import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.typedef.ProjectCantConstructException;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.desint.Editable;
+import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
+import com.dwarfeng.scheduler.typedef.exception.ProjectPathNotSuccessException;
+import com.dwarfeng.scheduler.typedef.exception.StructFailedException;
+import com.dwarfeng.scheduler.typedef.exception.UnhandledVersionException;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 
@@ -89,9 +96,9 @@ public class Scheduler {
 	 * 
 	 */
 	/**长版本号，用于显示在程序自述或者其他的地方*/
-	private final String longVersion = "alpha_0.2.2_20160610_build_A";
+	private final String longVersion = "alpha_0.3.0";
 	/**短版本号，用于显示在标题位置*/
-	private final String shortVersion = "alpha_0.2.2";
+	private final String shortVersion = "alpha_0.3.0";
 	/**默认的工作路径*/
 	private final String workspacePath;
 	/**默认的工程文档目录*/
@@ -214,30 +221,6 @@ public class Scheduler {
 	
 	
 /**
- * 转换文件路径。
- * <p>转换方法如下：
- * <br>如果文件是相对路径的话，直接返回自身。
- * <br> 如果文件是绝对路径的话，分析文件是否在程序的自身路径之内，如果是
- * ，返回与之对应的相对路径；如果不是，则返回绝对路径。
- * @param pathname 传入的路径。
- * @return 转换后的路径。
- */
-	private String transPath(String pathname){
-		if(pathname == null) return null;
-		File file = new File(pathname);
-		if(file.isAbsolute()){
-			String currentPath = System.getProperty("user.dir");
-			if(pathname.startsWith(currentPath)){
-				return pathname.substring(currentPath.length() + 1);
-			}else{
-				return pathname;
-			}
-		}else{
-			return pathname;
-		}
-	}
-	
-	/**
 	 * 询问并删除工程中文件的方法。
 	 * @param deleteable
 	 */
@@ -316,23 +299,96 @@ public class Scheduler {
 	 * @param pathname 指定的路径。
 	 * @return 读取的工程。
 	 */
-	public Project loadProject(String pathname){
+	public Project loadProject(File file){
 		
 		CT.trace("正在读取文件");
 		Project project = null;
-		try{
-			project = ProjectHelper.loadProject(pathname, ProjectHelper.Operate.FOREGROUND);
+		try {
+			project = ProjectHelper.loadProject(file, ProjectHelper.Operate.FOREGROUND);
 			CT.trace("文件读取成功");
-//			this.frontProject = project;
-//			this.zipPathname = pathname;
-//			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(pathname)).product();
+		} catch (IOException e) {
 			
-		}catch(ProjectCantConstructException e){
-			//TODO 将来会对异常进行非常详细的判定
-//			this.frontProject = null;
-//			this.zipPathname = null;
 			e.printStackTrace();
+			
+			JOptionPane.showMessageDialog(
+					schedulerGui, 
+					"读取文件时发生通信异常，文件不能正确读取\n"
+					+ "以下是异常的信息：\n"
+					+ e.getMessage(), 
+					"发生异常", 
+					JOptionPane.WARNING_MESSAGE, 
+					null
+			);
+		} catch (UnhandledVersionException e) {
+			
+			e.printStackTrace();
+			
+			String str;
+			switch (e.getVersionType()) {
+				case TOO_LATE:
+					str = "太新";
+					break;
+				case TOO_EARLY:
+					str = "太早";
+					break;
+				default:
+					str = "是中间的某个未知版本";
+					break;
+			}
+			JOptionPane.showMessageDialog(
+					schedulerGui, 
+					"检测到不支持的版本，文件不能正确读取\n"
+					+ "文件的版本是：" + e.getFailedVersion() + "\n"
+					+ "该版本对于本程序而言" +  str,
+					"发生异常", 
+					JOptionPane.WARNING_MESSAGE, 
+					null
+			);
+		} catch (StructFailedException e) {
+			
+			e.printStackTrace();
+			
+			JOptionPane.showMessageDialog(
+					schedulerGui, 
+					"构架文件结构时出现异常，文件不能正确读取\n"
+					+ "以下是异常的信息：\n"
+					+ e.getMessage(), 
+					"发生异常", 
+					JOptionPane.WARNING_MESSAGE, 
+					null
+			);
+		} catch (ProjectPathNotSuccessException e) {
+			
+			e.printStackTrace();
+			
+			for(Scpath scpath : e.getFailedList()){
+				CT.trace("解压失败：\t" + scpath.getPathName());
+			}
+			
+			int i = JOptionPane.showConfirmDialog(
+					schedulerGui, 
+					"解压文件具体路径时发生异常，一个或多个文件没有正确的被解压。\n"
+					+ "解压失败的文件被输出在了控制台上。\n"
+					+ "以下是异常的信息：\n"
+					+ e.getMessage()
+					+"\n\n"
+					+ "文件仍然可以被读取，但是解压失败的路径会造成数据丢失，要继续吗？",
+					"发生异常", 
+					JOptionPane.YES_NO_OPTION, 
+					JOptionPane.WARNING_MESSAGE,
+					null
+			);
+			
+			if(i == JOptionPane.YES_OPTION){
+				project = e.getProject();
+				CT.trace("文件架构读取成功，对应路径中一个或多个损坏");
+				return project;
+			}else{
+				project = null;
+				closeProject(e.getProject());
+			}
 		}
+		CT.trace("文件读取成功");
 		return project;
 	}
 	
@@ -344,13 +400,51 @@ public class Scheduler {
 	public void saveProject(Project project){
 		if(project == null) return;
 		CT.trace("正在将工程压缩存储");
-		try{
+		try {
 			ProjectHelper.saveProject(project,ProjectHelper.Operate.FOREGROUND);
-		}catch(ProjectCantConstructException e){
-			CT.trace("工程存储失败");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnhandledVersionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (StructFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProjectPathNotSuccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * 关闭（释放）指定的工程。
+	 * <p> 该过程不会关闭桌面面板上的编辑器，也不会保存工程，只是单纯的关闭。
+	 * 请配合其它方法使用。
+	 * @param project 指定的工程。
+	 */
+	public void closeProject(Project project){
+		if(project == null) return;
+		CT.trace("正在释放工程文件");
+		try{
+			ProjectHelper.disposeProject(project);
+			CT.trace("工程文件释放完毕");
+		}catch(ProjectCloseException e){
+			
+			e.printStackTrace();
+			
+			JOptionPane.showMessageDialog(
+					schedulerGui, 
+					"关闭文件时发生异常\n"
+					+ "以下是异常的信息：\n"
+					+ e.getMessage(), 
+					"发生异常", 
+					JOptionPane.WARNING_MESSAGE, 
+					null
+			);
+		}
+	}
+
 	/**
 	 * 释放指定工程在桌面面板上的所有编辑器。
 	 * @param project 指定的工程。
@@ -361,21 +455,11 @@ public class Scheduler {
 	}
 	
 	/**
-	 * 关闭（释放）指定的工程。
-	 * <p> 该过程不会关闭桌面面板上的编辑器，也不会保存工程，只是单纯的关闭。
-	 * 请配合其它方法使用。
-	 * @param project 指定的工程。
+	 * 关闭指定可编辑对象在桌面面板上的编辑器。
+	 * @param editable 指定的可编辑对象。
 	 */
-	public void closeProject(Project project){
-		CT.trace("正在释放工程文件");
-		if(project == null) return;
-		try{
-			ProjectHelper.disposeProject(project);
-			CT.trace("工程文件释放完毕");
-		}catch(Exception e){
-			e.printStackTrace();	//TODO 将来用更好的方式去解决，目前只是单纯的抛出去而已
-			CT.trace("由于某些原因，工程没有正常的被关闭");
-		}
+	public void disposeEditor(Editable editable){
+		schedulerGui.getDesktopPane().disposeEditor(editable);
 	}
 	
 	/**
@@ -442,6 +526,30 @@ public class Scheduler {
 		}
 	}
 	
+	/**
+	 * 转换文件路径。
+	 * <p>转换方法如下：
+	 * <br>如果文件是相对路径的话，直接返回自身。
+	 * <br> 如果文件是绝对路径的话，分析文件是否在程序的自身路径之内，如果是
+	 * ，返回与之对应的相对路径；如果不是，则返回绝对路径。
+	 * @param pathname 传入的路径。
+	 * @return 转换后的路径。
+	 */
+		private String transPath(String pathname){
+			if(pathname == null) return null;
+			File file = new File(pathname);
+			if(file.isAbsolute()){
+				String currentPath = System.getProperty("user.dir");
+				if(pathname.startsWith(currentPath)){
+					return pathname.substring(currentPath.length() + 1);
+				}else{
+					return pathname;
+				}
+			}else{
+				return pathname;
+			}
+		}
+
 	/**程序的初始化方法*/
 	private void init(){
 		RunnerQueue.invoke(new Runnable() {
@@ -468,7 +576,7 @@ public class Scheduler {
 						Project project = null;
 						jSplashWindow.setMessage("打开上一个工程...");
 						try{
-							project = loadProject(getLastPath());
+							project = ProjectHelper.loadProject(new File(fileInfo.getLastProjectPath()), ProjectHelper.Operate.FOREGROUND);
 							setFrontProject(project);
 						}catch(Exception e){
 							frontProject = null;

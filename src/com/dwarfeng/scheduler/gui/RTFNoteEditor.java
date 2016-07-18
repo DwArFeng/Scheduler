@@ -374,7 +374,7 @@ public class RTFNoteEditor extends AbstractEditor {
 		functionPanel.add(toolBar);
 		
 		boldButton = new JToggleButton("");
-		boldButton.setIcon(new ImageIcon(SchedulerGui.class.getResource("/resource/bold.png")));
+		boldButton.setIcon(new ImageIcon(SchedulerGui.class.getResource("/resource/textEditor/bold.png")));
 		boldButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {setBold();}
 		});
@@ -406,14 +406,14 @@ public class RTFNoteEditor extends AbstractEditor {
 		toolBar.add(boldButton);
 		
 		italicButton = new JToggleButton("");
-		italicButton.setIcon(new ImageIcon(SchedulerGui.class.getResource("/resource/italic.png")));
+		italicButton.setIcon(new ImageIcon(SchedulerGui.class.getResource("/resource/textEditor/italic.png")));
 		italicButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {setItalic();}
 		});
 		toolBar.add(italicButton);
 		
 		underlineButton = new JToggleButton("");
-		underlineButton.setIcon(new ImageIcon(RTFNoteEditor.class.getResource("/resource/underline.png")));
+		underlineButton.setIcon(new ImageIcon(RTFNoteEditor.class.getResource("/resource/textEditor/underline.png")));
 		underlineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {setUnderline();}
 		});

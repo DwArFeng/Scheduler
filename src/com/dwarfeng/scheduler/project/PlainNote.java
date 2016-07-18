@@ -1,11 +1,15 @@
 package com.dwarfeng.scheduler.project;
 
+import java.awt.Font;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.PlainDocument;
 
+import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.gui.PlainNoteEditor;
 import com.dwarfeng.scheduler.io.ProjectHelper;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
@@ -18,7 +22,7 @@ import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
  */
 public final class PlainNote extends Note {
 	
-	private static final long serialVersionUID = -7271300020601903537L;
+	private static final long serialVersionUID = 1563027638813115148L;
 
 	public PlainNote(PlainTextAttachment attachment) {
 		super(attachment);
@@ -45,11 +49,19 @@ public final class PlainNote extends Note {
 		return new  PlainNoteEditor(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.project.Note#createDefaultTextAttachment()
+	 */
 	@Override
 	protected TextAttachment createDefaultTextAttachment() {
 		return new PlainTextAttachment(ProjectHelper.genSchedulerURL(getRootProject(), "docs" + File.separator,	 ".txt"));
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.project.Note#getDocument()
+	 */
 	@Override
 	public PlainDocument getDocument() {
 		return (PlainDocument) super.getDocument();
@@ -61,6 +73,18 @@ public final class PlainNote extends Note {
 	 */
 	public DefaultEditorKit getEditorKit(){
 		return (DefaultEditorKit) getTextAttachment().getEditorKit();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#renderLabel(javax.swing.JLabel)
+	 */
+	@Override
+	public void renderLabel(JLabel label) {
+		label.setIconTextGap(8);		
+		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/plainNote.png")));
+		label.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		label.setText((String) (getParam(Note.NAME)));
 	}
 	
 }
