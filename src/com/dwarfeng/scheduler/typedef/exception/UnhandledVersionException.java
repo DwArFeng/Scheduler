@@ -9,11 +9,13 @@ import java.util.List;
  * 不能处理的版本异常。
  * <p> 程序在读取自身不能处理的版本时会抛出这个异常。
  * 异常记录了不能处理的版本号，以及所有能处理的版本号，并通过一个内在的版本比较器进行版本新旧的对比。
- *<b> 该异常还可以根据不能处理的版本号，使用内部算法推测哪个版本的解析器有可能能够读取这个未知版本的内容。
+ * <br> 该异常还可以根据不能处理的版本号，使用内部算法推测哪个版本的解析器有可能能够读取这个未知版本的内容。
  * @author DwArFeng
  * @since 1.8
  */
-public class UnhandledVersionException extends Exception {
+public final class UnhandledVersionException extends Exception {
+
+	private static final long serialVersionUID = -3967144139510400957L;
 
 	/**
 	 * 
@@ -22,11 +24,22 @@ public class UnhandledVersionException extends Exception {
 	 */
 	public enum VersionType{
 		/**指示该版本太晚*/
-		TOO_LATE,
+		LATE("太新"),
 		/**指示该版本太早*/
-		TOO_EARLY,
+		EARLY("太早"),
 		/**指示该版本处于中间版本且版本号未知，是比较少见的*/
-		MID_UNKOWN
+		MID("是中间的某个未知版本");
+		
+		private final String label;
+		
+		private VersionType(String label){
+			this.label = label;
+		}
+		
+		@Override
+		public String toString(){
+			return label;
+		}
 	}
 	
 	private String failedVersion;
@@ -61,11 +74,11 @@ public class UnhandledVersionException extends Exception {
 		String[] vs = sl.toArray(new String[0]);
 		Arrays.sort(vs,new VersionComparator());
 		if(failedVersion.equals(vs[0])){
-			return VersionType.TOO_EARLY;
+			return VersionType.EARLY;
 		}else if(failedVersion.equals(vs[vs.length-1])){
-			return VersionType.TOO_LATE;
+			return VersionType.LATE;
 		}else{
-			return VersionType.MID_UNKOWN;
+			return VersionType.MID;
 		}
 	}
 	
@@ -82,6 +95,7 @@ public class UnhandledVersionException extends Exception {
 
 
 
+
 /**
  * 版本比较器。
  * <p> 通过约定的版本规范比较两个版本的大小，如<code>版本0.2.0 > 版本0.1.0</code>。
@@ -90,7 +104,7 @@ public class UnhandledVersionException extends Exception {
  */
 class VersionComparator implements Comparator<String>{
 
-	private final static String SP = "//.";
+	private final static String SP = "\\.";
 	
 	@Override
 	public int compare(String s1, String s2) {

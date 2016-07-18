@@ -99,7 +99,7 @@ public final class ConfigHelper {
 	 * 保存程序外观。
 	 * <p> 该方法在Scheduler中获取配置文件夹的路径，并把外观信息保存在
 	 * appearance.xml中。
-	 * @param appearanceInfo
+	 * @param appearanceInfo 外观信息。
 	 */
 	public static void saveApperanceInfo(AppearanceInfo appearanceInfo){
 		Document document = DocumentHelper.createDocument();

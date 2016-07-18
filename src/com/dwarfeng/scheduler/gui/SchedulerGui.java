@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -17,12 +19,16 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +38,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -52,16 +57,20 @@ import com.dwarfeng.scheduler.core.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.io.ProjectHelper;
+import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.project.Tag;
+import com.dwarfeng.scheduler.tools.ProjectOperationHelper;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
+import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
+import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
+import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
 
 
 public class SchedulerGui extends JFrame {
 	
-	private static final long serialVersionUID = -1589971634374841967L;
+	private static final long serialVersionUID = -6917871614497310250L;
 	
 	/**控制台*/
 	private JOutOnlyConsolePanel console;
@@ -72,7 +81,7 @@ public class SchedulerGui extends JFrame {
 	/**工程树*/
 	private JProjectTree projectTree;
 	/**桌面面板*/
-	private JDesktopPaneS desktopPane;
+	private EditorDesktopPane desktopPane;
 	private JTextField serachTextField;
 	private TagListModel tagListModel;
 	private JList<TagToStringObject> tagList;
@@ -91,6 +100,7 @@ public class SchedulerGui extends JFrame {
 	private boolean fullScreen;
 
 	private SchedulerMenu menuBar;
+	private JLabel lblNewLabel;
 	
 	/**
 	 * 生成一个无上下文，具有默认外观属性的主界面。
@@ -103,7 +113,6 @@ public class SchedulerGui extends JFrame {
 	/**
 	 * 生成一个具有指定外观属性的主界面。
 	 * @param appearanceSet 指定的外观属性合集。
-	 * @param Scheduler.getInstance() 主程序上文。
 	 * @throws IOException  通信异常。
 	 * @throws NullPointerException 上文未指定。
 	 */
@@ -121,7 +130,7 @@ public class SchedulerGui extends JFrame {
 	
 	/**
 	 * 返回主界面所在的工程树。
-	 * @return
+	 * @return 主界面所在的工程树。
 	 */
 	public JProjectTree getProjectTree(){
 		return this.projectTree;
@@ -130,15 +139,16 @@ public class SchedulerGui extends JFrame {
 	 * 返回桌面面板。
 	 * @return 主界面的桌面面板。
 	 */
-	public JDesktopPaneS getDesktopPane(){
+	public EditorDesktopPane getDesktopPane(){
 		return this.desktopPane;
 	}
+	
 	/**
 	 * 更新界面数据，一般在程序变更指示工程时需要调用。
 	 * <p>它的顺序为
 	 * <br> 1、 重置标题。
 	 * <br> 2、 重置工程树数据模型。
-	 * <br>	3、 绘制按钮。
+	 * <br> 3、 绘制按钮。
 	 */
 	public void refreshData(){
 		resetTitle();
@@ -150,7 +160,7 @@ public class SchedulerGui extends JFrame {
 		String str = "Scheduler " + Scheduler.getInstance().getShortVersion();
 		try{
 			if(Scheduler.getInstance().getFrontProject() != null)
-				str += " - " + ProjectHelper.getProjectFile(Scheduler.getInstance().getFrontProject()).getAbsolutePath();
+				str += " - " + ProjectIoHelper.getProjectFile(Scheduler.getInstance().getFrontProject()).getAbsolutePath();
 		}catch(IllegalStateException e){}
 		setTitle(str);
 	}
@@ -299,7 +309,6 @@ public class SchedulerGui extends JFrame {
 	
 	private void init(AppearanceInfo appearanceSet) throws IOException {
 		//初始化成员变量。
-		//this.model = MODEL_OVERALL; XXX
 		this.consoleVisible = appearanceSet.isConsoleVisible();
 		this.projectTreeVisible = appearanceSet.isProjectTreeVisible();
 		this.paramVisible = appearanceSet.isParamVisible();
@@ -351,7 +360,7 @@ public class SchedulerGui extends JFrame {
 		console = new JOutOnlyConsolePanel();
 		mainPanel_1.add(console, BorderLayout.SOUTH);
 		
-		desktopPane = new JDesktopPaneS();
+		desktopPane = new EditorDesktopPane();
 		mainPanel_1.add(desktopPane, BorderLayout.CENTER);
 		
 		JPanel treePanel = new JPanel();
@@ -384,8 +393,7 @@ public class SchedulerGui extends JFrame {
 		             //鼠标双击发生的调度
 		             else if(e.getClickCount() == 2) {
 		            	 if(obj instanceof Editable){
-		            		 desktopPane.edit((Editable) obj);
-		            		 return;
+		            		 ProjectOperationHelper.edit((Editable) obj);
 		            	 }
 		             }
 		         }
@@ -402,23 +410,17 @@ public class SchedulerGui extends JFrame {
 		        projectTree.setSelectionPath(selPath);
 				checkAndShowPopup(e);
 			}
-			private void showMenu(MouseEvent e,JPopupMenu popup) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
 			private void checkAndShowPopup(MouseEvent e) {
 				if(e.isPopupTrigger()){
 					TreePath path = projectTree.getSelectionPath();
 					//鼠标在工程树上的某个节点点击时进行的调度
 					if(path != null){
 						Object obj = path.getLastPathComponent();
-						if(obj instanceof PopupInTree){
-							if(((PopupInTree) obj).getJPopupMenu(projectTree) != null)
-							showMenu(e,((PopupInTree) obj).getJPopupMenu(projectTree));
-						}
+						if(obj instanceof PopupInTree) ProjectOperationHelper.showPopupInProjectTree(projectTree, (PopupInTree) obj, e.getX(), e.getY());
 					}
 					//鼠标在工程树上的空白区域点击时进行的调度
 					else{
-						//TODO
+						//TODO 鼠标在工程树上的空白区域点击时进行的调度
 					}
 				}					
 			}
@@ -479,6 +481,7 @@ public class SchedulerGui extends JFrame {
 		
 		JButton noteTypeButton = new JButton("");
 		noteTypeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -505,18 +508,114 @@ public class SchedulerGui extends JFrame {
 		combineFunctionPanel.add(toolBarPanel_1, BorderLayout.CENTER);
 		toolBarPanel_1.setLayout(new BoxLayout(toolBarPanel_1, BoxLayout.X_AXIS));
 		
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{784, 0};
+		gbl_panel.rowHeights = new int[]{18, 0};
+		gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		lblNewLabel = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 10, 0, 0);
+		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 0;
+		panel.add(lblNewLabel, gbc_lblNewLabel);
+		
 		menuBar = new SchedulerMenu();
 		setJMenuBar(menuBar);
 	
-		
-		
+		//设置工程树的快捷键
+		setProjectTreeAction();
 		//更新数据
 		refreshData();
 	}
 	
 	
 	
-	
+	private void setProjectTreeAction() {
+		//设置快捷键
+		InputMap projectTreeInputMap = projectTree.getInputMap(JComponent.WHEN_FOCUSED);
+		ActionMap projectTreeActionMap = projectTree.getActionMap();
+		
+		//添加删除的Delete快捷键
+		projectTreeInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "del");
+		projectTreeActionMap.put("del", new AbstractAction() {
+			private static final long serialVersionUID = -1378680131920293448L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(projectTree.getSelectionPath() == null || projectTree.getSelectionPath().getLastPathComponent() == null) return;
+				
+				Object obj = projectTree.getSelectionPath().getLastPathComponent();
+				if(obj instanceof Deleteable){
+					ProjectOperationHelper.requestDelete((Deleteable) obj);
+				}
+			}
+		});
+		//添加上移以及下移的快捷键
+		projectTreeInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP,InputEvent.CTRL_MASK),"mup");
+		projectTreeActionMap.put("mup", new AbstractAction() {
+			private static final long serialVersionUID = 605550244921615505L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(projectTree.getSelectionPath() == null || projectTree.getSelectionPath().getLastPathComponent() == null) return;
+
+				Object obj = projectTree.getSelectionPath().getLastPathComponent();
+				if(obj instanceof Moveable){
+					ProjectOperationHelper.moveUp((Moveable) obj);
+				}
+			}
+		});
+		projectTreeInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,InputEvent.CTRL_MASK),"mdn");
+		projectTreeActionMap.put("mdn", new AbstractAction() {
+			private static final long serialVersionUID = -3146120382154775628L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(projectTree.getSelectionPath() == null || projectTree.getSelectionPath().getLastPathComponent() == null) return;
+
+				Object obj = projectTree.getSelectionPath().getLastPathComponent();
+				if(obj instanceof Moveable){
+					ProjectOperationHelper.moveDown((Moveable) obj);
+				}
+			}
+		});
+		//添加更改序列参数的快捷键
+		projectTreeInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0),"setp");
+		projectTreeActionMap.put("setp", new AbstractAction() {
+			private static final long serialVersionUID = -3571592601318400567L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(projectTree.getSelectionPath() == null || projectTree.getSelectionPath().getLastPathComponent() == null) return;
+
+				Object obj = projectTree.getSelectionPath().getLastPathComponent();
+				if(obj instanceof SerialParamSetable){
+					ProjectOperationHelper.setSerialParam((SerialParamSetable) obj);
+				}
+			}
+		});
+		//添加回车键编辑对象的快捷键		
+		projectTreeInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),"edit");
+		projectTreeActionMap.put("edit", new AbstractAction() {
+			private static final long serialVersionUID = -8545366270248966960L;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(projectTree.getSelectionPath() == null || projectTree.getSelectionPath().getLastPathComponent() == null) return;
+
+				Object obj = projectTree.getSelectionPath().getLastPathComponent();
+				if(obj instanceof Editable){
+					ProjectOperationHelper.edit((Editable) obj);
+				}
+			}
+		});
+	}
+
+
+
+
 	/**
 	 * 菜单栏
 	 * @author DwArFeng
@@ -535,13 +634,13 @@ public class SchedulerGui extends JFrame {
 			fileMenu.setMnemonic('F');
 			add(fileMenu);
 			
-			fileMenu.add(new JMenuItemAction(
-					null,	//TODO
-					"新建(N)", 
-					"新建一个工程文件", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_MASK), 
-					KeyEvent.VK_N,
-					new ActionListener() {
+			fileMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/new.png")))
+					.name("新建(N)")
+					.description("新建一个工程文件")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_N)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							JFileChooser chooser = new JFileChooserS(Scheduler.getInstance().getArchivePath());
@@ -550,6 +649,7 @@ public class SchedulerGui extends JFrame {
 							chooser.showDialog(SchedulerGui.this, "选择");
 							File temp = chooser.getSelectedFile();
 							if(temp == null) return;		//如果选择了取消，则返回。
+							//FIXME 这种分隔方式不对
 							File file = new File(temp.getAbsolutePath().split("\\.")[0] + ".sch");
 							if(file.exists()){
 								int i = JOptionPane.showConfirmDialog(
@@ -573,36 +673,61 @@ public class SchedulerGui extends JFrame {
 									 * 先保存旧文档的意义是通常来说，旧文档是比较大的，内容比较多的，先保存可以降低
 									 * 数据丢失的风险。 
 									 */
-									CT.trace("正在创建新文件：" + file.getAbsolutePath());
-									//先创建
-									Project project = Scheduler.getInstance().createNewProject(file);
-									//再显示为前台
-									Scheduler.getInstance().setFrontProject(project);
-									//释放上一个工程的编辑窗口
-									Scheduler.getInstance().disposeEditor(fp);
-									//如果新建的文件路径正好是当前工程的路径，则根本不需要保存当前的文档，否则保存
-									if(		
-										fp == null ||
-										!ProjectHelper.getProjectFile(fp).equals(file)
-									)
-									Scheduler.getInstance().saveProject(fp);
-									//关闭上一个工程。
-									Scheduler.getInstance().closeProject(fp);
-									//保存当前工程
-									Scheduler.getInstance().saveProject(project);
+									if(fp != null){
+										boolean flag = false;
+										//释放上一个工程的编辑窗口,如果新建的文件路径正好是当前工程的路径，则强制关闭编辑器
+										CT.trace(ProjectIoHelper.getProjectFile(fp));
+										CT.trace(file);
+										CT.trace(ProjectIoHelper.getProjectFile(fp).equals(file));
+										if(ProjectIoHelper.getProjectFile(fp).equals(file)){
+											ProjectOperationHelper.forceDisposeEditor(fp);
+											flag = true;
+										}else{
+											flag = ProjectOperationHelper.disposeEditor(fp,0);
+										}
+										//判断关闭时是否出现了异常。
+										if(!flag){
+											//重新将前台文件设置为fp
+											Scheduler.getInstance().setFrontProject(fp);
+											//停止执行后续代码
+											return;
+										}else{
+											CT.trace("正在创建新文件：" + file.getAbsolutePath());
+											//先创建
+											Project project = ProjectOperationHelper.createNewProject(file);
+											//再显示为前台
+											Scheduler.getInstance().setFrontProject(project);
+											//如果新建的文件路径正好是当前工程的路径，则根本不需要保存当前的文档，否则保存
+											if(	!ProjectIoHelper.getProjectFile(fp).equals(file)){
+												ProjectOperationHelper.saveProject(fp);
+											}
+											//关闭上一个工程。
+											ProjectOperationHelper.closeProject(fp);
+											//保存当前工程
+											ProjectOperationHelper.saveProject(project);
+										}
+									}else{
+										CT.trace("正在创建新文件：" + file.getAbsolutePath());
+										//先创建
+										Project project = ProjectOperationHelper.createNewProject(file);
+										//再显示为前台
+										Scheduler.getInstance().setFrontProject(project);
+									}
 								}
 							};
 							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
-			fileMenu.add(new JMenuItemAction(
-					null,	//TODO
-					"打开(O)", 
-					"打开一个工程文件", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_MASK),
-					KeyEvent.VK_O,
-					new ActionListener() {
+					})
+					.product()
+			);
+			
+			fileMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/open.png")))
+					.name("打开(O)")
+					.description("打开一个工程文件")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_O)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							JFileChooser chooser = new JFileChooserS(Scheduler.getInstance().getArchivePath());
@@ -618,40 +743,64 @@ public class SchedulerGui extends JFrame {
 							Runnable runnable = new Runnable() {
 								@Override
 								public void run() {
-									/*
-									 * 特殊情况：如果打开的文件就是自身，那么不进行任何操作。
-									 * 其余： 为了尽快将新的工程呈现给用户，先加载工程，再保存前一个工程。
-									 */
-									//考虑特殊情况
-									for(Project al : ProjectHelper.getAssociatedProjects()){
-										if(ProjectHelper.getProjectFile(al).equals(file)){
-											CT.trace("检测到文件已经打开");
-											Scheduler.getInstance().setFrontProject(al);
+									if(fp != null){
+										/*
+										 * 特殊情况：如果打开的文件就是自身，那么不进行任何操作。
+										 * 进一步：	如果打开的工程已经被加载了，则不用重新加载。
+										 * 其余： 为了尽快将新的工程呈现给用户，先加载工程，再保存前一个工程。
+										 */
+										//考虑特殊情况
+										if(ProjectIoHelper.getProjectFile(fp).equals(file)){
+											Scheduler.getInstance().setFrontProject(fp);
 											return;
 										}
+										//如果不是以上的极特殊情况，则需要先关闭前一个工程的编辑器。
+										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										if(!flag){
+											//如果前者的编辑器不能正常关闭，则还原前台工程，并返回。
+											Scheduler.getInstance().setFrontProject(fp);
+											return;
+										}else{
+											boolean ap = false;
+											//进一步检测特殊情况
+											for(Project al : ProjectIoHelper.getAssociatedProjects()){
+												if(ProjectIoHelper.getProjectFile(al).equals(file)){
+													CT.trace("检测到文件已经打开");
+													Scheduler.getInstance().setFrontProject(al);
+													ap = true;
+													break;
+												}
+											}
+											if(!ap){
+												//先加载工程
+												Project project = ProjectOperationHelper.loadProject(file);
+												//将工程显示在前台
+												Scheduler.getInstance().setFrontProject(project);
+											}
+											ProjectOperationHelper.saveProject(fp);
+											ProjectOperationHelper.closeProject(fp);
+										}
+									}else{
+										//先加载工程
+										Project project = ProjectOperationHelper.loadProject(file);
+										//将工程显示在前台
+										Scheduler.getInstance().setFrontProject(project);
 									}
-									//先加载工程
-									Project project = Scheduler.getInstance().loadProject(file);
-									//将工程显示在前台
-									Scheduler.getInstance().setFrontProject(project);
-									//关闭上一个工程
-									Scheduler.getInstance().disposeEditor(fp);
-									Scheduler.getInstance().saveProject(fp);
-									Scheduler.getInstance().closeProject(fp);
 								}
 							};
 							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
+					})
+					.product()
+			);
 			fileMenu.addSeparator();
-			close = fileMenu.add(new JMenuItemAction(
-					null, 		//TODO
-					"关闭(C)", 
-					"关闭当前工程", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK), 
-					KeyEvent.VK_C, 
-					new ActionListener() {
+			
+			close = fileMenu.add(new JMenuItemAction.Productor()
+					.name("关闭(C)")
+					.description("关闭当前工程")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_C)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							Project fp = Scheduler.getInstance().getFrontProject();
@@ -659,52 +808,65 @@ public class SchedulerGui extends JFrame {
 							Runnable runnable = new Runnable() {
 								@Override
 								public void run() {
-									// 关闭前一个工程
-									Scheduler.getInstance().disposeEditor(fp);
-									Scheduler.getInstance().saveProject(fp);
-									Scheduler.getInstance().closeProject(fp);
+									if(fp != null){
+										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										if(!flag){
+											Scheduler.getInstance().setFrontProject(fp);
+											return;
+										}else{
+											// 关闭前一个工程
+											ProjectOperationHelper.saveProject(fp);
+											ProjectOperationHelper.closeProject(fp);
+										}
+									}else{
+										return;
+									}
 								}
 							};
 							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
+					})
+					.product()
+			);
 			fileMenu.addSeparator();
-			save = fileMenu.add(new JMenuItemAction(
-					null, 		//TODO
-					"保存(S)",
-					"保存当前工程", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK),
-					KeyEvent.VK_S,
-					new ActionListener() {
+			
+			save = fileMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/save.png")))
+					.name("保存(S)")
+					.description("保存当前工程")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK))
+					.mnemonic(KeyEvent.VK_S)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							Runnable runnable = new Runnable() {
 								@Override
 								public void run() {
-									Scheduler.getInstance().saveProject(Scheduler.getInstance().getFrontProject());
+									Project fp = Scheduler.getInstance().getFrontProject();
+									if(fp != null) ProjectOperationHelper.saveProject(fp);
 								}
 							};
 							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
-			saveAs = fileMenu.add(new JMenuItemAction(
-					null,		//TODO
-					"另存为(A)", 
-					"将当前工程存储为别的文件", 
-					null, 
-					KeyEvent.VK_A, 
-					new ActionListener() {
+					})
+					.product()
+			);
+			
+			saveAs = fileMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/saveAs.png")))
+					.name("另存为(A)")
+					.description("将当前工程存储为别的文件")
+					.mnemonic(KeyEvent.VK_A)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-
 							JFileChooser chooser = new JFileChooserS(Scheduler.getInstance().getArchivePath());
 							chooser.setAcceptAllFileFilterUsed(false);
 							chooser.setFileFilter(new FileNameExtensionFilter("计划管理工程文件", "sch"));
 							chooser.showDialog(SchedulerGui.this, "选择");
 							File temp = chooser.getSelectedFile();
 							if(temp == null) return;		//如果选择了取消，则返回。
+							//FIXME 这种分隔方式不对
 							File file = new File(temp.getAbsolutePath().split("\\.")[0] + ".sch");
 							if(file.exists()){
 								int i = JOptionPane.showConfirmDialog(
@@ -718,51 +880,56 @@ public class SchedulerGui extends JFrame {
 								if(i == JOptionPane.NO_OPTION) return;
 							}
 							Project fp = Scheduler.getInstance().getFrontProject();
-							File backup = ProjectHelper.getProjectFile(fp);
-							CT.trace("正在映射新文件：" + file.getAbsolutePath());
-							/*
-							 * 特殊情况：另存为的文件等于自身文件，这时候相当于简单的保存。
-							 * 其它情况：在主线程中更改映射文件，这很重要，能规避许多安全问题
-							 */
-							//重新映射文件
-							if(!ProjectHelper.getProjectFile(fp).equals(file)){
-								try{
-									ProjectHelper.setProjectFile(fp, file);
-								}catch(Exception ex0){
-									ex0.printStackTrace();
-									CT.trace("更新文件映射失败，正在还原文件映射");
+							File backup = ProjectIoHelper.getProjectFile(fp);
+							if(fp != null){
+								CT.trace("正在映射新文件：" + file.getAbsolutePath());
+								/*
+								 * 特殊情况：另存为的文件等于自身文件，这时候相当于简单的保存。
+								 * 其它情况：在主线程中更改映射文件，这很重要，能规避许多安全问题
+								 */
+								//重新映射文件
+								if(!ProjectIoHelper.getProjectFile(fp).equals(file)){
 									try{
-										ProjectHelper.setProjectFile(fp, backup);
-									}catch(Exception ex1){
-										ex1.printStackTrace();
-										CT.trace("还原映射失败，正在尝试关闭文件");
-										Scheduler.getInstance().closeProject(fp);
+										ProjectIoHelper.setProjectFile(fp, file);
+									}catch(Exception ex0){
+										ex0.printStackTrace();
+										CT.trace("更新文件映射失败，正在还原文件映射");
+										try{
+											ProjectIoHelper.setProjectFile(fp, backup);
+										}catch(Exception ex1){
+											ex1.printStackTrace();
+											CT.trace("还原映射失败，正在尝试关闭文件");
+											ProjectOperationHelper.closeProject(fp);
+										}
+										return;
 									}
-									return;
 								}
+								//同步保存文档
+								Runnable runnable = new Runnable() {
+									@Override
+									public void run() {
+										//设置最新的工程为前台
+										Scheduler.getInstance().setFrontProject(fp);
+										//保存文件
+										ProjectOperationHelper.saveProject(fp);
+									}
+								};
+								RunnerQueue.invoke(runnable);
+								
 							}
-							//同步保存文档
-							Runnable runnable = new Runnable() {
-								@Override
-								public void run() {
-									//设置最新的工程为前台
-									Scheduler.getInstance().setFrontProject(fp);
-									//保存文件
-									Scheduler.getInstance().saveProject(fp);
-								}
-							};
-							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
+					})
+					.product()
+			);
+			
 			fileMenu.addSeparator();
-			fileMenu.add(new JMenuItemAction(
-					null, 
-					"退出(X)", 
-					"退出当前程序", 
-					null, 
-					KeyEvent.VK_X, 
-					new ActionListener() {
+			
+			fileMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/exit.png")))
+					.name("退出(X)")
+					.description("退出当前程序")
+					.mnemonic(KeyEvent.VK_X)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							Runnable runnable = new Runnable() {
@@ -773,8 +940,9 @@ public class SchedulerGui extends JFrame {
 							};
 							RunnerQueue.invoke(runnable);
 						}
-					}
-			));
+					})
+					.product()
+			);
 			
 			JMenu editMenu = new JMenu("编辑(E)");
 			editMenu.setMnemonic('E');
@@ -784,72 +952,91 @@ public class SchedulerGui extends JFrame {
 			toolMenu.setMnemonic('T');
 			add(toolMenu);
 			
-			toolMenu.add(new JMenuItemAction(
-					null, //TODO
-					"标签管理", 
-					"管理整个工程文件中的所有标签", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_T,InputEvent.CTRL_MASK), 
-					new ActionListener() {
+			toolMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/tag.png")))
+					.name("标签管理(T)")
+					.description("管理整个工程文件中的所有标签")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_T,InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_T)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							if(Scheduler.getInstance().getFrontProject() == null) return;
 							new JTagManager(SchedulerGui.this,Scheduler.getInstance().getFrontProject()).setVisible(true);
 						}
-					}
-			));
+					})
+					.product()
+			);
 			
 			JMenu windowMenu = new JMenu("窗口(W)");
 			windowMenu.setMnemonic('W');
 			add(windowMenu);
 			
-			windowMenu.add(new JMenuItemAction(
-					ImageIO.read(Scheduler.class.getResource("/resource/menu/console.png")),
-					"控制台", 
-					"显示/隐藏控制台", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_L,InputEvent.CTRL_MASK), 
-					new ActionListener() {
+			windowMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/console.png")))
+					.name("控制台(C)")
+					.description("显示/隐藏控制台")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_L,InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_C)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {setConsoleVisible(!isConsoleVisible());}
-			}));
-			windowMenu.add(new JMenuItemAction(
-					ImageIO.read(Scheduler.class.getResource("/resource/menu/projectTree.png")),
-					"工程树", 
-					"显示/隐藏工程树", 
-					null,
-					new ActionListener() {
+					})
+					.product()
+			);
+			
+			windowMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/projectTree.png")))
+					.name("工程树(T)")
+					.description("显示/隐藏工程树")
+					.mnemonic(KeyEvent.VK_T)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {setProjectTreeVisible(!isProjectTreeVisible());}
-			}));
-			windowMenu.add(new JMenuItemAction(
-					null,										//TODO
-					"属性栏", 
-					"显示/隐藏属性栏", 
-					null,
-					new ActionListener() {
+					})
+					.product()
+			);
+			
+			windowMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/paramPanel.png")))
+					.name("属性栏(P)")
+					.description("显示/隐藏属性栏")
+					.mnemonic(KeyEvent.VK_P)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {setParamVisible(!isPrarmVisible());}
-			}));
-			windowMenu.add(new JMenuItemAction(
-					ImageIO.read(Scheduler.class.getResource("/resource/menu/toolBar.png")),
-					"工具栏", 
-					"显示/隐藏工具栏", 
-					null,
-					new ActionListener() {
+					})
+					.product()
+			);
+			
+			windowMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/toolBar.png")))
+					.name("工具栏(F)")
+					.description("显示/隐藏工具栏")
+					.mnemonic(KeyEvent.VK_F)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {setFunctionPanelVisible(!isFunctionPanelVisible());}
-			}));
+					})
+					.product()
+			);
+			
 			windowMenu.addSeparator();
-			windowMenu.add(new JMenuItemAction(
-					null,										//TODO
-					"桌面最大化", 
-					"最大化/还原桌面窗口", 
-					KeyStroke.getKeyStroke(KeyEvent.VK_M,InputEvent.CTRL_MASK), 
-					new ActionListener() {
+			
+			windowMenu.add(new JMenuItemAction.Productor()
+					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/fullScreen.png")))
+					.name("桌面最大化(M)")
+					.description("最大化/还原桌面窗口")
+					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_M,InputEvent.CTRL_MASK))
+					.mnemonic(KeyEvent.VK_M)
+					.listener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {setFullScreen(!isFullScreen());}
-			}));
+					})
+					.product()
+			);
 		}
-
+		
 		private void resetMenu() {
 			if(Scheduler.getInstance().getFrontProject() != null){
 				save.setEnabled(true);
@@ -862,6 +1049,8 @@ public class SchedulerGui extends JFrame {
 			}
 		}
 	}
+	
+	
 	
 }
 

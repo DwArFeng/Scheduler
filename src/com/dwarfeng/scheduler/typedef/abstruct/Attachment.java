@@ -1,45 +1,33 @@
 package com.dwarfeng.scheduler.typedef.abstruct;
 
+import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
+
 /**
- * 附件接口。实现该接口的对象是工程文件的一部分，附件在占有
- * 工程结构的同时，还与工程中的某个文件相连接。
+ * 附件接口。
+ * <p>此接口实现该接口的对象是工程文件的一部分，附件在占有工程结构的同时，还与工程中的某个文件相连接。
+ * <br> 该接口是个泛型接口，其中的泛型代表着附件指示的文件最终能以什么类被读取以及以什么类被保存。
  * @author DwArFeng
  * @since 1.8
  */
-public interface Attachment extends ObjectInProject,Scpathable{
+public interface Attachment<T> extends Scpathable{
 	
 	/**
-	 * 读取附件指向的文档。
+	 * 从附件中读取文件，并且以泛型指示的类返回。
+	 * @return 去读的文件的对象形式。
+	 * @throws AttachmentException 附件读取失败异常。
 	 */
-	public void load() throws Exception;
+	public T load() throws AttachmentException;
 	
 	/**
-	 * 保存附件指向的文档。
-	 * @throws Exception 出现异常。
+	 * 将指定的对象保存在附件中，一般来说，这会覆盖原有的附件。
+	 * @param obj 指定的对象。
+	 * @throws AttachmentException 附件保存失败异常。 
 	 */
-	public void save() throws Exception;
+	public void save(T obj) throws AttachmentException;
 	
-	/**
-	 * 释放附件文档。
-	 */
-	public void release();
-	
-	/**
-	 * 获得目标对象。
-	 * <p> 该对象是与附件文件直接关联的对象，请保证该方法永远不返回空值。
-	 * <p> 如果目标对象为空，则返回{@linkplain Attachment#createDefaultObject()}中的对象。
-	 * @return 目标对象。
-	 */
-	public Object getAttachObject();
-	
-	/**
-	 * 设置目标对象为指定的对象。
-	 * @param target 指定的对象。
-	 */
-	public void setAttachObject(Object obj);
 	/**
 	 * 创建默认的附件对象。
 	 * @return 默认的附件对象。
 	 */
-	public Object createDefaultObject();
+	public T createDefaultObject();
 }

@@ -1,9 +1,6 @@
 package com.dwarfeng.scheduler.gui;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
@@ -11,29 +8,22 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTree;
-import javax.swing.KeyStroke;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
-import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 
 public class JProjectTree extends JTree {
 	
-	private static final long serialVersionUID = -3100586083000288039L;
+	private static final long serialVersionUID = -3921593828136775074L;
 	
 	private SchedulerGui mainFrame;
-	private Project project;
+	private DefaultTreeModel model;
 
 	public JProjectTree() {
 		super();
@@ -57,30 +47,43 @@ public class JProjectTree extends JTree {
 	}
 	
 	/**
-	 * 将工程树展开到指定的节点。
-	 * <p> 该方法会一路展开该节点的所有父节点，最后展开自身。
-	 * @param node 需要展开到的节点。
+	 * 返回工程树中指示的工程。
+	 * @return 工程树中的工程。
 	 */
-	public void expandPath(ObjectInProjectTree node){
-		for(
-				Enumeration<ObjectInProjectTree> enu = new PathBetweenNodesEnumeration(node.getRootProject(),node);
-				enu.hasMoreElements();
-				//no expression
-		){
-			ObjectInProjectTree treeNode = enu.nextElement();
-			TreePath treePath = new TreePath(getPath2Root(treeNode));
-			expandPath(treePath);
-			//如果该组件是最后一个组件，则需要确保该组件被显示在合适的位置。
-			if(!enu.hasMoreElements()) scrollPathToVisible(treePath);
-		}
+	public Project getProject(){
+		if(model == null || model.getRoot() == null) return null;
+		return (Project) model.getRoot();
 	}
 	
 	/**
-	 * 返回该工程树正在指向的工程。
-	 * @return
+	 * 设置工程树所指向的工程。
+	 * <p> 无论指定的工程是否和原工程相等，调用此方法都会更新工程树的模型。
+	 * @param project 指定的工程。
 	 */
-	public Project getProject(){
-		return this.project;
+	public void setProject(Project project){
+		this.model = new DefaultTreeModel(project);
+		this.setModel(model);
+	}
+	
+	/**
+	 * 重载工程树模型。
+	 * <p> 该重载方法首先重载工程树的模型，并把工程树展开到更新之前的情况。
+	 * <br> 如果入口参数<code>selectNode</code>不为<code>null</code>，则再将指定的路径展开并选中。
+	 * @param selectNode 需要展开并选中的节点，可以为<code>null</code>，表示不选中任何节点。
+	 */
+	public void refresh(ObjectInProjectTree selectNode){
+		Enumeration<TreePath> tps = getExpandedDescendants(new TreePath(getProject()));
+		this.model.reload();
+		if(tps != null){
+			while(tps.hasMoreElements()){
+				expandPath(tps.nextElement());
+			}
+		}
+		if(selectNode != null){
+			TreePath tp = new TreePath(getPath2Root(selectNode));
+			addSelectionPath(tp);
+			scrollPathToVisible(tp);
+		}
 	}
 	
 	private ObjectInProjectTree[] getPath2Root(ObjectInProjectTree objectInProjectTree){
@@ -97,21 +100,54 @@ public class JProjectTree extends JTree {
 	}
 	
 	/**
-	 * 设置工程树所指向的工程。
-	 * <p> 无论指定的工程是否和原工程相等，调用此方法都会更新工程树的模型。
-	 * @param project 指定的工程。
+	 * 路径间枚举。
+	 * <p> 该方法摘自{@linkplain DefaultMutableTreeNode}。
+	 * @author DwArFeng
+	 * @since 1.8
 	 */
-	public void setProject(Project project){
-		if(project != this.project){
-			this.project = project;
+	private static class PathBetweenNodesEnumeration implements Enumeration<ObjectInProjectTree>{
+		
+		  protected Stack<ObjectInProjectTree> stack;
+		  
+		  public PathBetweenNodesEnumeration(ObjectInProjectTree ancestor,ObjectInProjectTree descendant) {
+			  super();
+
+	        if (ancestor == null || descendant == null) {
+	            throw new IllegalArgumentException("argument is null");
+	        }
+
+	        ObjectInProjectTree current;
+
+	        stack = new Stack<ObjectInProjectTree>();
+	        stack.push(descendant);
+
+	        current = descendant;
+	        while (current != ancestor) {
+	            current = current.getParent();
+	            if (current == null && descendant != ancestor) {
+	                throw new IllegalArgumentException("node " + ancestor +
+	                            " is not an ancestor of " + descendant);
+	            }
+	            stack.push(current);
+	        }
+		 }
+		
+		@Override
+		public boolean hasMoreElements() {
+			return stack.size() > 0;
 		}
-		repaintTreeModel();
-		repaint();
+
+		@Override
+		public ObjectInProjectTree nextElement() {
+			 try {
+	           return stack.pop();
+	       } catch (EmptyStackException e) {
+	           throw new NoSuchElementException("No more elements");
+	       }
+		}
+		
 	}
 	
-	public void repaintTreeModel(){
-		setModel(new DefaultTreeModel(project));
-	}
 	
 	/**
 	 * 初始化方法。
@@ -119,129 +155,8 @@ public class JProjectTree extends JTree {
 	private void init() {
 		//设置自身属性
 		setCellRenderer(new ProjectTreeRender());
-		
-		//添加快捷键
-		InputMap inputMap = getInputMap(JComponent.WHEN_FOCUSED);
-		ActionMap actionMap = getActionMap();
-		
-		//添加删除的Delete快捷键
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "del");
-		actionMap.put("del", new AbstractAction() {
-			private static final long serialVersionUID = -1378680131920293448L;
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(getSelectionPath() == null || getSelectionPath().getLastPathComponent() == null) return;
-				
-				Deleteable obj;
-				try{
-					obj = (Deleteable) getSelectionPath().getLastPathComponent();
-				}catch(ClassCastException exception){
-					return;
-				}
-				ObjectInProjectTree parent = obj.getParent();
-				Scheduler.getInstance().requestDelete(obj);
-				repaintTreeModel();
-				JProjectTree.this.expandPath(parent);
-			}
-		});
-		//添加上移以及下移的快捷键
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP,InputEvent.CTRL_MASK),"mup");
-		actionMap.put("mup", new AbstractAction() {
-			private static final long serialVersionUID = 605550244921615505L;
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(getSelectionPath() == null || getSelectionPath().getLastPathComponent() == null) return;
-
-				Moveable obj;
-				try{
-					obj = (Moveable) getSelectionPath().getLastPathComponent();
-				}catch(ClassCastException exception){
-					return;
-				}
-				Scheduler.getInstance().moveUp(obj);
-				JProjectTree.this.repaintTreeModel();
-				JProjectTree.this.expandPath(obj);
-				JProjectTree.this.setSelectionPath(new TreePath(getPath2Root(obj)));
-			}
-		});
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,InputEvent.CTRL_MASK),"mdn");
-		actionMap.put("mdn", new AbstractAction() {
-			private static final long serialVersionUID = -3146120382154775628L;
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(getSelectionPath() == null || getSelectionPath().getLastPathComponent() == null) return;
-
-				Moveable obj;
-				try{
-					obj = (Moveable) getSelectionPath().getLastPathComponent();
-				}catch(ClassCastException exception){
-					return;
-				}
-				Scheduler.getInstance().moveDown(obj);
-				JProjectTree.this.repaintTreeModel();
-				JProjectTree.this.expandPath(obj);
-				JProjectTree.this.setSelectionPath(new TreePath(getPath2Root(obj)));
-			}
-		});
 	}
 }
-
-
-
-
-
-
-
-
-
-class PathBetweenNodesEnumeration implements Enumeration<ObjectInProjectTree>{
-	
-	  protected Stack<ObjectInProjectTree> stack;
-	  
-	  public PathBetweenNodesEnumeration(ObjectInProjectTree ancestor,ObjectInProjectTree descendant) {
-		  super();
-
-          if (ancestor == null || descendant == null) {
-              throw new IllegalArgumentException("argument is null");
-          }
-
-          ObjectInProjectTree current;
-
-          stack = new Stack<ObjectInProjectTree>();
-          stack.push(descendant);
-
-          current = descendant;
-          while (current != ancestor) {
-              current = current.getParent();
-              if (current == null && descendant != ancestor) {
-                  throw new IllegalArgumentException("node " + ancestor +
-                              " is not an ancestor of " + descendant);
-              }
-              stack.push(current);
-          }
-	 }
-	
-	@Override
-	public boolean hasMoreElements() {
-		return stack.size() > 0;
-	}
-
-	@Override
-	public ObjectInProjectTree nextElement() {
-		 try {
-             return stack.pop();
-         } catch (EmptyStackException e) {
-             throw new NoSuchElementException("No more elements");
-         }
-	}
-	
-}
-
-
-
-
-
-
 
 
 

@@ -3,7 +3,6 @@ package com.dwarfeng.scheduler.project;
 import com.dwarfeng.func.interfaces.Describeable;
 import com.dwarfeng.func.interfaces.Nameable;
 
-//FIXME 重写hashCode方法。
 /**
  * 标签类，记录着标签以及定义标签的方法。
  * @author DwArFeng
@@ -37,22 +36,33 @@ public class Tag implements Nameable,Describeable{
 	}
 	/**
 	 * 设置Tag的名称。
-	 * @param name
+	 * @param name Tag的名称。
 	 */
 	public void setName(String name){
 		this.name = name == null ? "" : name;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.func.interfaces.Describeable#getDescribe()
+	 */
 	@Override
 	public String getDescribe() {
 		return this.describe;
 	}
+	
 	/**
 	 * 设置Tag的描述。
-	 * @param describe
+	 * @param describe Tag的描述。
 	 */
 	public void setDescribe(String describe){
 		this.describe = describe == null ? "" : describe;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object o){
 		if(o == this) return true;
@@ -61,11 +71,19 @@ public class Tag implements Nameable,Describeable{
 		return ((Tag)o).getName().equals(this.getName());
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode(){
 		return getName().hashCode()*17;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		return "标签：" + getName() + "，描述：" + getDescribe();

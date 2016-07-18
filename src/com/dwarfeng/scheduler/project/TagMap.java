@@ -1,6 +1,7 @@
 package com.dwarfeng.scheduler.project;
 
 import com.dwarfeng.func.util.IDMap;
+import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
 
 /**
@@ -8,10 +9,8 @@ import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
  * @author DwArFeng。
  * @since 1.8。
  */
-public class TagMap implements ObjectInProject{
+public class TagMap extends AbstractObjectOutProjectTree implements ObjectInProject{
 	
-	/**记录工程上下文*/
-	private Project context;
 	/**记录ID-Tag映射的ID映射*/
 	private IDMap<Tag> map;
 	
@@ -32,8 +31,8 @@ public class TagMap implements ObjectInProject{
 	
 	/**
 	 * 获取指定ID对应的tag
-	 * @param id
-	 * @return
+	 * @param id 指定的id值。
+	 * @return 指定id值对应的标签。
 	 */
 	public Tag getTag(int id){
 		return map.get(id);
@@ -47,19 +46,6 @@ public class TagMap implements ObjectInProject{
 		return map.getAllIDs();
 	}
 
-	/**
-	 * 设置该标签-ID映射的根工程，该方法由工程类调用。
-	 * @param context 工程上文。
-	 */
-	public void setRootProject(Project context){
-		this.context = context;
-	}
-	
-	@Override
-	public Project getRootProject() {
-		return context;
-	}
-	
 //	/**
 //	 * 映射标签与标签ID的类。
 //	 * <p> 该类存放着整个工程的所有Tag，并且每个Tag都定义了唯一的编号。
@@ -115,7 +101,7 @@ public class TagMap implements ObjectInProject{
 //		 * @param t
 //		 */
 //		public void removeTag(Tag t){
-//			//TODO
+//			//TODO 移除标签功能待完善
 ////			try{
 ////				Iterator<Tagable> iterator = getContextProject().getTagables().iterator();
 ////				while(iterator.hasNext()){
@@ -132,7 +118,7 @@ public class TagMap implements ObjectInProject{
 //		 * @param id
 //		 */
 //		public void removeTag(int id){
-//			//TODO
+//	//TODO 移除标签功能待完善
 ////			try{
 ////				Iterator<Tagable> iterator = getContextProject().getTagables().iterator();
 ////				while(iterator.hasNext()){

@@ -8,7 +8,7 @@ import com.dwarfeng.scheduler.io.Scpath;
  * @author DwArFeng
  * @since 1.8
  */
-public interface Scpathable extends ObjectInProject{
+public interface Scpathable extends ObjectOutProjectTree{
 	
 	/**
 	 * 获取附件的路径。

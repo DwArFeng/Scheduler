@@ -16,6 +16,11 @@ import com.dwarfeng.func.io.CT;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.project.Tag;
 
+/**
+ * 标签管理对话框。
+ * @author DwArFeng
+ * @since 1.8
+ */
 public class JTagManager extends JDialog {
 
 	private static final long serialVersionUID = 2133960867137583427L;
@@ -36,6 +41,10 @@ public class JTagManager extends JDialog {
 			addRow(new Object[]{"","","",false});
 		}
 		
+		/*
+		 * (non-Javadoc)
+		 * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
+		 */
 		@Override
 		public boolean isCellEditable(int row,int column){
 			return column != 0 && column != 3;
@@ -52,13 +61,17 @@ public class JTagManager extends JDialog {
 //	}
 
 	/**
-	 * 
+	 * 生成一个默认的标签管理器，该构造器是为了能够正常的使用GUI插件。
 	 */
-	public JTagManager() {
+	@SuppressWarnings("unused")
+	private JTagManager() {
 		this(null,null);
 	}
+	
 	/**
-	 * @param owner
+	 * 生成一个具有指定所有者，指定目标工程的标签管理器。
+	 * @param owner 指定的所有者。
+	 * @param project 制定的目标工程。
 	 */
 	public JTagManager(Frame owner,Project project) {
 		super(owner,true);
@@ -66,6 +79,10 @@ public class JTagManager extends JDialog {
 		init();
 	}
 
+	/**
+	 * 获取标签管理器指定的工程。
+	 * @return 标签管理器指定的工程。
+	 */
 	public Project getProject() {
 		return project;
 	}
