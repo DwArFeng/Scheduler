@@ -43,7 +43,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import com.dwarfeng.func.gui.JAdjustableBorderPanel;
+import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.gui.Im.ImTag;
 import com.dwarfeng.scheduler.io.ProjectIoHelper;

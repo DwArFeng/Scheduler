@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.dwarfeng.func.io.CT;
+import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.project.Tag;
 

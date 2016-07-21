@@ -1,6 +1,7 @@
 package com.dwarfeng.scheduler.project;
 
-import com.dwarfeng.func.util.IDMap;
+import com.dwarfeng.dwarffunction.cna.IDMap;
+import com.dwarfeng.dwarffunction.cna.IDMap.CodingType;
 import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
 
@@ -25,7 +26,7 @@ public class TagMap extends AbstractObjectOutProjectTree implements ObjectInProj
 	 * @param map 指定的ID-标签映射对象。
 	 */
 	public TagMap(IDMap<Tag> map){
-		this.map = map == null ? new IDMap<Tag>(IDMap.NUMBER_COMPACT) : map;
+		this.map = map == null ? new IDMap<Tag>(CodingType.COMPACT) : map;
 	}
 	
 	

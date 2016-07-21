@@ -12,8 +12,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-import com.dwarfeng.func.io.CT;
-import com.dwarfeng.func.io.FileFunc;
+import com.dwarfeng.dwarffunction.io.CT;
+import com.dwarfeng.dwarffunction.io.FileFunction;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
@@ -137,7 +137,7 @@ public final class ConfigHelper {
 		FileOutputStream fout = null;
 		try{
 			File file = new File(Scheduler.getInstance().getConfigPath() + "appearance.xml");
-			FileFunc.createFileIfNotExists(file);
+			FileFunction.createFileIfNotExists(file);
 			fout = new FileOutputStream(file);
 			XMLWriter writer = new XMLWriter(fout,OutputFormat.createPrettyPrint());
 			writer.write(document);
@@ -202,7 +202,7 @@ public final class ConfigHelper {
 		File infoFile = new File(Scheduler.getInstance().getConfigPath() + "files.xml");
 		FileOutputStream fout = null;
 		try{
-			FileFunc.createFileIfNotExists(infoFile);
+			FileFunction.createFileIfNotExists(infoFile);
 			fout = new FileOutputStream(infoFile);
 			XMLWriter writer = new XMLWriter(fout, OutputFormat.createPrettyPrint());
 			writer.write(document);

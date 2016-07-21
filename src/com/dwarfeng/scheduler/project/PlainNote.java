@@ -34,8 +34,7 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.PlainDocument;
 import javax.swing.undo.UndoManager;
 
-import com.dwarfeng.func.gui.JMenuItemAction;
-import com.dwarfeng.func.io.CT;
+import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.gui.SchedulerGui;

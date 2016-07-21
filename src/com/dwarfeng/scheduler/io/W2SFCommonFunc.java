@@ -24,9 +24,9 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-import com.dwarfeng.func.io.CT;
-import com.dwarfeng.func.io.IOFunc;
-import com.dwarfeng.func.util.IDMap;
+import com.dwarfeng.dwarffunction.cna.IDMap;
+import com.dwarfeng.dwarffunction.io.CT;
+import com.dwarfeng.dwarffunction.io.IOFunction;
 import com.dwarfeng.scheduler.project.ImprovisedPlant;
 import com.dwarfeng.scheduler.project.ImprovisedPlantCol;
 import com.dwarfeng.scheduler.project.Note;
@@ -350,7 +350,7 @@ final class W2SFCommonFunc{
 			InputStream zin = file.getInputStream(file.getEntry(str));
 			
 			//输入流的内容传递到输出流
-			IOFunc.trans(zin, wout, 4096);
+			IOFunction.trans(zin, wout, 4096);
 			
 		}finally{
 			if(wout != null){
@@ -382,7 +382,7 @@ final class W2SFCommonFunc{
 			String str = thisVersionScpath.getPathName();
 			str = str.replace(File.separatorChar, '/');
 			zout.putNextEntry(new ZipEntry(str));
-			IOFunc.trans(in, zout, 4096);
+			IOFunction.trans(in, zout, 4096);
 			zout.flush();
 			
 		}finally{

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 
-import com.dwarfeng.func.gui.JImagePanel;
+import com.dwarfeng.dwarffunction.gui.JImagePanel;
 import com.sun.awt.AWTUtilities;
 
 public class JSplashWindow extends JWindow {

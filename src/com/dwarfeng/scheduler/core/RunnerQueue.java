@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.dwarfeng.func.io.CT;
+import com.dwarfeng.dwarffunction.io.CT;
 
 /**
  * 维持程序运行的工厂类，该类可以向其中添加{@linkplain Runnable}，并以一个独立的线程

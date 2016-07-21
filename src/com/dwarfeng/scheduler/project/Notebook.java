@@ -16,7 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
-import com.dwarfeng.func.gui.JMenuItemAction;
+import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;

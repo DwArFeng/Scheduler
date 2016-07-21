@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import com.dwarfeng.func.io.CT;
+import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.gui.JCrashFrame;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.gui.JSplashWindow;

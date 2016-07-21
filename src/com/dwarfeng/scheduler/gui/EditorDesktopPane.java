@@ -1,7 +1,6 @@
 package com.dwarfeng.scheduler.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +11,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import com.dwarfeng.func.io.CT;
+import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.core.RunnerQueue;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.typedef.desint.Editable;

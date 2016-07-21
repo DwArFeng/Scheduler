@@ -8,7 +8,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import com.dwarfeng.func.gui.JMenuItemAction;
+import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;

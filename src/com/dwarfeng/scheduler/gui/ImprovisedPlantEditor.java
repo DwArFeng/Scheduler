@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
 
-import com.dwarfeng.func.gui.JAdjustableBorderPanel;
+import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.scheduler.project.ImprovisedPlant;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;

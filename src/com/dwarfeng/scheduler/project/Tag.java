@@ -1,7 +1,7 @@
 package com.dwarfeng.scheduler.project;
 
-import com.dwarfeng.func.interfaces.Describeable;
-import com.dwarfeng.func.interfaces.Nameable;
+import com.dwarfeng.dwarffunction.interfaces.Describeable;
+import com.dwarfeng.dwarffunction.interfaces.Nameable;
 
 /**
  * 标签类，记录着标签以及定义标签的方法。
