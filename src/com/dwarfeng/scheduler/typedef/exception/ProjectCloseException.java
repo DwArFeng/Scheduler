@@ -9,9 +9,10 @@ import com.dwarfeng.scheduler.project.Project;
  * @author DwArFeng
  * @since 1.8
  */
-public class ProjectCloseException extends Exception {
+public final class ProjectCloseException extends ProjectException {
 
-	private final Project project;
+	private static final long serialVersionUID = 7489611659269338555L;
+	
 	private final File workspace;
 	
 	/**
@@ -30,17 +31,8 @@ public class ProjectCloseException extends Exception {
 	 * @param message 异常的描述。
 	 */
 	public ProjectCloseException(Project project,File workspace,String message){
-		super(message);
-		this.project = project;
+		super(project,message);
 		this.workspace = workspace;
-	}
-
-	/**
-	 * 返回异常的工程。
-	 * @return 异常的工程。
-	 */
-	public Project getProject() {
-		return project;
 	}
 
 	/**

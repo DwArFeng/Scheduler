@@ -1,7 +1,7 @@
 package com.dwarfeng.scheduler.core;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.WeakHashMap;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -9,22 +9,18 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import com.dwarfeng.func.io.CT;
 import com.dwarfeng.scheduler.gui.JCrashFrame;
+import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.gui.JSplashWindow;
 import com.dwarfeng.scheduler.gui.SchedulerGui;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.io.ProjectHelper;
-import com.dwarfeng.scheduler.io.Scpath;
+import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.project.Project;
+import com.dwarfeng.scheduler.tools.ProjectOperationHelper;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
 import com.dwarfeng.scheduler.typedef.exception.ProjectPathNotSuccessException;
-import com.dwarfeng.scheduler.typedef.exception.StructFailedException;
-import com.dwarfeng.scheduler.typedef.exception.UnhandledVersionException;
-import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
-import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 
 /**
  * 计划管理程序。
@@ -32,6 +28,7 @@ import com.dwarfeng.scheduler.typedef.funcint.Moveable;
  * <br>&nbsp;&nbsp; 1.笔记记录以及整理工作，此部分类似于现有的有道云笔记等笔记管理程序，在其基础上再添加某些功能。
  * <br>&nbsp;&nbsp; 2.任务管理。通过想程序中输入指定的计划任务，程序根据系统时间来对这些任务进行管理。
  * <p>该类为程序的入口类，遵循单例设计模式，同时具有主方法，调用其主方法就可以启动程序。
+ * <p> 该类中的所有方法均不是线程安全的，如需要多线程调用，请使用外部同步。
  * @author DwArFeng
  * @since 1.8
  */
@@ -45,12 +42,13 @@ public class Scheduler {
 	public static class Luncher{
 		
 		private String workspacePath = "workspace" + File.separator;
+		private boolean showSplash = true;
 		
 		/**
 		 * 初始化启动器
 		 */
 		public Luncher(){
-			//TODO
+			//TODO　以后在此添加启动时必要的参数。
 		}
 		
 		/**
@@ -64,31 +62,72 @@ public class Scheduler {
 		}
 		
 		/**
+		 * 设置程序启动时是否显示闪现窗体。
+		 * @param val <code>true</code>为显示闪现窗体，反之不显示闪现窗体。
+		 * @return 启动器自身。
+		 */
+		public Luncher showSplash(boolean val){
+			this.showSplash = val;
+			return this;
+		}
+		
+		/**
 		 * 启动程序。
 		 * <p> 程序不能连续被启动多次，否则会抛出{@linkplain IllegalStateException}。
 		 */
 		public void lunch(){
-			if(runFlag) throw new IllegalStateException("Scheduler has already been lunched");
-			runFlag = true;
+			if(getInstance() != null) throw new IllegalStateException("Scheduler has already run");
 			instance = new Scheduler(workspacePath);
+			instance.init(showSplash);
 		}
 		
 	}
 	
 	/**
 	 * 返回该类的唯一实例。
+	 * <p> 实例只能在程序运行或崩溃的时候被返回。试图在程序未启动或启动中时调用此方法会导致{@linkplain IllegalStateException}异常。
 	 * @return 该类的唯一实例。
+	 * @throws IllegalStateException 在不正确的状态下调用此方法抛出的异常。
 	 */
 	public static Scheduler getInstance(){
-		if(!runFlag) throw new IllegalStateException("Scheduler hasn't been lunched yet");
 		return instance;
 	}
 	
+	/**
+	 * 表示程序的状态。
+	 * @author DwArFeng
+	 * @since 1.8
+	 */
+	public enum State{
+		/**代表程序还未启动和初始化的字段*/
+		RAW("waiting for start"),
+		/**代表程序正在启动的字段*/
+		INIT("initializing"),
+		/**代表程序正在运行的字段*/
+		RUN("running"),
+		/**代表程序崩溃的字段*/
+		CRASHED("crashed");
+		
+		private final String label;
+		
+		private State(String label){
+			this.label = label;
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString(){
+			return this.label;
+		}
+	}
 	/**运行标志，该标志在程序被启动的时候设置为true,之后不再更改*/
-	private static boolean runFlag = false;
+	private State state = State.RAW;
+	
 	/**计划管理类的唯一实例标记*/
 	private static Scheduler instance;
-	
 	
 	/*
 	 * 
@@ -96,21 +135,22 @@ public class Scheduler {
 	 * 
 	 */
 	/**长版本号，用于显示在程序自述或者其他的地方*/
-	private final String longVersion = "alpha_0.3.0";
+	private final String longVersion = "alpha_0.3.1_20160702_build_A";
 	/**短版本号，用于显示在标题位置*/
-	private final String shortVersion = "alpha_0.3.0";
+	private final String shortVersion = "alpha_0.3.1";
 	/**默认的工作路径*/
 	private final String workspacePath;
 	/**默认的工程文档目录*/
 	private final String archivePath = "archive\\";
 	/**程序的配置文件所在的目录*/
 	private final String configPath = "config" + File.separator;
+	/**存储JTree表的弱映射*/
+	private final WeakHashMap<JProjectTree, Object> projectTreeMap = new WeakHashMap<JProjectTree, Object>();
 	
 	
 	/**启动一个新的计划管理器程序*/
 	private Scheduler(String workspacePath){
 		this.workspacePath = workspacePath;
-		init();
 	}
 	
 	/**主界面*/
@@ -125,6 +165,14 @@ public class Scheduler {
 	private Project frontProject;
 	
 	
+	/**
+	 * 返回程序的状态。
+	 * @return 程序的状态枚举。
+	 */
+	public State getState(){
+		return state;
+	}
+
 	/**
 	 * 获取程序的短版本。
 	 * <p> 短版本号一般用在标题栏当中。
@@ -187,29 +235,7 @@ public class Scheduler {
 	public SchedulerGui getGui(){
 		return schedulerGui;
 	}
-
 	
-	/**
-	 * 设置前台的工程。
-	 * <p> 如果工程是个坏工程的话，程序会还原之前的前台工程，且不会抛出异常。
-	 * @param project 设置前台的工程。
-	 */
-	public void setFrontProject(Project project){
-		Project temp = getFrontProject();
-		try{
-			String path = project == null ? null : ProjectHelper.getProjectFile(project).getAbsolutePath();
-			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
-			this.frontProject = project;
-		}catch(Exception e){
-			e.printStackTrace();
-			CT.trace("由于某些原因，不能设置指定的工程到前台，可能的原因是工程损坏");
-			String path = temp == null ? null : ProjectHelper.getProjectFile(temp).getAbsolutePath();
-			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
-			this.frontProject = temp;
-		}
-		schedulerGui.refreshData();
-	}
-
 	/**
 	 * 获取程序指向的最新的工程路径。
 	 * @return 程序指向的最新的工程路径。
@@ -217,249 +243,28 @@ public class Scheduler {
 	public String getLastPath(){
 		return this.fileInfo.getLastProjectPath();
 	}
-	
-	
-	
-/**
-	 * 询问并删除工程中文件的方法。
-	 * @param deleteable
-	 */
-	public void requestDelete(Deleteable deleteable){
-		String confirmWord = deleteable.getConfirmWord() == null ?
-				"即将删除工程对象：" + deleteable.toString() + "\n"
-				+ "当前操作不可恢复" 
-				: 
-				deleteable.getConfirmWord();
-		
-		int sel = JOptionPane.showConfirmDialog(
-				schedulerGui,
-				confirmWord, 
-				"删除确认", 
-				JOptionPane.YES_NO_OPTION, 
-				JOptionPane.INFORMATION_MESSAGE, 
-				null
-		);
-		if(sel == JOptionPane.YES_OPTION){
-			CT.trace("正在删除对象...");
-			deleteable.delete();
-			CT.trace("对象已经成功的被删除");
-		}
-	
-	}
-	
-	/**
-	 * 将指定的可移动对象在同级之间上移一位的方法。
-	 * <p> 顶级元素强制不可移动，并且如果该元素已经位于首位，也不可移动。
-	 * @param moveable 指定的可移动对象。
-	 */
-	public void moveUp(Moveable moveable){
-		ObjectInProjectTree parent = moveable.getParent();
-		//顶级元素强制不可移动，不管是否实现Moveable接口
-		if(parent == null) return;
-		int index = parent.getIndex(moveable);
-		//如果已经在顶端了，则不可以移动
-		if(index == 0)return;
-		parent.remove(moveable);
-		parent.insert(moveable, index - 1);
-	}
-	
-	/**
-	 * 将指定的可移动对象在同级之间下移一位的方法。
-	 * <p> 顶级元素强制不可移动，并且如果该元素已经位于首位，也不可移动。
-	 * @param moveable 指定的可移动对象。
-	 */
-	public void moveDown(Moveable moveable){
-		ObjectInProjectTree parent = moveable.getParent();
-		//顶级元素强制不可移动，不管是否实现Moveable接口
-		if(parent == null) return;
-		int index = parent.getIndex(moveable);
-		//如果已经在末端了，则不可以移动
-		if(index == parent.getChildCount()-1)return;
-		parent.remove(moveable);
-		parent.insert(moveable, index + 1);
-	}
-	
-	/**
-	 * 新建一个标准的工程文档。
-	 */
-	public Project createNewProject(File file ){
-		try{
-			CT.trace("正在创建新文件...");
-			return ProjectHelper.createDefaultProject(file);
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	/**
-	 * 读取指定路径的工程文档。
-	 * <p> 在程序中读取工程，该方法要优先于{@linkplain ProjectHelper#loadProject(String, com.dwarfeng.scheduler.io.ProjectHelper.Operate)}
-	 * 因为该方法的异常判断更为全面。
-	 * @param pathname 指定的路径。
-	 * @return 读取的工程。
-	 */
-	public Project loadProject(File file){
-		
-		CT.trace("正在读取文件");
-		Project project = null;
-		try {
-			project = ProjectHelper.loadProject(file, ProjectHelper.Operate.FOREGROUND);
-			CT.trace("文件读取成功");
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-			
-			JOptionPane.showMessageDialog(
-					schedulerGui, 
-					"读取文件时发生通信异常，文件不能正确读取\n"
-					+ "以下是异常的信息：\n"
-					+ e.getMessage(), 
-					"发生异常", 
-					JOptionPane.WARNING_MESSAGE, 
-					null
-			);
-		} catch (UnhandledVersionException e) {
-			
-			e.printStackTrace();
-			
-			String str;
-			switch (e.getVersionType()) {
-				case TOO_LATE:
-					str = "太新";
-					break;
-				case TOO_EARLY:
-					str = "太早";
-					break;
-				default:
-					str = "是中间的某个未知版本";
-					break;
-			}
-			JOptionPane.showMessageDialog(
-					schedulerGui, 
-					"检测到不支持的版本，文件不能正确读取\n"
-					+ "文件的版本是：" + e.getFailedVersion() + "\n"
-					+ "该版本对于本程序而言" +  str,
-					"发生异常", 
-					JOptionPane.WARNING_MESSAGE, 
-					null
-			);
-		} catch (StructFailedException e) {
-			
-			e.printStackTrace();
-			
-			JOptionPane.showMessageDialog(
-					schedulerGui, 
-					"构架文件结构时出现异常，文件不能正确读取\n"
-					+ "以下是异常的信息：\n"
-					+ e.getMessage(), 
-					"发生异常", 
-					JOptionPane.WARNING_MESSAGE, 
-					null
-			);
-		} catch (ProjectPathNotSuccessException e) {
-			
-			e.printStackTrace();
-			
-			for(Scpath scpath : e.getFailedList()){
-				CT.trace("解压失败：\t" + scpath.getPathName());
-			}
-			
-			int i = JOptionPane.showConfirmDialog(
-					schedulerGui, 
-					"解压文件具体路径时发生异常，一个或多个文件没有正确的被解压。\n"
-					+ "解压失败的文件被输出在了控制台上。\n"
-					+ "以下是异常的信息：\n"
-					+ e.getMessage()
-					+"\n\n"
-					+ "文件仍然可以被读取，但是解压失败的路径会造成数据丢失，要继续吗？",
-					"发生异常", 
-					JOptionPane.YES_NO_OPTION, 
-					JOptionPane.WARNING_MESSAGE,
-					null
-			);
-			
-			if(i == JOptionPane.YES_OPTION){
-				project = e.getProject();
-				CT.trace("文件架构读取成功，对应路径中一个或多个损坏");
-				return project;
-			}else{
-				project = null;
-				closeProject(e.getProject());
-			}
-		}
-		CT.trace("文件读取成功");
-		return project;
-	}
-	
-	/**
-	 * 保存指定的工程。
-	 * <p>将工程位置保存在最新的路径上。
-	 * @param project 指定的工程。
-	 */
-	public void saveProject(Project project){
-		if(project == null) return;
-		CT.trace("正在将工程压缩存储");
-		try {
-			ProjectHelper.saveProject(project,ProjectHelper.Operate.FOREGROUND);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnhandledVersionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (StructFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProjectPathNotSuccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 关闭（释放）指定的工程。
-	 * <p> 该过程不会关闭桌面面板上的编辑器，也不会保存工程，只是单纯的关闭。
-	 * 请配合其它方法使用。
-	 * @param project 指定的工程。
-	 */
-	public void closeProject(Project project){
-		if(project == null) return;
-		CT.trace("正在释放工程文件");
-		try{
-			ProjectHelper.disposeProject(project);
-			CT.trace("工程文件释放完毕");
-		}catch(ProjectCloseException e){
-			
-			e.printStackTrace();
-			
-			JOptionPane.showMessageDialog(
-					schedulerGui, 
-					"关闭文件时发生异常\n"
-					+ "以下是异常的信息：\n"
-					+ e.getMessage(), 
-					"发生异常", 
-					JOptionPane.WARNING_MESSAGE, 
-					null
-			);
-		}
-	}
 
 	/**
-	 * 释放指定工程在桌面面板上的所有编辑器。
-	 * @param project 指定的工程。
+	 * 设置前台的工程。
+	 * <p> 如果工程是个坏工程的话，程序会还原之前的前台工程，且不会抛出异常。
+	 * @param project 设置前台的工程。
 	 */
-	public void disposeEditor(Project project){
-		if(project == null) return;
-		schedulerGui.getDesktopPane().disposeEditor(project);
-	}
-	
-	/**
-	 * 关闭指定可编辑对象在桌面面板上的编辑器。
-	 * @param editable 指定的可编辑对象。
-	 */
-	public void disposeEditor(Editable editable){
-		schedulerGui.getDesktopPane().disposeEditor(editable);
+	public void setFrontProject(Project project){
+		if(schedulerGui == null) throw new IllegalStateException("Bad state : " + getState());
+		
+		Project temp = getFrontProject();
+		try{
+			String path = project == null ? null : ProjectIoHelper.getProjectFile(project).getAbsolutePath();
+			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
+			this.frontProject = project;
+		}catch(Exception e){
+			e.printStackTrace();
+			CT.trace("由于某些原因，不能设置指定的工程到前台，可能的原因是工程损坏");
+			String path = temp == null ? null : ProjectIoHelper.getProjectFile(temp).getAbsolutePath();
+			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
+			this.frontProject = temp;
+		}
+		schedulerGui.refreshData();
 	}
 	
 	/**
@@ -467,14 +272,16 @@ public class Scheduler {
 	 * TODO 该方法还在继续完善。
 	 */
 	public void crash(){
+		
 		AppearanceInfo appearanceSet = null;
 		try{
 			if(frontProject != null){
-				ProjectHelper.saveProject(frontProject, getLastPath(),ProjectHelper.Operate.FOREGROUND);
+				ProjectIoHelper.saveProject(frontProject, getLastPath(),ProjectIoHelper.Operate.FOREGROUND);
 			}
 			if(schedulerGui != null){
 				appearanceSet = schedulerGui.getAppearanceInfo();
 				schedulerGui.dispose();
+				schedulerGui = null;
 			}
 			if(jSplashWindow != null){
 				jSplashWindow.dispose();
@@ -483,9 +290,11 @@ public class Scheduler {
 			e.printStackTrace();
 		}
 		jCrashFrame = new JCrashFrame(appearanceSet);
+		state = State.CRASHED;
 		jCrashFrame.setVisible(true);
 		jCrashFrame.setAlwaysOnTop(true);
 		jCrashFrame.setAlwaysOnTop(false);
+		
 	}
 	/**
 	 * 尝试关闭程序。
@@ -494,13 +303,34 @@ public class Scheduler {
 	 * <br>如果保存当前工程时出现异常，程序会询问用户是继续退出还是不退出。
 	 */
 	public void exitProgram(){
+		
+		//TODO 需要对不同状态进行判断。
 		ConfigHelper.saveApperanceInfo(schedulerGui.getAppearanceInfo());
 		ConfigHelper.saveFileInfo(fileInfo);
 		try{
-			for(Project project : ProjectHelper.getAssociatedProjects()){
-				disposeEditor(project);
-				saveProject(project);
-				closeProject(project);
+			for(Project project : ProjectIoHelper.getAssociatedProjects()){
+				Project front = Scheduler.getInstance().getFrontProject();
+				if(project != front){
+					ProjectOperationHelper.forceDisposeEditor(project);
+					ProjectOperationHelper.saveProject(project);
+					ProjectOperationHelper.closeProject(project);
+				}else{
+					if(!ProjectOperationHelper.disposeEditor(project,0)){
+						JOptionPane.showMessageDialog(
+								schedulerGui, 
+								"一个或多个编辑器退出时发生异常，程序退出中止\n"
+								+ "请妥善保存数据", 
+								"过程中止", 
+								JOptionPane.INFORMATION_MESSAGE, 
+								null
+						);
+						//中止退出过程
+						return;
+					}else{
+						ProjectOperationHelper.saveProject(project);
+						ProjectOperationHelper.closeProject(project);
+					}
+				}
 			}
 			System.exit(0);
 		} catch (Exception e) {
@@ -516,12 +346,30 @@ public class Scheduler {
 			);
 			if(sel == JOptionPane.YES_OPTION){
 				try{
-					closeProject(frontProject);
+					ProjectOperationHelper.closeProject(frontProject);
 				}finally{
 					System.exit(1);
 				}
 			}else{
 				e.printStackTrace();
+			}
+		}
+	}
+	
+
+	/**
+	 * 对程序中所有与<code>project</code>有关的工程树进行更新，而且展开并选中指定的节点。
+	 * @param project 有关的工程。
+	 * @param expand 指定的节点。
+	 */
+	//XXX 是否封装为接口待讨论。
+	public void refreshProjectTrees(Project project,ObjectInProjectTree expand){
+		
+		if(project == null) throw new NullPointerException("Project can't be null");
+		
+		for(JProjectTree tree:projectTreeMap.keySet()){
+			if(project.equals(tree.getProject())){
+				tree.refresh(expand);
 			}
 		}
 	}
@@ -549,9 +397,10 @@ public class Scheduler {
 				return pathname;
 			}
 		}
-
+		
 	/**程序的初始化方法*/
-	private void init(){
+	private void init(boolean showSplash){
+		state = State.INIT;
 		RunnerQueue.invoke(new Runnable() {
 			
 			@Override
@@ -559,41 +408,63 @@ public class Scheduler {
 				try{
 					//记录初始时间
 					long l = - System.currentTimeMillis();
+					//记录工程信息
+					Project project = null;
 					//设置外观样式
 					UIManager.setLookAndFeel(new NimbusLookAndFeel());
+					
 					//生成闪现窗体
-					jSplashWindow = new JSplashWindow();
-					jSplashWindow.setVisible(true);		
-					//读取文件信息
-					fileInfo = ConfigHelper.loadFileInfo();
+					if(showSplash){
+						jSplashWindow = new JSplashWindow();
+						jSplashWindow.setVisible(true);	
+					}
+					
 					//界面初始化
-					jSplashWindow.setMessage("初始化界面...");
+					if(showSplash) jSplashWindow.setMessage("正在初始化界面");
 					schedulerGui = new SchedulerGui(ConfigHelper.loadAppearanceInfo());
+					projectTreeMap.put(schedulerGui.getProjectTree(),null);
+					
 					//读取程序信息
-					jSplashWindow.setMessage("读取程序信息...");
+					if(showSplash) jSplashWindow.setMessage("正在读取文件信息");
+					fileInfo = ConfigHelper.loadFileInfo();
+					
+					if(showSplash) jSplashWindow.setMessage("读取程序信息...");
 					//如果有最后的打开工程，打开这个工程
 					if(fileInfo.getLastProjectPath() != null){
-						Project project = null;
-						jSplashWindow.setMessage("打开上一个工程...");
+						if(showSplash) jSplashWindow.setMessage("打开上一个工程...");
 						try{
-							project = ProjectHelper.loadProject(new File(fileInfo.getLastProjectPath()), ProjectHelper.Operate.FOREGROUND);
-							setFrontProject(project);
+							CT.trace("正在打开上一个工程");
+							project = ProjectIoHelper.loadProject(new File(fileInfo.getLastProjectPath()), ProjectIoHelper.Operate.FOREGROUND);
+							CT.trace("工程打开成功");
 						}catch(Exception e){
+							if(e instanceof ProjectPathNotSuccessException){
+								try{
+									ProjectIoHelper.closeProject(((ProjectPathNotSuccessException) e).getProject());
+								}catch(ProjectCloseException e1){
+									e1.printStackTrace();
+								}
+							}
 							frontProject = null;
+							e.printStackTrace();
+							CT.trace("在读取文件时发生问题，已取消当前文件的自动读取");
 						}
 					}
 					//重绘界面
-					jSplashWindow.setMessage("绘制界面...");
+					setFrontProject(project);
+					if(showSplash) jSplashWindow.setMessage("绘制界面...");
 					schedulerGui.refreshData();
 					//确保闪现窗体生成时间达到2000ms XXX 该参数可以设置为可变的
-					l += System.currentTimeMillis();
-					if(l > 0 && l < 2000) Thread.sleep(2000-l);
+					if(showSplash){
+						l += System.currentTimeMillis();
+						if(l > 0 && l < 2000) Thread.sleep(2000-l);
+					}
 					//释放闪现窗体
-					jSplashWindow.dispose();
+					if(showSplash) jSplashWindow.dispose();
 					//显示界面
 					schedulerGui.setVisible(true);
 					schedulerGui.setAlwaysOnTop(true);
 					schedulerGui.setAlwaysOnTop(false);
+					state = State.RUN;
 				}catch(Exception e){
 					//调用崩溃方法
 					crash();

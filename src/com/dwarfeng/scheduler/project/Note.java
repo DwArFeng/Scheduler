@@ -1,133 +1,79 @@
 package com.dwarfeng.scheduler.project;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
 import javax.swing.text.Document;
-import javax.swing.tree.MutableTreeNode;
+import javax.swing.text.EditorKit;
 
-import com.dwarfeng.func.gui.JMenuItemAction;
-import com.dwarfeng.scheduler.core.Scheduler;
-import com.dwarfeng.scheduler.gui.JNTDSettingDialog;
-import com.dwarfeng.scheduler.gui.JProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractSerialParamableTreeNode;
+import com.dwarfeng.scheduler.tools.PopupMenuActions;
+import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
 import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.SerialParamable;
-import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
+import com.dwarfeng.scheduler.typedef.funcint.Searchable;
+import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
+import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
 
-public abstract class Note extends AbstractSerialParamableTreeNode 
-implements Editable,PopupInTree,Moveable,Deleteable{
+/**
+ * 抽象笔记类。
+ * <p> 该类作为所有类型笔记的父类。
+ * @author DwArFeng
+ * @since 1.8
+ */
+public abstract class Note<T extends Document,S extends EditorKit> extends AbstractObjectInProjectTree 
+implements Editable,PopupInTree,Moveable,Deleteable,Searchable,SerialParamSetable{
 
-	private static final long serialVersionUID = 8454528838313738006L;
-	
 	/**文本附件*/
-	protected TextAttachment attachment;
+	protected final TextAttachment<T,S> attachment;
+	/**序列参数*/
+	protected SerialParam serialParam;
 	/**是否启用自动换行*/
-	private boolean lineWrap;
-	/**正在指向自己的编辑器*/
-	protected AbstractEditor editor;
+	protected boolean lineWrap;
 	
 	/**
-	 * 生成一个默认的笔记，具有指定的附件。
-	 * @param attachment 指定的文本附件。
+	 * 生成一个具有指定的附件、指定是自动否换行的标识、指定的线性参数的抽象笔记类。
+	 * @param attachment 指定的附件。
+	 * @param lineWrap 是否自动换行的标识。
+	 * @param serialParam 指定的线性参数。
+	 * @throws NullPointerException 指定的附件为<code>null</code>。
 	 */
-	public Note(TextAttachment attachment) {
-		this(attachment,null,null,null);
-	}
-	/**
-	 * 
-	 * @param attachment
-	 * @param name
-	 * @param describe
-	 * @param tagIdList
-	 */
-	public Note(TextAttachment attachment,String name,String describe,List<Integer> tagIdList) {
-		this(attachment,true,name,describe,tagIdList);
-	}
-	/**
-	 * 
-	 * @param attachment
-	 * @param lineWarp
-	 * @param name
-	 * @param describe
-	 * @param tagIdList
-	 */
-	public Note(TextAttachment attachment,boolean lineWarp,String name,String describe,List<Integer> tagIdList) {
+	protected Note(TextAttachment<T,S> attachment,boolean lineWrap,SerialParam serialParam) {
 		//调用父类构造方法
-		super(false,name,describe,tagIdList);
+		super(false);
 		//设置附件
-		this.attachment = attachment == null ? 
-				createDefaultTextAttachment() : attachment;
-		this.attachment.setRootProject(getRootProject());
+		if(attachment == null) throw new NullPointerException("Attachment can't be null");
+		this.attachment = attachment;
+		this.attachment.setContext(getRootProject());
+		//设置序列参数
+		this.serialParam = serialParam == null ?
+				new SerialParam.Productor().product() : serialParam;
+		this.serialParam.setContext(getRootProject());
 		//设置是否自动换行
-		this.setLineWarp(lineWarp);
+		this.lineWrap = lineWrap;
 	}
 
-	/**
-	 * 返回文本附件。
-	 * @return 文本附件。
-	 */
-	public TextAttachment getTextAttachment(){
-		return attachment;
-	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.desint.Editable#getEditorTitle()
+	 */
 	@Override
 	public String getEditorTitle(){
-		return (String) getParam(SerialParamable.NAME);
+		return serialParam.getName();
 	}
 	
-	@Override
-	public AbstractEditor getEditor() throws Exception {
-		if(editor == null) editor = createEditor();
-		return editor;
-	}
-
-	@Override
-	public void firedEditorClose() {
-		editor = null;
-	}
-
-	@Override
-	public void load() throws Exception {
-		attachment.load();		
-	}
-
 	/**
-	 * 返回该笔记的文档。
-	 * <p> 可以保证该方法永远不返回null值。
-	 * @return 返回该笔记的文档。
+	 * 返回笔记的文本附件。
+	 * @return 笔记的文本附件。
 	 */
-	public Document getDocument() {
-		return attachment.getAttachObject();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.desint.Editable#save()
-	 */
-	@Override
-	public void save() throws Exception {
-		attachment.save();		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.desint.Editable#release()
-	 */
-	@Override
-	public void release() {
-		attachment.release();		
+	public TextAttachment<T,S> getTextAttachment(){
+		return this.attachment;
 	}
 	
 	/*
@@ -135,20 +81,13 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#setParent(javax.swing.tree.MutableTreeNode)
 	 */
 	@Override
-	public void setParent(MutableTreeNode newParent){
+	public void setParent(ObjectInProjectTree newParent){
 		super.setParent(newParent);
 		if(newParent instanceof ObjectInProject){
-			attachment.setRootProject((ObjectInProject) newParent);
+			attachment.setContext((ObjectInProject) newParent);
+			serialParam.setContext((ObjectInProject) newParent);
 		}
 	}
-	
-	/**
-	 * 当该对象没有指向的编辑器时，该方法负责生成编辑器。
-	 * @throws Exception 生成编辑器时发生异常。
-	 */
-	protected abstract AbstractEditor createEditor() throws Exception;
-	
-	protected abstract TextAttachment createDefaultTextAttachment();
 	
 	/**
 	 * 是否自动换行。
@@ -157,74 +96,18 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 	public boolean isLineWrap() {
 		return lineWrap;
 	}
-	/**
-	 * 设置文本是否自动换行。
-	 * @param lineWrap 文本是否自动换行。
-	 */
-	public void setLineWarp(boolean lineWrap) {
-		this.lineWrap = lineWrap;
-	}
 
-	@Override
-	public JPopupMenu getJPopupMenu(JProjectTree jProjectTree){
-		JPopupMenu popup = new JPopupMenu();
-		popup.add(new JMenuItemAction(
-				null,																										//XXX 	不要忘记添加图标
-				"更改属性",
-				"更改笔记的NTD属性",
-				KeyStroke.getKeyStroke(KeyEvent.VK_C,0),
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						JNTDSettingDialog dialog = new JNTDSettingDialog(
-								Scheduler.getInstance().getGui(),
-								"笔记属性修改",
-								(String)getParam(RTFNote.NAME),
-								(String)getParam(RTFNote.DESCRIBE)
-						);
-						dialog.setVisible(true);
-						String name = dialog.getName();
-						String describe = dialog.getDescribe();
-						//XXX																										将来还要添加标签进去
-						//判断是否按下了取消键
-						if(name == null) return;
-						setParam(RTFNote.NAME, name);
-						setParam(RTFNote.DESCRIBE, describe);
-						//更新工程树的数据模型
-						jProjectTree.repaintTreeModel();
-						//展开到该笔记本
-						jProjectTree.expandPath(Note.this);
-					}
-				}
-		));
-		popup.add(new JMenuItemAction(
-				null,																										//XXX 	不要忘记添加图标
-				"删除",
-				"不可恢复地删除当前的笔记",
-				KeyStroke.getKeyStroke(KeyEvent.VK_D,0),
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						ObjectInProjectTree parent = getParent();
-						Scheduler.getInstance().requestDelete(Note.this);
-						//更新工程树的数据模型
-						jProjectTree.repaintTreeModel();
-						//展开到该笔记本
-						jProjectTree.expandPath(parent);
-					}
-				}
-		));
-		return popup;
-	}
-	
 	/*
 	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.funcint.Deleteable#delete()
+	 * @see com.dwarfeng.scheduler.typedef.funcint.PopupInTree#getJPopupMenu(com.dwarfeng.scheduler.gui.JProjectTree)
 	 */
 	@Override
-	public void delete(){
-		Scheduler.getInstance().disposeEditor(this);
-		removeFromParent();
+	public JPopupMenu getJPopupMenu(){
+		JPopupMenu popup = new JPopupMenu();
+		popup.add(PopupMenuActions.newEditItem("启动编辑器编辑该笔记", this));
+		popup.add(PopupMenuActions.newParamSetItem("更改笔记的NTD属性", this));
+		popup.add(PopupMenuActions.newDeleteItem("不可恢复地删除当前的笔记", this));
+		return popup;
 	}
 	
 	/*
@@ -234,18 +117,40 @@ implements Editable,PopupInTree,Moveable,Deleteable{
 	@Override
 	public String getConfirmWord(){
 		return 
-				"即将删除：" + (String)getParam(RTFNote.NAME) + "\n"
+				"即将删除：" + serialParam.getName() + "\n"
 				+ "当前操作将会删除该文档，该操作不可恢复";
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getOtherObjectInProjects()
+	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<ObjectInProject> getOtherObjectInProjects() {
-		Set<ObjectInProject> set = new HashSet<ObjectInProject>();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
+		Set<ObjectOutProjectTree> set = new HashSet<ObjectOutProjectTree>();
 		set.add(attachment);
+		set.add(serialParam);
 		return set;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.funcint.SerialParamable#getSerialParam()
+	 */
+	@Override
+	public SerialParam getSerialParam(){
+		return this.serialParam == null ?
+				new SerialParam.Productor().product() : serialParam;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.scheduler.typedef.funcint.SerialParamable#setSerialParam(com.dwarfeng.scheduler.typedef.funcint.SerialParam)
+	 */
+	@Override
+	public void setSerialParam(SerialParam serialParam){
+		this.serialParam = serialParam == null ?
+				new SerialParam.Productor().product() : serialParam;
+	}
+	
 }

@@ -186,80 +186,81 @@ public class AppearanceInfo {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * 获取窗口延伸情况的按位表示形式。
+	 * <p> 该值记录了窗口是否是最大化，还是单向最大化，还是没有最大化。
+	 * @return 窗口延伸情况。
 	 */
 	public int getFrameExtension(){
 		return this.frameExtension;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取窗口的屏幕宽度。
+	 * @return 窗口的屏幕宽度。
 	 */
 	public int getFrameWidth(){
 		return frameWidth;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取窗口的屏幕高度。
+	 * @return 窗口的屏幕高度。
 	 */
 	public int getFrameHeight(){
 		return frameHeight;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取控制台是否可见。
+	 * @return 控制台是否可见。
 	 */
 	public boolean isConsoleVisible() {
 		return consoleVisible;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取工程树是否可见。
+	 * @return 工程树是否可见。
 	 */
 	public boolean isProjectTreeVisible(){
 		return projectTreeVisible;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取属性栏是否可见。
+	 * @return 属性栏是否可见。
 	 */
 	public boolean isParamVisible(){
 		return paramVisible;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取功能面板是否可见。
+	 * @return 功能面板是否可见。
 	 */
 	public boolean isFunctionPanelVisible(){
 		return functionPanelVisible;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取控制台的高度。
+	 * @return 控制台的高度。
 	 */
 	public int getConsoleHeight(){
 		return consoleHeight;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取工程树的宽度。
+	 * @return 工程树的宽度。
 	 */
 	public int getProjectTreeWidth(){
 		return projectTreeWidth;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 获取属性栏的宽度。
+	 * @return 属性栏的宽度。
 	 */
 	public int getParamWidth(){
 		return paramWidth;

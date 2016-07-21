@@ -8,7 +8,7 @@ package com.dwarfeng.scheduler.io;
  */
 public final class Scpath{
 	
-	private String fileName;
+	private final String fileName;
 	
 	/**
 	 * 生成一个指定的工程路径。

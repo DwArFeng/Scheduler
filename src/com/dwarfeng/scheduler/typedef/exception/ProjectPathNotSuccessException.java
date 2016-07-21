@@ -12,8 +12,10 @@ import com.dwarfeng.scheduler.project.Project;
  * @author DwArFeng
  * @since 1.8
  */
-public class ProjectPathNotSuccessException extends Exception{
+public final class ProjectPathNotSuccessException extends ProjectException{
 	
+	private static final long serialVersionUID = -3055271426953283002L;
+
 	/**
 	 * 指示着工程在进行何种调度时发生了不成功的现象。
 	 * @author DwArFeng
@@ -27,7 +29,6 @@ public class ProjectPathNotSuccessException extends Exception{
 	}
 	
 	private final FailedType failedType;
-	private final Project project;
 	private final List<Scpath> successList;
 	private final List<Scpath> failedList;
 
@@ -37,8 +38,12 @@ public class ProjectPathNotSuccessException extends Exception{
 	 * @param successList 工程中的成功路径列表。
 	 * @param failedList 工程中失败的路径列表。
 	 */
-	public ProjectPathNotSuccessException(Project project,List<Scpath> successList,List<Scpath> failedList,FailedType failedType) {
-		this.project = project;
+	public ProjectPathNotSuccessException(
+			Project project,List<Scpath> successList,
+			List<Scpath> failedList,
+			FailedType failedType
+	) {
+		super(project);
 		this.successList = successList;
 		this.failedList = failedList;
 		this.failedType = failedType;
@@ -56,14 +61,6 @@ public class ProjectPathNotSuccessException extends Exception{
 					+ " : " + failedList.size() + "fails";
 		}
 		return str;
-	}
-
-	/**
-	 * 返回失败的工程。
-	 * @return 失败的工程。
-	 */
-	public Project getProject() {
-		return project;
 	}
 
 	/**

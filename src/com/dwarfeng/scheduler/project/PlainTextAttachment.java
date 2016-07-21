@@ -10,7 +10,7 @@ import com.dwarfeng.scheduler.io.Scpath;
  * @author DwArFeng
  * @since 1.8
  */
-public class PlainTextAttachment extends TextAttachment{
+public class PlainTextAttachment extends TextAttachment<PlainDocument,DefaultEditorKit>{
 
 	/**
 	 * 生成平面文本附件。
@@ -19,22 +19,7 @@ public class PlainTextAttachment extends TextAttachment{
 	public PlainTextAttachment(Scpath scpath) {
 		super(scpath,new DefaultEditorKit());
 	}
-
-	@Override
-	public PlainDocument getAttachObject() {
-		return (PlainDocument) super.getAttachObject();
-	}
 	
-	@Override
-	protected boolean checkTarget(Object target) {
-		return target instanceof PlainDocument;
-	}
-
-	@Override
-	public DefaultEditorKit getEditorKit(){
-		return (DefaultEditorKit) super.getEditorKit();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.Attachment#createDefaultObject()
@@ -43,4 +28,6 @@ public class PlainTextAttachment extends TextAttachment{
 	public PlainDocument createDefaultObject() {
 		return (PlainDocument) getEditorKit().createDefaultDocument();
 	}
+
+
 }
