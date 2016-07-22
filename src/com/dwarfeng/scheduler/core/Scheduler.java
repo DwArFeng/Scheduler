@@ -1,8 +1,8 @@
 package com.dwarfeng.scheduler.core;
 
-import com.dwarfeng.scheduler.core.control.SControlMgr;
-import com.dwarfeng.scheduler.core.module.SModuleMgr;
-import com.dwarfeng.scheduler.core.view.SViewMgr;
+import com.dwarfeng.scheduler.typedef.cabstruct.SControlMgr;
+import com.dwarfeng.scheduler.typedef.cabstruct.SModuleMgr;
+import com.dwarfeng.scheduler.typedef.cabstruct.SViewMgr;
 
 /**
  * 计划管理程序。
@@ -19,6 +19,12 @@ public final class Scheduler {
 	private SModuleMgr module;
 	private SViewMgr view;
 	private SControlMgr control;
+	
+	private Scheduler(SModuleMgr module, SViewMgr view, SControlMgr control){
+		this.module = module;
+		this.view = view;
+		this.control = control;
+	}
 	
 	
 }
