@@ -53,7 +53,7 @@ import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.dwarffunction.gui.JOutOnlyConsolePanel;
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.core.RunnerQueue;
+import com.dwarfeng.dwarffunction.threads.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;

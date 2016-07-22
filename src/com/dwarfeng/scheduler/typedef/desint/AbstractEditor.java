@@ -2,8 +2,6 @@ package com.dwarfeng.scheduler.typedef.desint;
 
 import javax.swing.JPanel;
 
-import com.dwarfeng.scheduler.core.RunnerQueue;
-
 /**
  * 最大程度的实现了基于界面的边界器方法。
  * <p> 

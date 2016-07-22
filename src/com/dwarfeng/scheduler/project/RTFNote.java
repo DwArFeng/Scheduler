@@ -53,7 +53,6 @@ import javax.swing.text.rtf.RTFEditorKit;
 import javax.swing.undo.UndoManager;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
-import com.dwarfeng.scheduler.core.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.JLineWrapableTextPane;
 import com.dwarfeng.scheduler.gui.LineWrapableViewportLayout;
