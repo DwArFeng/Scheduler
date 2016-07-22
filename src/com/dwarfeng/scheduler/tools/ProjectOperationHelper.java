@@ -7,12 +7,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.io.Scpath;
 import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
 import com.dwarfeng.scheduler.typedef.exception.ProjectException;
@@ -25,6 +24,7 @@ import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * 对整个工程以及工程树操作的封装方法。
@@ -65,7 +65,7 @@ public final class ProjectOperationHelper {
 	 * @param sps 指定的序列参数可设置对象。
 	 */
 	public static void setSerialParam(SerialParamSetable sps){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		if(sps == null) throw new NullPointerException("Sps can't be null");
 		
 		try{
@@ -79,7 +79,7 @@ public final class ProjectOperationHelper {
 		if(sp == null) return;
 		sps.setSerialParam(sp);
 		
-		Scheduler.getInstance().refreshProjectTrees(sps.getRootProject(), sps);
+		Scheduler133.getInstance().refreshProjectTrees(sps.getRootProject(), sps);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public final class ProjectOperationHelper {
 	 * @param deleteable 指定的可删除对象。
 	 */
 	public static void requestDelete(Deleteable deleteable){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		
 		if(deleteable == null) throw new NullPointerException("Deleteable can't be null");
 		
@@ -100,7 +100,7 @@ public final class ProjectOperationHelper {
 				deleteable.getConfirmWord();
 		
 		int sel = JOptionPane.showConfirmDialog(
-				Scheduler.getInstance().getGui(),
+				Scheduler133.getInstance().getGui(),
 				confirmWord, 
 				"删除确认", 
 				JOptionPane.YES_NO_OPTION, 
@@ -119,7 +119,7 @@ public final class ProjectOperationHelper {
 			deleteable.removeFromeParent();
 			CT.trace("对象已经成功的被删除");
 			
-			Scheduler.getInstance().refreshProjectTrees(parent.getRootProject(), parent);
+			Scheduler133.getInstance().refreshProjectTrees(parent.getRootProject(), parent);
 		}
 	
 	}
@@ -131,7 +131,7 @@ public final class ProjectOperationHelper {
 	 * @param moveable 指定的可移动对象。
 	 */
 	public static void moveUp(Moveable moveable){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(moveable == null) throw new NullPointerException("Moveable can't be null");
 		
@@ -144,7 +144,7 @@ public final class ProjectOperationHelper {
 		parent.remove(moveable);
 		parent.insert(moveable, index - 1);
 		//更新工程树
-		Scheduler.getInstance().refreshProjectTrees(moveable.getRootProject(),moveable);
+		Scheduler133.getInstance().refreshProjectTrees(moveable.getRootProject(),moveable);
 	}
 	
 	/**
@@ -154,7 +154,7 @@ public final class ProjectOperationHelper {
 	 * @param moveable 指定的可移动对象。
 	 */
 	public static void moveDown(Moveable moveable){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		
 		if(moveable == null) throw new NullPointerException("Moveable can't be null");
 
@@ -167,14 +167,14 @@ public final class ProjectOperationHelper {
 		parent.remove(moveable);
 		parent.insert(moveable, index + 1);
 		//更新工程树
-		Scheduler.getInstance().refreshProjectTrees(moveable.getRootProject(),moveable);
+		Scheduler133.getInstance().refreshProjectTrees(moveable.getRootProject(),moveable);
 	}
 	
 	/**
 	 * 新建一个标准的工程文档。
 	 */
 	public static Project createNewProject(File file){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(file == null) throw new NullPointerException("File can't be null");
 		try{
@@ -192,7 +192,7 @@ public final class ProjectOperationHelper {
 	 * @return 读取出的文档。
 	 */
 	public static Project loadProject(File file){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(file == null) throw new NullPointerException("File can't be null");
 		
@@ -208,7 +208,7 @@ public final class ProjectOperationHelper {
 				e.printStackTrace();
 				
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"读取文件时发生通信异常，文件不能正确读取\n"
 						+ "以下是异常的信息：\n"
 						+ e.getMessage(), 
@@ -226,7 +226,7 @@ public final class ProjectOperationHelper {
 				e.printStackTrace();
 				
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"检测到不支持的版本，文件不能正确读取\n"
 						+ "文件的版本是：" + ((UnhandledVersionException) e).getFailedVersion() + "\n"
 						+ "该版本对于本程序而言" +  ((UnhandledVersionException) e).getVersionType(),
@@ -248,7 +248,7 @@ public final class ProjectOperationHelper {
 					sb.append(type + " ");
 				}
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"构架文件结构时出现异常，文件不能正确读取\n"
 						+ "以下是异常的信息：\n"
 						+ sb.toString(), 
@@ -270,7 +270,7 @@ public final class ProjectOperationHelper {
 				}
 				
 				int i = JOptionPane.showConfirmDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"解压文件具体路径时发生异常，一个或多个文件没有正确的被解压。\n"
 						+ "解压失败的文件被输出在了控制台上。\n"
 						+ "以下是异常的信息：\n"
@@ -297,7 +297,7 @@ public final class ProjectOperationHelper {
 				
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"读取文件时遇到无法处理的异常\n"
 						+ "异常信息已经被打印在控制台上\n"
 						+ "以下是异常的信息：\n"
@@ -320,7 +320,7 @@ public final class ProjectOperationHelper {
 	 * @param project 指定的工程。
 	 */
 	public static void saveProject(Project project){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(project == null) throw new NullPointerException("File can't be null");
 		CT.trace("正在将工程压缩存储");
@@ -333,7 +333,7 @@ public final class ProjectOperationHelper {
 				e.printStackTrace();
 				
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"保存文件时发生通信异常，文件不能正确保存\n"
 						+ "以下是异常的信息：\n"
 						+ e.getMessage(), 
@@ -354,7 +354,7 @@ public final class ProjectOperationHelper {
 				}
 				
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"压缩文件具体路径时发生异常，一个或多个文件没有正确的被压缩。\n"
 						+ "压缩失败的文件被输出在了控制台上。\n"
 						+ "以下是异常的信息：\n"
@@ -371,7 +371,7 @@ public final class ProjectOperationHelper {
 				
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(
-						Scheduler.getInstance().getGui(), 
+						Scheduler133.getInstance().getGui(), 
 						"保存文件时遇到无法处理的异常\n"
 						+ "异常信息已经被打印在控制台上\n"
 						+ "以下是异常的信息：\n"
@@ -393,7 +393,7 @@ public final class ProjectOperationHelper {
 	 * @param project 指定的工程。
 	 */
 	public static void closeProject(Project project){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(project == null) throw new NullPointerException("Project can't be null");
 		
@@ -406,7 +406,7 @@ public final class ProjectOperationHelper {
 			e.printStackTrace();
 			
 			JOptionPane.showMessageDialog(
-					Scheduler.getInstance().getGui(), 
+					Scheduler133.getInstance().getGui(), 
 					"关闭文件时发生异常\n"
 					+ "以下是异常的信息：\n"
 					+ e.getMessage(), 
@@ -423,12 +423,12 @@ public final class ProjectOperationHelper {
 	 */
 	public static void edit(Editable editable){
 		
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		
 		if(editable == null) throw new NullPointerException("Editable can't be null");
 		
 		try{
-			Scheduler.getInstance().getGui().getDesktopPane().edit(editable);
+			Scheduler133.getInstance().getGui().getDesktopPane().edit(editable);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -440,11 +440,11 @@ public final class ProjectOperationHelper {
 	 * @throws NullPointerException <code>project</code>为<code>null</code>。
 	 */
 	public static boolean disposeEditor(Project project,int i){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		
 		if(project == null) throw new NullPointerException("Project can't be null");
 		
-		return Scheduler.getInstance().getGui().getDesktopPane().disposeEditor(project);
+		return Scheduler133.getInstance().getGui().getDesktopPane().disposeEditor(project);
 	}
 	
 	/**
@@ -453,11 +453,11 @@ public final class ProjectOperationHelper {
 	 * @throws NullPointerException <code>project</code>为<code>null</code>。
 	 */
 	public static void forceDisposeEditor(Project project){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 		
 		if(project == null) throw new NullPointerException("Project can't be null");
 		
-		Scheduler.getInstance().getGui().getDesktopPane().forceDisposeEditor(project);
+		Scheduler133.getInstance().getGui().getDesktopPane().forceDisposeEditor(project);
 	}
 	
 	/**
@@ -466,11 +466,11 @@ public final class ProjectOperationHelper {
 	 * @return 是否全部关闭成功，如果至少有一个界面没有关闭成功，则返回<code>false</code>。
 	 */
 	public static boolean disposeEditor(Editable editable,int i){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(editable == null) throw new NullPointerException("Editable can't be null");
 		
-		return Scheduler.getInstance().getGui().getDesktopPane().disposeEditor(editable);
+		return Scheduler133.getInstance().getGui().getDesktopPane().disposeEditor(editable);
 	}
 	
 	/**
@@ -479,11 +479,11 @@ public final class ProjectOperationHelper {
 	 * @return 是否全部关闭成功，如果至少有一个界面没有关闭成功，则返回<code>false</code>。
 	 */
 	public static void forceDisposeEditor(Editable editable){
-		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
+		if(Scheduler133.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler133.getInstance().getState());
 
 		if(editable == null) throw new NullPointerException("Editable can't be null");
 		
-		Scheduler.getInstance().getGui().getDesktopPane().forceDisposeEditor(editable);
+		Scheduler133.getInstance().getGui().getDesktopPane().forceDisposeEditor(editable);
 	}
 	
 	private ProjectOperationHelper(){

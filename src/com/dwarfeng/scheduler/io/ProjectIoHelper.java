@@ -26,7 +26,7 @@ import org.dom4j.io.SAXReader;
 
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.dwarffunction.io.FileFunction;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.project.ImprovisedPlantCol;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
@@ -626,7 +626,7 @@ class Pfr{
 		String path;
 		do{
 			path = "" + l + tryTimes + File.separator;
-			file = new File(Scheduler.getInstance().getWorkspacePath()  + path + File.separator);
+			file = new File(Scheduler133.getInstance().getWorkspacePath()  + path + File.separator);
 		}while(file.exists());
 		//如果不存在这个目录，则创建它。
 		file.mkdirs();

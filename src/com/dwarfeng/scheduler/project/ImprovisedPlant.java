@@ -19,12 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.text.PlainDocument;
 
 import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.desint.Editor;
@@ -35,6 +31,10 @@ import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 import com.dwarfeng.scheduler.typedef.funcint.Searchable;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.typedef.pabstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProject;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectOutProjectTree;
 
 /**
  * 
@@ -160,7 +160,7 @@ implements Editable, Deleteable, Moveable,PopupInTree,Searchable,SerialParamSeta
 	@Override
 	public void renderLabel(JLabel label) {
 		label.setIconTextGap(8);
-		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/improvisedPlant.png")));
+		label.setIcon(new ImageIcon(Scheduler133.class.getResource("/resource/tree/improvisedPlant.png")));
 		label.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		label.setText(getSerialParam().getName());	
 	}

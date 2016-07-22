@@ -1,6 +1,6 @@
 package com.dwarfeng.scheduler.tools;
 
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
 
 /**
@@ -17,7 +17,7 @@ public final class UserInput {
 	 * @return 用户输入的序列参数，如果按下取消或者退出按钮，则返回null。
 	 */
 	public static SerialParam getSerialParam(String frameTitle,SerialParam serialParam){
-		SerialParamDialog dialog = new SerialParamDialog(Scheduler.getInstance().getGui(),frameTitle,serialParam);
+		SerialParamDialog dialog = new SerialParamDialog(Scheduler133.getInstance().getGui(),frameTitle,serialParam);
 		dialog.setVisible(true);
 		return dialog.getSerialParam();
 	}

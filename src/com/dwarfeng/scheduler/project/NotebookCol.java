@@ -11,14 +11,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.tools.UserInput;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
+import com.dwarfeng.scheduler.typedef.pabstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectOutProjectTree;
 
 /**
  * 笔记本集合。
@@ -99,7 +99,7 @@ public final class NotebookCol extends AbstractObjectInProjectTree implements Po
 				//向工程树中的指定笔记本集添加此笔记本
 				add(notebook);
 				//更新界面
-				Scheduler.getInstance().refreshProjectTrees(getRootProject(), notebook);
+				Scheduler133.getInstance().refreshProjectTrees(getRootProject(), notebook);
 			}
 		}));
 		
@@ -123,7 +123,7 @@ public final class NotebookCol extends AbstractObjectInProjectTree implements Po
 	@Override
 	public void renderLabel(JLabel label) {
 		label.setIconTextGap(8);
-		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebookCollection.png")));
+		label.setIcon(new ImageIcon(Scheduler133.class.getResource("/resource/tree/notebookCollection.png")));
 		label.setFont(new Font("SansSerif", Font.BOLD, 14));
 		label.setText("所有笔记本");
 	}

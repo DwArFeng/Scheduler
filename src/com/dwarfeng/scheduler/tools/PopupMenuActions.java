@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
@@ -31,7 +31,7 @@ public final class PopupMenuActions {
 		if(context == null) throw new NullPointerException("Context can't be null");
 		
 		return new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/edit.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/edit.png")))
 				.name("编辑")
 				.description(describe)
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0))
@@ -54,7 +54,7 @@ public final class PopupMenuActions {
 		if(context == null) throw new NullPointerException("Context can't be null");
 		
 		return new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/paramPanel.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/paramPanel.png")))
 				.name("更改属性")
 				.description(describe)
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_F2,0))
@@ -77,7 +77,7 @@ public final class PopupMenuActions {
 		if(context == null) throw new NullPointerException("Context can't be null");
 		
 		return new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/deleteFile.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/deleteFile.png")))
 				.name("删除")
 				.description("不可恢复地删除当前的笔记")
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0))
@@ -100,7 +100,7 @@ public final class PopupMenuActions {
 		if(context == null) throw new NullPointerException("Context can't be null");
 
 		return new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/new.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/new.png")))
 				.name("新建")
 				.description(describe)
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_N,0))

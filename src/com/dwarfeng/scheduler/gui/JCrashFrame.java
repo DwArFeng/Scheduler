@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
 
@@ -52,7 +52,7 @@ public class JCrashFrame extends JFrame {
 		getContentPane().setBackground(new Color(70, 130, 180));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
-			setIconImage(ImageIO.read(Scheduler.class.getResource("/resource/sys/crash_small.png")));
+			setIconImage(ImageIO.read(Scheduler133.class.getResource("/resource/img/sys/crash_small.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

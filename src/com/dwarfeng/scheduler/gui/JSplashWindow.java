@@ -36,7 +36,7 @@ public class JSplashWindow extends JWindow {
 		
 		//设置内部属性
 		JImagePanel imagePanel = new JImagePanel();
-		imagePanel.setImage(ImageIO.read(SchedulerGui.class.getResource("/resource/sys/splash_background.png")));
+		imagePanel.setImage(ImageIO.read(SchedulerGui.class.getResource("/resource/img/sys/splash_background.png")));
 		getContentPane().add(imagePanel);
 		imagePanel.setLayout(null);
 		

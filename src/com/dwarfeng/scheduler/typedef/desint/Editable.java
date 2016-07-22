@@ -2,7 +2,7 @@ package com.dwarfeng.scheduler.typedef.desint;
 
 import javax.swing.JDesktopPane;
 
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * ¿É±à¼­½Ó¿Ú¡£

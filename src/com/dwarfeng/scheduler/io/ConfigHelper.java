@@ -14,7 +14,7 @@ import org.dom4j.io.XMLWriter;
 
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.dwarffunction.io.FileFunction;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 
@@ -53,7 +53,7 @@ public final class ConfigHelper {
 			int paramWidth;
 			
 			SAXReader reader = new SAXReader();
-			Document document = reader.read(new File(Scheduler.getInstance().getConfigPath() + "appearance.xml"));
+			Document document = reader.read(new File(Scheduler133.getInstance().getConfigPath() + "appearance.xml"));
 			
 			Element frame = (Element) document.selectNodes("/appearance/frame").get(0);
 			frameExtension = new Integer(frame.attribute("extension").getValue()).intValue();
@@ -136,7 +136,7 @@ public final class ConfigHelper {
 		
 		FileOutputStream fout = null;
 		try{
-			File file = new File(Scheduler.getInstance().getConfigPath() + "appearance.xml");
+			File file = new File(Scheduler133.getInstance().getConfigPath() + "appearance.xml");
 			FileFunction.createFileIfNotExists(file);
 			fout = new FileOutputStream(file);
 			XMLWriter writer = new XMLWriter(fout,OutputFormat.createPrettyPrint());
@@ -171,7 +171,7 @@ public final class ConfigHelper {
 			String lastProjectPath;
 			
 			//读取文件
-			Document document = reader.read(new File(Scheduler.getInstance().getConfigPath() + "files.xml"));
+			Document document = reader.read(new File(Scheduler133.getInstance().getConfigPath() + "files.xml"));
 			
 			//读取最后被打开的文档的信息
 			Element lastProj = (Element) document.selectNodes("/info/lastProj").get(0);
@@ -199,7 +199,7 @@ public final class ConfigHelper {
 		info.add(lastProject);
 		
 		//写入工作路径
-		File infoFile = new File(Scheduler.getInstance().getConfigPath() + "files.xml");
+		File infoFile = new File(Scheduler133.getInstance().getConfigPath() + "files.xml");
 		FileOutputStream fout = null;
 		try{
 			FileFunction.createFileIfNotExists(infoFile);

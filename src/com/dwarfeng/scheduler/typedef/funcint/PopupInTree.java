@@ -2,7 +2,7 @@ package com.dwarfeng.scheduler.typedef.funcint;
 
 import javax.swing.JPopupMenu;
 
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * 示意着能够在主界面的工程树中右击可弹出一个菜单。

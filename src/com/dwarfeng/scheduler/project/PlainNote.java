@@ -36,13 +36,13 @@ import javax.swing.undo.UndoManager;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.RunnerQueue;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.SchedulerGui;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
 import com.dwarfeng.scheduler.typedef.desint.Editor;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * 纯文本笔记。
@@ -123,7 +123,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 	@Override
 	public void renderLabel(JLabel label) {
 		label.setIconTextGap(8);		
-		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/plainNote.png")));
+		label.setIcon(new ImageIcon(Scheduler133.class.getResource("/resource/tree/plainNote.png")));
 		label.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		label.setText(serialParam.getName());
 	}
@@ -209,7 +209,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 			fileMenu.setMnemonic('F');
 			
 			fileMenu.add(new JMenuItemAction.Productor()
-					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/save.png")))
+					.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/save.png")))
 					.name("保存(S)")
 					.description("保存当前文档")
 					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_MASK))
@@ -245,7 +245,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 			editMenu.setMnemonic('E');
 			
 			undoMenu = editMenu.add(new JMenuItemAction.Productor()
-					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/undo.png")))
+					.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/undo.png")))
 					.name("撤销(Z)")
 					.description("撤销上一步操作")
 					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_Z,InputEvent.CTRL_MASK))
@@ -261,7 +261,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 			);
 			
 			redoMenu = editMenu.add(new JMenuItemAction.Productor()
-					.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/redo.png")))
+					.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/redo.png")))
 					.name("重做(Y)")
 					.description("重做上一次撤销的操作")
 					.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_Y,InputEvent.CTRL_MASK))
@@ -310,7 +310,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 		 */
 		@Override
 		protected boolean doWhenExceptionInPrepare(Exception e) {
-			JFrame jf = Scheduler.getInstance().getGui();
+			JFrame jf = Scheduler133.getInstance().getGui();
 			if(e instanceof AttachmentException){
 				AttachmentException ae = (AttachmentException) e;
 				//检查此异常是否由文件丢失引起
@@ -462,7 +462,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 			textArea.setDocument(document);
 			scrollPane.setViewportView(textArea);
 			
-			checkIcon = new ImageIcon(Scheduler.class.getResource("/resource/menu/check.png"));
+			checkIcon = new ImageIcon(Scheduler133.class.getResource("/resource/menu/check.png"));
 			
 			popupMenu = new JPopupMenu();
 			
@@ -507,7 +507,7 @@ public final class PlainNote extends Note<PlainDocument,DefaultEditorKit> {
 					//返回值
 					return true;
 				}catch(Exception e){
-					SchedulerGui gui = Scheduler.getInstance().getGui();
+					SchedulerGui gui = Scheduler133.getInstance().getGui();
 					if(e instanceof AttachmentException){
 						e.printStackTrace();
 						int i = JOptionPane.showConfirmDialog(

@@ -9,7 +9,7 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
 import com.dwarfeng.scheduler.io.Scpath;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractAttachment;
+import com.dwarfeng.scheduler.typedef.pabstruct.AbstractAttachment;
 
 /**
  * ÎÄ±¾¸½¼þ¡£

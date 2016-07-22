@@ -17,20 +17,20 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
-import com.dwarfeng.scheduler.core.Scheduler;
+import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.tools.UserInput;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
 import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 import com.dwarfeng.scheduler.typedef.funcint.Searchable;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.typedef.pabstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProject;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectOutProjectTree;
 
 /**
  * 笔记本。
@@ -124,10 +124,10 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 		JPopupMenu popup = new JPopupMenu();
 		JMenu notebookTreePopupNew = new JMenu("新建(N)");
 		notebookTreePopupNew.setMnemonic(KeyEvent.VK_N);
-		notebookTreePopupNew.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/menu/new.png")));
+		notebookTreePopupNew.setIcon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/new.png")));
 		
 		notebookTreePopupNew.add(new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/plainNote.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/plainNote.png")))
 				.name("纯文本笔记")
 				.description("新建一个纯文本（TXT）笔记")
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_T,0))
@@ -145,14 +145,14 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 						//向工程树中的指定笔记本添加此笔记
 						add(note);
 						//更新界面
-						Scheduler.getInstance().refreshProjectTrees(getRootProject(), note);
+						Scheduler133.getInstance().refreshProjectTrees(getRootProject(), note);
 					}
 				})
 				.product()
 		);
 		
 		notebookTreePopupNew.add(new JMenuItemAction.Productor()
-				.icon(new ImageIcon(Scheduler.class.getResource("/resource/menu/rtfNote.png")))
+				.icon(new ImageIcon(Scheduler133.class.getResource("/resource/menu/rtfNote.png")))
 				.name("富文本笔记")
 				.description("新建一个富文本（RTF）笔记")
 				.keyStorke(KeyStroke.getKeyStroke(KeyEvent.VK_R,0))
@@ -170,7 +170,7 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 						//向工程树中的指定笔记本添加此笔记
 						add(note);
 						//更新界面
-						Scheduler.getInstance().refreshProjectTrees(getRootProject(), note);
+						Scheduler133.getInstance().refreshProjectTrees(getRootProject(), note);
 					}
 				})
 				.product()
@@ -214,7 +214,7 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 	@Override
 	public void renderLabel(JLabel label) {
 		label.setIconTextGap(8);		
-		label.setIcon(new ImageIcon(Scheduler.class.getResource("/resource/tree/notebook.png")));
+		label.setIcon(new ImageIcon(Scheduler133.class.getResource("/resource/tree/notebook.png")));
 		label.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		label.setText(serialParam.getName());
 	}

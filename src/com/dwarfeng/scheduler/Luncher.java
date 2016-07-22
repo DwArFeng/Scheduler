@@ -1,7 +1,5 @@
 package com.dwarfeng.scheduler;
 
-import com.dwarfeng.scheduler.core.Scheduler;
-
 /**
  * 程序的启动器。
  * <p> 该自动器分为两种模式进行启动，一种是默认的，没有启动参数的；第二种是带有启动参数的。
@@ -12,13 +10,6 @@ import com.dwarfeng.scheduler.core.Scheduler;
 public class Luncher {
 
 	public static void main(String[] args){
-		lunch();
-	}
-	
-	/**
-	 * 不带有参数地启动程序。
-	 */
-	public static void lunch(){
-		new Scheduler.Luncher().lunch();
+		
 	}
 }

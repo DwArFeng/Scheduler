@@ -8,10 +8,6 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
-import com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
 import com.dwarfeng.scheduler.typedef.funcint.Moveable;
@@ -19,6 +15,10 @@ import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
 import com.dwarfeng.scheduler.typedef.funcint.Searchable;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.typedef.pabstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProject;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.pabstruct.ObjectOutProjectTree;
 
 /**
  * ≥ÈœÛ± º«¿‡°£
