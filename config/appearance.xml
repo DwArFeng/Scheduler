@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <appearance>
-  <frame extension="0" width="974" height="1047"/>
+  <frame extension="6" width="800" height="600"/>
   <console visible="true" height="355"/>
   <pTree visible="true" width="190"/>
   <param visible="false" width="150"/>

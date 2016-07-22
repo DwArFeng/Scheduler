@@ -700,7 +700,7 @@ public final class RTFNote extends Note<StyledDocument,RTFEditorKit>{
 				//移除撤销侦听。
 				document.removeUndoableEditListener(undoableEditListener);
 				//变更自动换行方式
-				lineWrap = textPane.isLineWrap();
+				textPane.isLineWrap();
 				//保存文件。
 				saveEdit();
 				return true;
