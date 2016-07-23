@@ -7,7 +7,7 @@ import com.dwarfeng.scheduler.typedef.cabstruct.ControlPort;
 import com.dwarfeng.scheduler.typedef.cabstruct.ViewControlPort;
 import com.dwarfeng.scheduler.typedef.cabstruct.ViewMgr;
 
-public final class DefaultViewMgr implements ViewMgr {
+public final class SViewManager implements ViewMgr {
 
 	/**持有的控制器引用*/
 	private ControlPort controlPort = null;
