@@ -15,27 +15,21 @@ public interface ControlMgr {
 	public void setViewControlPort(ViewControlPort viewControlPort);
 	
 	/**
-	 * 获取控制器的视图询问站。
-	 * @return 控制器的视图询问站。
+	 * 获取程序的控制站点。 
+	 * @return 程序的控制站点。
 	 */
-	public ViewAskPort getViewAskPort();
+	public SchedulerControlPort getSchedulerControlPort();
 	
 	/**
-	 * 设置控制器的视图询问站。
-	 * @param viewAskPort 控制器的视图询问站。
+	 * 设置程序控制站点。
+	 * @param schedulerControlPort 程序控制站点。
 	 */
-	public void setViewAskPort(ViewAskPort viewAskPort);
+	public void setSchedulerControlPort(SchedulerControlPort schedulerControlPort);
 	
 	/**
-	 * 使程序显示指定的信息包中对应的输出信息。
-	 * @param pack 指定的信息包。
+	 * 获取控制管理器的控制站点。
+	 * @return 控制站点。
 	 */
-	public default void showMessage(MessagePack pack){
-		if(getViewControlPort() != null){
-			getViewControlPort().showMessage(pack);
-		}else{
-			return;
-		}
-	}
+	public ControlPort getControlPort();
 	
 }

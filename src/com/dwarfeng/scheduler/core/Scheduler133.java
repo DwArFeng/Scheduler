@@ -48,7 +48,7 @@ public class Scheduler133 {
 		 * 初始化启动器
 		 */
 		public Luncher(){
-			//TODO　以后在此添加启动时必要的参数。
+			//TODO 以后在此添加启动时必要的参数。
 		}
 		
 		/**
@@ -269,7 +269,7 @@ public class Scheduler133 {
 	
 	/**
 	 * 崩溃的有关方法。
-	 * TODO 该方法还在继续完善。
+	 * TODO 有关崩溃方法还在继续完善。
 	 */
 	public void crash(){
 		

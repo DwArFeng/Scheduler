@@ -273,7 +273,6 @@ implements Editable, Deleteable, Moveable,PopupInTree,Searchable,SerialParamSeta
 			try {
 				editorInit();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

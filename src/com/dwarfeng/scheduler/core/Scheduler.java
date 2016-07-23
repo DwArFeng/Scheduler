@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Queue;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -19,8 +20,10 @@ import com.dwarfeng.scheduler.info.ExceptionStringFieldKey;
 import com.dwarfeng.scheduler.info.ImageKeys;
 import com.dwarfeng.scheduler.info.LabelStringFieldKey;
 import com.dwarfeng.scheduler.info.MessageStringFieldKey;
+import com.dwarfeng.scheduler.info.StringFieldType;
 import com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr;
 import com.dwarfeng.scheduler.typedef.cabstruct.ModuleMgr;
+import com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort;
 import com.dwarfeng.scheduler.typedef.cabstruct.ViewMgr;
 
 /**
@@ -34,40 +37,37 @@ import com.dwarfeng.scheduler.typedef.cabstruct.ViewMgr;
  * @since 1.8
  */
 public final class Scheduler {
+	
+	private final SchedulerControlPort scp = new SchedulerControlPort() {
+		/*
+		 * (non-Javadoc)
+		 * @see com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort#backgroundInvoke(com.dwarfeng.dwarffunction.threads.NadeRunner)
+		 */
+		@Override
+		public void backgroundInvoke(NadeRunner runner) {
+			background.invoke(runner);
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * @see com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort#getBackgroundQueueSize()
+		 */
+		@Override
+		public int getBackgroundQueueSize() {
+			return background.getQueueSize();
+		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort#getBackgroundQueue()
+		 */
+		@Override
+		public Queue<NadeRunner> getBackgroundQueue() {
+			return background.getWaitingQueue();
+		}
+	};
 	/**有关的后台*/
 	private final static RunnerQueue<NadeRunner> background = new RunnerQueue<NadeRunner>();
-	
-//	/**
-//	 * 向该程序的后台中添加一个运行器。
-//	 * @param runner 指定的运行器。
-//	 */
-//	public static void backgroundInvoke(NadeRunner runner){
-//		background.invoke(runner);
-//	}
-//	
-//	/**
-//	 * 获取程序后台的等待队列的元素数量。
-//	 * @return 元素数量。
-//	 */
-//	public static int getBackgroundQueueSize(){
-//		return background.getQueueSize();
-//	}
-	
-	/**
-	 * 文本字段的类型枚举。
-	 * @author DwArFeng
-	 * @since 1.8
-	 */
-	public enum StringFieldType{
-		/**异常文本*/
-		EXCEPTION,
-		/**标签文本*/
-		LABEL,
-		/**信息文本*/
-		MESSAGE
-	}
-	
 	/**
 	 * 计划管理器文本字段。
 	 * <p> 该类负责存储程序中所有出现的文本字段。
@@ -194,12 +194,21 @@ public final class Scheduler {
 	}
 	
 	/**
+	 * 返回信息文本。
+	 * @param key 信息文本的主键。
+	 * @return 主键对应的文本。
+	 */
+	public String getMessage(MessageStringFieldKey key){
+		return stringFields.getMessage(key);
+	}
+	
+	/**
 	 * 设置地区。
 	 * <p> 文本字段会自动变更为指定地区对应的字段。
 	 * @param locale 指定的地区。
 	 */
-	public void setLocale(Locale locale){
-		stringFields.setLocale(locale);;
+	public static void setLocale(Locale locale){
+		stringFields.setLocale(locale);
 	}
 	
 	/**
@@ -207,7 +216,7 @@ public final class Scheduler {
 	 * @param type 指定的文本类型。
 	 * @param locale 指定的地区。
 	 */
-	public void setLocale(StringFieldType type,Locale locale){
+	public static void setLocale(StringFieldType type,Locale locale){
 		stringFields.setLocale(type, locale);
 	}
 	
@@ -236,10 +245,7 @@ public final class Scheduler {
 			try {
 				return ImageIO.read(cl.getResource(key.getName()));
 			} catch (IOException e) {
-				//TODO 用控制器来做。
-				e.printStackTrace();
 				return defaultImage;
-				
 			}
 		}
 		
@@ -288,9 +294,9 @@ public final class Scheduler {
 		this.view = view;
 		this.control = control;
 		
-		view.setControlMgr(control);
-		control.setViewAskPort(view.getViewAskPort());
+		view.setControlPort(control.getControlPort());
 		control.setViewControlPort(view.getViewControlPort());
+		control.setSchedulerControlPort(scp);
 	}
 	
 	

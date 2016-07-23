@@ -1,10 +1,25 @@
 package com.dwarfeng.scheduler.core.control;
 
 import com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr;
-import com.dwarfeng.scheduler.typedef.cabstruct.ViewAskPort;
+import com.dwarfeng.scheduler.typedef.cabstruct.ControlPort;
+import com.dwarfeng.scheduler.typedef.cabstruct.MessagePack;
+import com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort;
 import com.dwarfeng.scheduler.typedef.cabstruct.ViewControlPort;
 
 public final class DefaultControlMgr implements ControlMgr {
+	
+	private final ControlPort controlPort = new ControlPort() {
+		
+		@Override
+		public void showMessage(MessagePack pack) {
+			if(viewControlPort != null){
+				viewControlPort.showMessage(pack);
+			}
+		}
+	};
+	
+	private ViewControlPort viewControlPort;
+	private SchedulerControlPort schedulerControlPort;
 
 	/*
 	 * (non-Javadoc)
@@ -12,8 +27,7 @@ public final class DefaultControlMgr implements ControlMgr {
 	 */
 	@Override
 	public ViewControlPort getViewControlPort() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.viewControlPort;
 	}
 
 	/*
@@ -22,28 +36,30 @@ public final class DefaultControlMgr implements ControlMgr {
 	 */
 	@Override
 	public void setViewControlPort(ViewControlPort viewControlPort) {
-		// TODO Auto-generated method stub
-		
+		this.viewControlPort = viewControlPort;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr#getViewAskPort()
+	 * @see com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr#getSchedulerControlPort()
 	 */
 	@Override
-	public ViewAskPort getViewAskPort() {
-		// TODO Auto-generated method stub
-		return null;
+	public SchedulerControlPort getSchedulerControlPort() {
+		return this.schedulerControlPort;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 * @see com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr#setViewAskPort(com.dwarfeng.scheduler.typedef.cabstruct.ViewAskPort)
+	 * @see com.dwarfeng.scheduler.typedef.cabstruct.ControlMgr#setSchedulerControlPort(com.dwarfeng.scheduler.typedef.cabstruct.SchedulerControlPort)
 	 */
 	@Override
-	public void setViewAskPort(ViewAskPort viewAskPort) {
-		// TODO Auto-generated method stub
-		
+	public void setSchedulerControlPort(SchedulerControlPort schedulerControlPort) {
+		this.schedulerControlPort = schedulerControlPort;
+	}
+
+	@Override
+	public ControlPort getControlPort() {
+		return controlPort;
 	}
 
 }
