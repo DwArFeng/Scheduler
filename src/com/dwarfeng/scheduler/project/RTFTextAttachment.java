@@ -3,7 +3,7 @@ package com.dwarfeng.scheduler.project;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.rtf.RTFEditorKit;
 
-import com.dwarfeng.scheduler.io.Scpath;
+import com.dwarfeng.scheduler.core.module.Scpath;
 
 /**
  * XXX 如果之后额外添加了HTML文本的话，该类变为一个抽象类。

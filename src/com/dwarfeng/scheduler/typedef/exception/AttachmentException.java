@@ -1,6 +1,6 @@
 package com.dwarfeng.scheduler.typedef.exception;
 
-import com.dwarfeng.scheduler.io.Scpath;
+import com.dwarfeng.scheduler.core.module.Scpath;
 
 /**
  * ¸½¼þÒì³£¡£

@@ -1,6 +1,6 @@
 package com.dwarfeng.scheduler.typedef.funcint;
 
-import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProject;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject;
 
 /**
  * 序列参数可设置接口。

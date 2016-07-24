@@ -2,7 +2,7 @@ package com.dwarfeng.scheduler.typedef.funcint;
 
 import javax.swing.tree.TreeNode;
 
-import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 
 /**
  * ¿ÉÉ¾³ý½Ó¿Ú¡£

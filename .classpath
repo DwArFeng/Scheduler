@@ -8,6 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="Scheduler_lib/jaxen-1.1-beta-6.jar"/>
-	<classpathentry kind="lib" path="Scheduler_lib/DwarfFunction.jar"/>
+	<classpathentry kind="lib" path="Scheduler_lib/DwarfFunction.jar" sourcepath="/DwarfFunction Reload"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

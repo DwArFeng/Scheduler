@@ -3,7 +3,7 @@ package com.dwarfeng.scheduler.project;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.PlainDocument;
 
-import com.dwarfeng.scheduler.io.Scpath;
+import com.dwarfeng.scheduler.core.module.Scpath;
 
 /**
  * 平面文本附件。

@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import com.dwarfeng.dwarffunction.io.CT;
+import com.dwarfeng.scheduler.core.module.ProjectIoHelper;
 import com.dwarfeng.scheduler.gui.JCrashFrame;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.gui.JSplashWindow;
@@ -15,12 +16,11 @@ import com.dwarfeng.scheduler.gui.SchedulerGui;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.io.ProjectIoHelper;
 import com.dwarfeng.scheduler.project.Project;
 import com.dwarfeng.scheduler.tools.ProjectOperationHelper;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
 import com.dwarfeng.scheduler.typedef.exception.ProjectPathNotSuccessException;
-import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * 计划管理程序。
@@ -48,7 +48,7 @@ public class Scheduler133 {
 		 * 初始化启动器
 		 */
 		public Luncher(){
-			//TODO 以后在此添加启动时必要的参数。
+			//TODO　以后在此添加启动时必要的参数。
 		}
 		
 		/**
@@ -269,7 +269,7 @@ public class Scheduler133 {
 	
 	/**
 	 * 崩溃的有关方法。
-	 * TODO 有关崩溃方法还在继续完善。
+	 * TODO 该方法还在继续完善。
 	 */
 	public void crash(){
 		

@@ -12,8 +12,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-import com.dwarfeng.scheduler.io.Scpath;
-import com.dwarfeng.scheduler.typedef.pabstruct.AbstractAttachment;
+import com.dwarfeng.scheduler.core.module.Scpath;
+import com.dwarfeng.scheduler.typedef.abstruct.AbstractAttachment;
 
 /**
  * XML¸½¼þÀà¡£

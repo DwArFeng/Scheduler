@@ -1,6 +1,6 @@
-package com.dwarfeng.scheduler.typedef.pabstruct;
+package com.dwarfeng.scheduler.typedef.abstruct;
 
-import com.dwarfeng.scheduler.io.Scpath;
+import com.dwarfeng.scheduler.core.module.Scpath;
 
 /**
  * Â·¾¶Àà¡£

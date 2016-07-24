@@ -16,7 +16,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 
 public class JProjectTree extends JTree {
 	

@@ -8,8 +8,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
-import com.dwarfeng.scheduler.io.Scpath;
-import com.dwarfeng.scheduler.typedef.pabstruct.AbstractAttachment;
+import com.dwarfeng.scheduler.core.module.Scpath;
+import com.dwarfeng.scheduler.typedef.abstruct.AbstractAttachment;
 
 /**
  * ÎÄ±¾¸½¼þ¡£

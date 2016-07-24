@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.typedef.pabstruct;
+package com.dwarfeng.scheduler.typedef.abstruct;
 
 import java.util.Enumeration;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.io;
+package com.dwarfeng.scheduler.core.module;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -522,11 +522,11 @@ public final class ProjectIoHelper {
 	 * @throws UnhandledVersionException 遇到了无法处理的版本。
 	 */
  	private static W2SF getW2sf(String versionString) throws UnhandledVersionException{
-		for(Version version:Version.values()){
+		for(ProjectVersion version:ProjectVersion.values()){
 			if(version.getVersionString().equals(versionString)) return version.getW2sf();
 		}
 		List<String> sl = new ArrayList<String>();
-		for(Version version:Version.values()){
+		for(ProjectVersion version:ProjectVersion.values()){
 			sl.add(version.getVersionString());
 		}
 		throw new UnhandledVersionException(versionString,sl.toArray(new String[0]));

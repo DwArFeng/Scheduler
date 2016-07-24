@@ -57,11 +57,11 @@ import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.JLineWrapableTextPane;
 import com.dwarfeng.scheduler.gui.LineWrapableViewportLayout;
 import com.dwarfeng.scheduler.gui.SchedulerGui;
+import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
 import com.dwarfeng.scheduler.typedef.desint.Editor;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
 import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
-import com.dwarfeng.scheduler.typedef.pabstruct.ObjectInProjectTree;
 
 /**
  * RTF± º«¿‡°£
