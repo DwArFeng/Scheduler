@@ -8,7 +8,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.core.module.ProjectIoHelper;
 import com.dwarfeng.scheduler.gui.JCrashFrame;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.gui.JSplashWindow;
@@ -16,9 +15,10 @@ import com.dwarfeng.scheduler.gui.SchedulerGui;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.tools.ProjectOperationHelper;
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.SProjectIoHelper;
+import com.dwarfeng.scheduler.module.SProjectOperationHelper;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
 import com.dwarfeng.scheduler.typedef.exception.ProjectPathNotSuccessException;
 
@@ -254,13 +254,13 @@ public class Scheduler133 {
 		
 		Project temp = getFrontProject();
 		try{
-			String path = project == null ? null : ProjectIoHelper.getProjectFile(project).getAbsolutePath();
+			String path = project == null ? null : SProjectIoHelper.getProjectFile(project).getAbsolutePath();
 			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
 			this.frontProject = project;
 		}catch(Exception e){
 			e.printStackTrace();
 			CT.trace("由于某些原因，不能设置指定的工程到前台，可能的原因是工程损坏");
-			String path = temp == null ? null : ProjectIoHelper.getProjectFile(temp).getAbsolutePath();
+			String path = temp == null ? null : SProjectIoHelper.getProjectFile(temp).getAbsolutePath();
 			this.fileInfo = new FileInfo.Productor().lastProjectPath(transPath(path)).product();
 			this.frontProject = temp;
 		}
@@ -276,7 +276,7 @@ public class Scheduler133 {
 		AppearanceInfo appearanceSet = null;
 		try{
 			if(frontProject != null){
-				ProjectIoHelper.saveProject(frontProject, getLastPath(),ProjectIoHelper.Operate.FOREGROUND);
+				SProjectIoHelper.saveProject(frontProject, getLastPath(),SProjectIoHelper.Operate.FOREGROUND);
 			}
 			if(schedulerGui != null){
 				appearanceSet = schedulerGui.getAppearanceInfo();
@@ -308,14 +308,14 @@ public class Scheduler133 {
 		ConfigHelper.saveApperanceInfo(schedulerGui.getAppearanceInfo());
 		ConfigHelper.saveFileInfo(fileInfo);
 		try{
-			for(Project project : ProjectIoHelper.getAssociatedProjects()){
+			for(Project project : SProjectIoHelper.getAssociatedProjects()){
 				Project front = Scheduler133.getInstance().getFrontProject();
 				if(project != front){
-					ProjectOperationHelper.forceDisposeEditor(project);
-					ProjectOperationHelper.saveProject(project);
-					ProjectOperationHelper.closeProject(project);
+					SProjectOperationHelper.forceDisposeEditor(project);
+					SProjectOperationHelper.saveProject(project);
+					SProjectOperationHelper.closeProject(project);
 				}else{
-					if(!ProjectOperationHelper.disposeEditor(project,0)){
+					if(!SProjectOperationHelper.disposeEditor(project,0)){
 						JOptionPane.showMessageDialog(
 								schedulerGui, 
 								"一个或多个编辑器退出时发生异常，程序退出中止\n"
@@ -327,8 +327,8 @@ public class Scheduler133 {
 						//中止退出过程
 						return;
 					}else{
-						ProjectOperationHelper.saveProject(project);
-						ProjectOperationHelper.closeProject(project);
+						SProjectOperationHelper.saveProject(project);
+						SProjectOperationHelper.closeProject(project);
 					}
 				}
 			}
@@ -346,7 +346,7 @@ public class Scheduler133 {
 			);
 			if(sel == JOptionPane.YES_OPTION){
 				try{
-					ProjectOperationHelper.closeProject(frontProject);
+					SProjectOperationHelper.closeProject(frontProject);
 				}finally{
 					System.exit(1);
 				}
@@ -363,7 +363,7 @@ public class Scheduler133 {
 	 * @param expand 指定的节点。
 	 */
 	//XXX 是否封装为接口待讨论。
-	public void refreshProjectTrees(Project project,ObjectInProjectTree expand){
+	public void refreshProjectTrees(Project project,PProjectTreeNode expand){
 		
 		if(project == null) throw new NullPointerException("Project can't be null");
 		
@@ -434,12 +434,12 @@ public class Scheduler133 {
 						if(showSplash) jSplashWindow.setMessage("打开上一个工程...");
 						try{
 							CT.trace("正在打开上一个工程");
-							project = ProjectIoHelper.loadProject(new File(fileInfo.getLastProjectPath()), ProjectIoHelper.Operate.FOREGROUND);
+							project = SProjectIoHelper.loadProject(new File(fileInfo.getLastProjectPath()), SProjectIoHelper.Operate.FOREGROUND);
 							CT.trace("工程打开成功");
 						}catch(Exception e){
 							if(e instanceof ProjectPathNotSuccessException){
 								try{
-									ProjectIoHelper.closeProject(((ProjectPathNotSuccessException) e).getProject());
+									SProjectIoHelper.closeProject(((ProjectPathNotSuccessException) e).getProject());
 								}catch(ProjectCloseException e1){
 									e1.printStackTrace();
 								}

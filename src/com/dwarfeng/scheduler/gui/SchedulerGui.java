@@ -55,17 +55,17 @@ import com.dwarfeng.dwarffunction.gui.JOutOnlyConsolePanel;
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.dwarffunction.threads.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler133;
-import com.dwarfeng.scheduler.core.module.ProjectIoHelper;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.project.Tag;
-import com.dwarfeng.scheduler.tools.ProjectOperationHelper;
+import com.dwarfeng.scheduler.module.PTag;
+import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.SProjectIoHelper;
+import com.dwarfeng.scheduler.module.SProjectOperationHelper;
+import com.dwarfeng.scheduler.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.project.funcint.Moveable;
+import com.dwarfeng.scheduler.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
-import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
-import com.dwarfeng.scheduler.typedef.funcint.Moveable;
-import com.dwarfeng.scheduler.typedef.funcint.PopupInTree;
-import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
 
 
 public class SchedulerGui extends JFrame {
@@ -160,7 +160,7 @@ public class SchedulerGui extends JFrame {
 		String str = "Scheduler " + Scheduler133.getInstance().getShortVersion();
 		try{
 			if(Scheduler133.getInstance().getFrontProject() != null)
-				str += " - " + ProjectIoHelper.getProjectFile(Scheduler133.getInstance().getFrontProject()).getAbsolutePath();
+				str += " - " + SProjectIoHelper.getProjectFile(Scheduler133.getInstance().getFrontProject()).getAbsolutePath();
 		}catch(IllegalStateException e){}
 		setTitle(str);
 	}
@@ -393,7 +393,7 @@ public class SchedulerGui extends JFrame {
 		             //鼠标双击发生的调度
 		             else if(e.getClickCount() == 2) {
 		            	 if(obj instanceof Editable){
-		            		 ProjectOperationHelper.edit((Editable) obj);
+		            		 SProjectOperationHelper.edit((Editable) obj);
 		            	 }
 		             }
 		         }
@@ -416,7 +416,7 @@ public class SchedulerGui extends JFrame {
 					//鼠标在工程树上的某个节点点击时进行的调度
 					if(path != null){
 						Object obj = path.getLastPathComponent();
-						if(obj instanceof PopupInTree) ProjectOperationHelper.showPopupInProjectTree(projectTree, (PopupInTree) obj, e.getX(), e.getY());
+						if(obj instanceof PopupInTree) SProjectOperationHelper.showPopupInProjectTree(projectTree, (PopupInTree) obj, e.getX(), e.getY());
 					}
 					//鼠标在工程树上的空白区域点击时进行的调度
 					else{
@@ -552,7 +552,7 @@ public class SchedulerGui extends JFrame {
 				
 				Object obj = projectTree.getSelectionPath().getLastPathComponent();
 				if(obj instanceof Deleteable){
-					ProjectOperationHelper.requestDelete((Deleteable) obj);
+					SProjectOperationHelper.requestDelete((Deleteable) obj);
 				}
 			}
 		});
@@ -566,7 +566,7 @@ public class SchedulerGui extends JFrame {
 
 				Object obj = projectTree.getSelectionPath().getLastPathComponent();
 				if(obj instanceof Moveable){
-					ProjectOperationHelper.moveUp((Moveable) obj);
+					SProjectOperationHelper.moveUp((Moveable) obj);
 				}
 			}
 		});
@@ -579,7 +579,7 @@ public class SchedulerGui extends JFrame {
 
 				Object obj = projectTree.getSelectionPath().getLastPathComponent();
 				if(obj instanceof Moveable){
-					ProjectOperationHelper.moveDown((Moveable) obj);
+					SProjectOperationHelper.moveDown((Moveable) obj);
 				}
 			}
 		});
@@ -593,7 +593,7 @@ public class SchedulerGui extends JFrame {
 
 				Object obj = projectTree.getSelectionPath().getLastPathComponent();
 				if(obj instanceof SerialParamSetable){
-					ProjectOperationHelper.setSerialParam((SerialParamSetable) obj);
+					SProjectOperationHelper.setSerialParam((SerialParamSetable) obj);
 				}
 			}
 		});
@@ -607,7 +607,7 @@ public class SchedulerGui extends JFrame {
 
 				Object obj = projectTree.getSelectionPath().getLastPathComponent();
 				if(obj instanceof Editable){
-					ProjectOperationHelper.edit((Editable) obj);
+					SProjectOperationHelper.edit((Editable) obj);
 				}
 			}
 		});
@@ -676,14 +676,14 @@ public class SchedulerGui extends JFrame {
 									if(fp != null){
 										boolean flag = false;
 										//释放上一个工程的编辑窗口,如果新建的文件路径正好是当前工程的路径，则强制关闭编辑器
-										CT.trace(ProjectIoHelper.getProjectFile(fp));
+										CT.trace(SProjectIoHelper.getProjectFile(fp));
 										CT.trace(file);
-										CT.trace(ProjectIoHelper.getProjectFile(fp).equals(file));
-										if(ProjectIoHelper.getProjectFile(fp).equals(file)){
-											ProjectOperationHelper.forceDisposeEditor(fp);
+										CT.trace(SProjectIoHelper.getProjectFile(fp).equals(file));
+										if(SProjectIoHelper.getProjectFile(fp).equals(file)){
+											SProjectOperationHelper.forceDisposeEditor(fp);
 											flag = true;
 										}else{
-											flag = ProjectOperationHelper.disposeEditor(fp,0);
+											flag = SProjectOperationHelper.disposeEditor(fp,0);
 										}
 										//判断关闭时是否出现了异常。
 										if(!flag){
@@ -694,22 +694,22 @@ public class SchedulerGui extends JFrame {
 										}else{
 											CT.trace("正在创建新文件：" + file.getAbsolutePath());
 											//先创建
-											Project project = ProjectOperationHelper.createNewProject(file);
+											Project project = SProjectOperationHelper.createNewProject(file);
 											//再显示为前台
 											Scheduler133.getInstance().setFrontProject(project);
 											//如果新建的文件路径正好是当前工程的路径，则根本不需要保存当前的文档，否则保存
-											if(	!ProjectIoHelper.getProjectFile(fp).equals(file)){
-												ProjectOperationHelper.saveProject(fp);
+											if(	!SProjectIoHelper.getProjectFile(fp).equals(file)){
+												SProjectOperationHelper.saveProject(fp);
 											}
 											//关闭上一个工程。
-											ProjectOperationHelper.closeProject(fp);
+											SProjectOperationHelper.closeProject(fp);
 											//保存当前工程
-											ProjectOperationHelper.saveProject(project);
+											SProjectOperationHelper.saveProject(project);
 										}
 									}else{
 										CT.trace("正在创建新文件：" + file.getAbsolutePath());
 										//先创建
-										Project project = ProjectOperationHelper.createNewProject(file);
+										Project project = SProjectOperationHelper.createNewProject(file);
 										//再显示为前台
 										Scheduler133.getInstance().setFrontProject(project);
 									}
@@ -750,12 +750,12 @@ public class SchedulerGui extends JFrame {
 										 * 其余： 为了尽快将新的工程呈现给用户，先加载工程，再保存前一个工程。
 										 */
 										//考虑特殊情况
-										if(ProjectIoHelper.getProjectFile(fp).equals(file)){
+										if(SProjectIoHelper.getProjectFile(fp).equals(file)){
 											Scheduler133.getInstance().setFrontProject(fp);
 											return;
 										}
 										//如果不是以上的极特殊情况，则需要先关闭前一个工程的编辑器。
-										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										boolean flag = SProjectOperationHelper.disposeEditor(fp,0);
 										if(!flag){
 											//如果前者的编辑器不能正常关闭，则还原前台工程，并返回。
 											Scheduler133.getInstance().setFrontProject(fp);
@@ -763,8 +763,8 @@ public class SchedulerGui extends JFrame {
 										}else{
 											boolean ap = false;
 											//进一步检测特殊情况
-											for(Project al : ProjectIoHelper.getAssociatedProjects()){
-												if(ProjectIoHelper.getProjectFile(al).equals(file)){
+											for(Project al : SProjectIoHelper.getAssociatedProjects()){
+												if(SProjectIoHelper.getProjectFile(al).equals(file)){
 													CT.trace("检测到文件已经打开");
 													Scheduler133.getInstance().setFrontProject(al);
 													ap = true;
@@ -773,16 +773,16 @@ public class SchedulerGui extends JFrame {
 											}
 											if(!ap){
 												//先加载工程
-												Project project = ProjectOperationHelper.loadProject(file);
+												Project project = SProjectOperationHelper.loadProject(file);
 												//将工程显示在前台
 												Scheduler133.getInstance().setFrontProject(project);
 											}
-											ProjectOperationHelper.saveProject(fp);
-											ProjectOperationHelper.closeProject(fp);
+											SProjectOperationHelper.saveProject(fp);
+											SProjectOperationHelper.closeProject(fp);
 										}
 									}else{
 										//先加载工程
-										Project project = ProjectOperationHelper.loadProject(file);
+										Project project = SProjectOperationHelper.loadProject(file);
 										//将工程显示在前台
 										Scheduler133.getInstance().setFrontProject(project);
 									}
@@ -809,14 +809,14 @@ public class SchedulerGui extends JFrame {
 								@Override
 								public void run() {
 									if(fp != null){
-										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										boolean flag = SProjectOperationHelper.disposeEditor(fp,0);
 										if(!flag){
 											Scheduler133.getInstance().setFrontProject(fp);
 											return;
 										}else{
 											// 关闭前一个工程
-											ProjectOperationHelper.saveProject(fp);
-											ProjectOperationHelper.closeProject(fp);
+											SProjectOperationHelper.saveProject(fp);
+											SProjectOperationHelper.closeProject(fp);
 										}
 									}else{
 										return;
@@ -843,7 +843,7 @@ public class SchedulerGui extends JFrame {
 								@Override
 								public void run() {
 									Project fp = Scheduler133.getInstance().getFrontProject();
-									if(fp != null) ProjectOperationHelper.saveProject(fp);
+									if(fp != null) SProjectOperationHelper.saveProject(fp);
 								}
 							};
 							RunnerQueue.invoke(runnable);
@@ -880,7 +880,7 @@ public class SchedulerGui extends JFrame {
 								if(i == JOptionPane.NO_OPTION) return;
 							}
 							Project fp = Scheduler133.getInstance().getFrontProject();
-							File backup = ProjectIoHelper.getProjectFile(fp);
+							File backup = SProjectIoHelper.getProjectFile(fp);
 							if(fp != null){
 								CT.trace("正在映射新文件：" + file.getAbsolutePath());
 								/*
@@ -888,18 +888,18 @@ public class SchedulerGui extends JFrame {
 								 * 其它情况：在主线程中更改映射文件，这很重要，能规避许多安全问题
 								 */
 								//重新映射文件
-								if(!ProjectIoHelper.getProjectFile(fp).equals(file)){
+								if(!SProjectIoHelper.getProjectFile(fp).equals(file)){
 									try{
-										ProjectIoHelper.setProjectFile(fp, file);
+										SProjectIoHelper.setProjectFile(fp, file);
 									}catch(Exception ex0){
 										ex0.printStackTrace();
 										CT.trace("更新文件映射失败，正在还原文件映射");
 										try{
-											ProjectIoHelper.setProjectFile(fp, backup);
+											SProjectIoHelper.setProjectFile(fp, backup);
 										}catch(Exception ex1){
 											ex1.printStackTrace();
 											CT.trace("还原映射失败，正在尝试关闭文件");
-											ProjectOperationHelper.closeProject(fp);
+											SProjectOperationHelper.closeProject(fp);
 										}
 										return;
 									}
@@ -911,7 +911,7 @@ public class SchedulerGui extends JFrame {
 										//设置最新的工程为前台
 										Scheduler133.getInstance().setFrontProject(fp);
 										//保存文件
-										ProjectOperationHelper.saveProject(fp);
+										SProjectOperationHelper.saveProject(fp);
 									}
 								};
 								RunnerQueue.invoke(runnable);
@@ -1076,14 +1076,14 @@ public class SchedulerGui extends JFrame {
 
 class TagToStringObject{
 	
-	private Tag tag;
+	private PTag tag;
 	
-	public TagToStringObject(Tag tag){
+	public TagToStringObject(PTag tag){
 		if(tag == null) throw new NullPointerException("Tag can't be null");
 		this.tag = tag;
 	}
 	
-	public Tag getTag(){
+	public PTag getTag(){
 		return this.tag;
 	}
 	
@@ -1112,26 +1112,26 @@ class TagListModel extends DefaultListModel<TagToStringObject>{
 	
 	public TagListModel(){}
 	
-	public Tag getTag(int index){
+	public PTag getTag(int index){
 		return super.getElementAt(index).getTag();
 	}
-	public void addTag(Tag tag){
+	public void addTag(PTag tag){
 		if(tag == null) return;
 		super.addElement(new TagToStringObject(tag));
 	}
-	public void addTags(Tag[] tags){
+	public void addTags(PTag[] tags){
 		if(tags == null) return;
-		for(Tag tag:tags){
+		for(PTag tag:tags){
 			addTag(tag);
 		}
 	}
-	public void removeTag(Tag tag){
+	public void removeTag(PTag tag){
 		if(tag == null) return;
 		super.removeElement(new TagToStringObject(tag));
 	}
-	public void removeTags(Tag[] tags){
+	public void removeTags(PTag[] tags){
 		if(tags == null) return;
-		for(Tag tag:tags){
+		for(PTag tag:tags){
 			removeTag(tag);
 		}
 	}
@@ -1145,26 +1145,26 @@ class TagsComboModel extends DefaultComboBoxModel<TagToStringObject>{
 	
 	public TagsComboModel(){}
 	
-	public Tag getTag(int index){
+	public PTag getTag(int index){
 		return super.getElementAt(index).getTag();
 	}
-	public void addTag(Tag tag){
+	public void addTag(PTag tag){
 		if(tag == null) return;
 		super.addElement(new TagToStringObject(tag));
 	}
-	public void addTags(Tag[] tags){
+	public void addTags(PTag[] tags){
 		if(tags == null) return;
-		for(Tag tag:tags){
+		for(PTag tag:tags){
 			addTag(tag);
 		}
 	}
-	public void removeTag(Tag tag){
+	public void removeTag(PTag tag){
 		if(tag == null) return;
 		super.removeElement(new TagToStringObject(tag));
 	}
-	public void removeTags(Tag[] tags){
+	public void removeTags(PTag[] tags){
 		if(tags == null) return;
-		for(Tag tag:tags){
+		for(PTag tag:tags){
 			removeTag(tag);
 		}
 	}

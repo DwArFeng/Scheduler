@@ -13,8 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.project.Project;
-import com.dwarfeng.scheduler.project.Tag;
+import com.dwarfeng.scheduler.module.PTag;
+import com.dwarfeng.scheduler.module.Project;
 
 /**
  * 标签管理对话框。
@@ -35,7 +35,7 @@ public class JTagManager extends JDialog {
 		public TagManagerTableModel(){
 			super(new Object[]{"注册ID","标题","描述","操作"},0);
 			for(int i:project.getTagMap().getTagIds()){
-				Tag tag = project.getTagMap().getTag(i);
+				PTag tag = project.getTagMap().getTag(i);
 				addRow(new Object[]{i,tag.getName(),tag.getDescribe(),true});
 			}
 			addRow(new Object[]{"","","",false});

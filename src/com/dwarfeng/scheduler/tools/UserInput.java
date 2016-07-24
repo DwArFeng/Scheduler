@@ -1,7 +1,7 @@
 package com.dwarfeng.scheduler.tools;
 
 import com.dwarfeng.scheduler.core.Scheduler133;
-import com.dwarfeng.scheduler.typedef.funcint.SerialParam;
+import com.dwarfeng.scheduler.project.funcint.SerialParam;
 
 /**
  * 需要用户输入的方法整合型工具包。

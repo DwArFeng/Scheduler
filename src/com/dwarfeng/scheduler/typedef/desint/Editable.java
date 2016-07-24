@@ -2,7 +2,7 @@ package com.dwarfeng.scheduler.typedef.desint;
 
 import javax.swing.JDesktopPane;
 
-import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
+import com.dwarfeng.scheduler.module.PProjectTreeNode;
 
 /**
  * 可编辑接口。
@@ -13,7 +13,7 @@ import com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree;
  * @author DwArFeng
  * @since 1.8
  */
-public interface Editable extends ObjectInProjectTree{
+public interface Editable extends PProjectTreeNode{
 	
 	/**
 	 * 返回编辑器界面所属的窗口的标题。

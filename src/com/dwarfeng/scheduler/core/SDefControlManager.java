@@ -1,9 +1,9 @@
 package com.dwarfeng.scheduler.core;
 
 import com.dwarfeng.dwarffunction.program.mvc.ControlManager;
-import com.dwarfeng.scheduler.core.module.SModuleControlPort;
-import com.dwarfeng.scheduler.typedef.abstruct.SControlPort;
-import com.dwarfeng.scheduler.typedef.abstruct.SViewControlPort;
+import com.dwarfeng.scheduler.module.SModuleControlPort;
+import com.dwarfeng.scheduler.project.abstruct.SControlPort;
+import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
 import com.dwarfeng.scheduler.typedef.conmod.OutputMessagePack;
 
 public final class SDefControlManager implements ControlManager<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort>{

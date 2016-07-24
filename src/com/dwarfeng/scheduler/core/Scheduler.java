@@ -8,12 +8,12 @@ import com.dwarfeng.dwarffunction.program.MvcProgram;
 import com.dwarfeng.dwarffunction.program.Version;
 import com.dwarfeng.dwarffunction.threads.NadeRunner;
 import com.dwarfeng.dwarffunction.threads.RunnerQueue;
-import com.dwarfeng.scheduler.core.module.SDefModuleManager;
-import com.dwarfeng.scheduler.core.module.SModuleControlPort;
 import com.dwarfeng.scheduler.info.ImageKeys;
 import com.dwarfeng.scheduler.info.StringFieldKey;
-import com.dwarfeng.scheduler.typedef.abstruct.SControlPort;
-import com.dwarfeng.scheduler.typedef.abstruct.SViewControlPort;
+import com.dwarfeng.scheduler.module.SModuleManager;
+import com.dwarfeng.scheduler.module.SModuleControlPort;
+import com.dwarfeng.scheduler.project.abstruct.SControlPort;
+import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
 
 /**
  * 计划管理程序。
@@ -133,7 +133,7 @@ public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleCont
 
 	
 	
-	private Scheduler(SDefModuleManager moduleManager, SDefViewManager viewManager, SDefControlManager controlManager){
+	private Scheduler(SModuleManager moduleManager, SDefViewManager viewManager, SDefControlManager controlManager){
 		super(moduleManager, viewManager, controlManager);
 	}
 

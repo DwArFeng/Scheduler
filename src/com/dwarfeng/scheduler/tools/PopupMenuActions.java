@@ -10,9 +10,10 @@ import javax.swing.KeyStroke;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler133;
+import com.dwarfeng.scheduler.module.SProjectOperationHelper;
+import com.dwarfeng.scheduler.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
-import com.dwarfeng.scheduler.typedef.funcint.Deleteable;
-import com.dwarfeng.scheduler.typedef.funcint.SerialParamSetable;
 
 /**
  * 提供众多通用的右键菜单按钮的工厂类。
@@ -38,7 +39,7 @@ public final class PopupMenuActions {
 				.listener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						ProjectOperationHelper.edit(context);
+						SProjectOperationHelper.edit(context);
 					}
 				})
 				.product();
@@ -61,7 +62,7 @@ public final class PopupMenuActions {
 				.listener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						ProjectOperationHelper.setSerialParam(context);
+						SProjectOperationHelper.setSerialParam(context);
 					}
 				})
 				.product();
@@ -84,7 +85,7 @@ public final class PopupMenuActions {
 				.listener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						ProjectOperationHelper.requestDelete(context);
+						SProjectOperationHelper.requestDelete(context);
 					}
 				})
 				.product();
