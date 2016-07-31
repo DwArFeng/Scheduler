@@ -6,13 +6,16 @@ import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.tree.TreeNode;
 
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
+
 /**
  * 工程树节点接口。
  * <p> 实现该接口意味着该对象是整个工程的树状结构的一员。
  * @author DwArFeng
  * @since 1.8
  */
-interface PProjectTreeNode extends PObjectInProject,TreeNode{
+interface PProjectTreeNode extends ObjectInProject,TreeNode{
 	
 	/**
 	 * 将指定的工程树节点插入在指定的位置。
@@ -81,7 +84,7 @@ interface PProjectTreeNode extends PObjectInProject,TreeNode{
 	 * 返回以此节点除自身以外，还额外包含的所有<code>ObjectInProject</code>。
 	 * @return 此节点除自身以外，还额外包含的所有<code>ObjectInProject</code>。
 	 */
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees();
 	
 //	/**
 //	 * 根据原先的渲染的标签样式来补充渲染自己的独特样式的标签。

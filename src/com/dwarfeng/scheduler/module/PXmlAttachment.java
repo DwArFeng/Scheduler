@@ -12,6 +12,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractAttachment;
+
 /**
  * XML附件类。
  * <p> 该类可以与工程中的一个XML附件相关联，并且封装有XML的多种方法

@@ -14,6 +14,7 @@ import com.dwarfeng.scheduler.module.SModuleManager;
 import com.dwarfeng.scheduler.module.SModuleControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
+import com.dwarfeng.scheduler.view.SViewManager;
 
 /**
  * 计划管理程序。
@@ -133,7 +134,7 @@ public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleCont
 
 	
 	
-	private Scheduler(SModuleManager moduleManager, SDefViewManager viewManager, SDefControlManager controlManager){
+	private Scheduler(SModuleManager moduleManager, SViewManager viewManager, SControlManager controlManager){
 		super(moduleManager, viewManager, controlManager);
 	}
 

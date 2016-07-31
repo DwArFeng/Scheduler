@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -8,7 +8,10 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
-import com.dwarfeng.scheduler.project.abstruct.Scpathable;
+import com.dwarfeng.scheduler.module.PScpathable;
+import com.dwarfeng.scheduler.module.Scpath;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 
 /**
  * 项目类。
@@ -16,7 +19,7 @@ import com.dwarfeng.scheduler.project.abstruct.Scpathable;
  * @author DwArFeng
  * @since 1.8
  */
-final class Project extends PAbstractObjectInProjectTree{
+public final class Project extends AbstractObjectInProjectTree{
 	
 	/**
 	 * 工程对象的构造器。
@@ -127,9 +130,9 @@ final class Project extends PAbstractObjectInProjectTree{
 	 */
 	public Set<Scpath> getScpaths(){
 		Set<Scpath> scpaths = new HashSet<Scpath>();
-		for(PObjectInProject objectInProject : getProjectItems()){
-			if(objectInProject instanceof Scpathable){
-				scpaths.add(((Scpathable) objectInProject).getScpath());
+		for(ObjectInProject objectInProject : getProjectItems()){
+			if(objectInProject instanceof PScpathable){
+				scpaths.add(((PScpathable) objectInProject).getScpath());
 			}
 		}
 		return scpaths;
@@ -147,8 +150,8 @@ final class Project extends PAbstractObjectInProjectTree{
 	 * 返回能够被工程识别的包括工程自身的所有事物。
 	 * @return 工程中能够识别的所有事物。
 	 */
-	public Set<PObjectInProject> getProjectItems(){
-		Set<PObjectInProject> pi = new HashSet<PObjectInProject>();
+	public Set<ObjectInProject> getProjectItems(){
+		Set<ObjectInProject> pi = new HashSet<ObjectInProject>();
 		for(
 				Enumeration<PProjectTreeNode> enu = breadthFirstEnumeration();
 				enu.hasMoreElements();
@@ -157,7 +160,7 @@ final class Project extends PAbstractObjectInProjectTree{
 			PProjectTreeNode obj = enu.nextElement();
 			pi.add(obj);
 			if(obj.getObjectOutProjectTrees() != null){
-				for(PObjectOutProjectTree opt : obj.getObjectOutProjectTrees()){
+				for(ObjectOutProjectTree opt : obj.getObjectOutProjectTrees()){
 					pi.add(opt);
 				}
 			}
@@ -265,7 +268,7 @@ final class Project extends PAbstractObjectInProjectTree{
 	 * @return 指定的子节点。
 	 * @throws NullPointerException <code>child</code>为<code>null</code>的时候抛出的异常。
 	 */
-	public PObjectInProject getChildFromEnum(ChildType child){
+	public ObjectInProject getChildFromEnum(ChildType child){
 		if(child == null) throw new NullPointerException("Child can't be null");
 		return getChildAt(child.getIndex());
 	}
@@ -292,8 +295,8 @@ final class Project extends PAbstractObjectInProjectTree{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees(){
-		Set<PObjectOutProjectTree> set = new HashSet<PObjectOutProjectTree>();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
+		Set<ObjectOutProjectTree> set = new HashSet<ObjectOutProjectTree>();
 		set.add(tagMap);
 		return set;
 	}

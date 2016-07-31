@@ -3,7 +3,7 @@ package com.dwarfeng.scheduler.project.funcint;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dwarfeng.scheduler.module.PAbstractObjectOutProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectOutProjectTree;
 
 /**
  * 序列参数。
@@ -13,7 +13,7 @@ import com.dwarfeng.scheduler.module.PAbstractObjectOutProjectTree;
  * @author DwArFeng
  * @since 1.8
  */
-public final class SerialParam extends PAbstractObjectOutProjectTree{
+public final class SerialParam extends AbstractObjectOutProjectTree{
 
 	/**
 	 * 序列参数的序列标记。

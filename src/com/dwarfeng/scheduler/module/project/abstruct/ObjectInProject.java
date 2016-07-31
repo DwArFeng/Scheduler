@@ -1,4 +1,6 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
+
+import com.dwarfeng.scheduler.module.project.Project;
 
 
 /**
@@ -7,7 +9,7 @@ package com.dwarfeng.scheduler.module;
  * @author DwArFeng
  * @since 1.8
  */
-interface PObjectInProject{
+public interface ObjectInProject{
 	
 	/**
 	 * 返回该对象的Project根。

@@ -12,7 +12,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.project.Project;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.desint.Editor;
 

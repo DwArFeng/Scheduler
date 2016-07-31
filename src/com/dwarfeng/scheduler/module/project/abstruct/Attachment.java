@@ -1,6 +1,6 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
 
-import com.dwarfeng.scheduler.project.abstruct.Scpathable;
+import com.dwarfeng.scheduler.module.PScpathable;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
 
 /**
@@ -10,7 +10,7 @@ import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
  * @author DwArFeng
  * @since 1.8
  */
-interface PAttachment<T> extends Scpathable{
+interface Attachment<T> extends PScpathable{
 	
 	/**
 	 * 从附件中读取文件，并且以泛型指示的类返回。

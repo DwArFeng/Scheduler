@@ -1,6 +1,6 @@
 package com.dwarfeng.scheduler.project.funcint;
 
-import com.dwarfeng.scheduler.module.PObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 
 /**
  * 序列参数可设置接口。
@@ -12,7 +12,7 @@ public interface SerialParamSetable extends SerialParamable{
 
 	/**
 	 * 设置该实例的序列参数。
-	 * <p> 约定：设置<code>serialParam</code>的时候一定要使用{@linkplain SerialParam#setContext(PObjectInProject)}方法设置其上下文。
+	 * <p> 约定：设置<code>serialParam</code>的时候一定要使用{@linkplain SerialParam#setContext(ObjectInProject)}方法设置其上下文。
 	 * @param serialParam 指定的序列参数。
 	 */
 	public void setSerialParam(SerialParam serialParam);

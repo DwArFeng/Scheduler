@@ -8,6 +8,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractAttachment;
+
 /**
  * 文本附件。
  * <p> 该类为文本附件提供了最大化的方法实现。

@@ -2,7 +2,7 @@ package com.dwarfeng.scheduler.typedef.exception;
 
 import java.io.File;
 
-import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * 文件不能正常关闭时抛出的异常。

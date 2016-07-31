@@ -1,4 +1,6 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
+
+import com.dwarfeng.scheduler.module.project.Project;
 
 
 /**
@@ -6,19 +8,19 @@ package com.dwarfeng.scheduler.module;
  * @author DwArFeng
  * @since 1.8
  */
-interface PObjectOutProjectTree extends PObjectInProject {
+interface ObjectOutProjectTree extends ObjectInProject {
 
 	/**
 	 * 获取该类的工程对象上文。
 	 * @return 工程对象上文。
 	 */
-	public PObjectInProject getContext();
+	public ObjectInProject getContext();
 	
 	/**
 	 * 设置该类工程对上文。
 	 * @param context 指定的工程对象上文。
 	 */
-	public void setContext(PObjectInProject context);
+	public void setContext(ObjectInProject context);
 	
 	/*
 	 * (non-Javadoc)

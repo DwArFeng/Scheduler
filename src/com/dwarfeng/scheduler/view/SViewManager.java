@@ -1,11 +1,12 @@
-package com.dwarfeng.scheduler.core;
+package com.dwarfeng.scheduler.view;
 
 import com.dwarfeng.dwarffunction.program.mvc.ViewManager;
+import com.dwarfeng.scheduler.core.SProgramConstField;
 import com.dwarfeng.scheduler.project.abstruct.SControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
 import com.dwarfeng.scheduler.typedef.conmod.OutputMessagePack;
 
-public final class SDefViewManager implements ViewManager<SViewControlPort, SControlPort, SProgramConstField> {
+public final class SViewManager implements ViewManager<SViewControlPort, SControlPort, SProgramConstField> {
 
 	private final SViewControlPort ViewControlPort = new SViewControlPort() {
 		
@@ -59,6 +60,10 @@ public final class SDefViewManager implements ViewManager<SViewControlPort, SCon
 		this.programConstField = programConstField;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.dwarfeng.dwarffunction.program.mvc.ViewManager#setControlPort(com.dwarfeng.dwarffunction.program.mvc.ControlPort)
+	 */
 	@Override
 	public void setControlPort(SControlPort controlPort) {
 		this.controlPort = controlPort;

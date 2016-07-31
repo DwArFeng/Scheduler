@@ -1,23 +1,24 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
+
 
 
 
 /**
  * 抽象的不在工程树内的工程对象。
- * <p> 该类最大程度的实现{@linkplain PObjectOutProjectTree} 接口。
+ * <p> 该类最大程度的实现{@linkplain ObjectOutProjectTree} 接口。
  * @author DwArFeng
  * @since 1.8
  */
-abstract class PAbstractObjectOutProjectTree implements PObjectOutProjectTree{
+public abstract class AbstractObjectOutProjectTree implements ObjectOutProjectTree{
 
-	protected PObjectInProject context;
+	protected ObjectInProject context;
 	
 	/*
 	 * (non-Javadoc)
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree#getContext()
 	 */
 	@Override
-	public PObjectInProject getContext() {
+	public ObjectInProject getContext() {
 		return this.context;
 	}
 
@@ -26,7 +27,7 @@ abstract class PAbstractObjectOutProjectTree implements PObjectOutProjectTree{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectOutProjectTree#setContext(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProject)
 	 */
 	@Override
-	public void setContext(PObjectInProject context) {
+	public void setContext(ObjectInProject context) {
 		this.context = context;
 	}
 

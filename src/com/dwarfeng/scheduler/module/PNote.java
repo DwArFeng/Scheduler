@@ -7,6 +7,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.project.funcint.Deleteable;
 import com.dwarfeng.scheduler.project.funcint.Moveable;
 import com.dwarfeng.scheduler.project.funcint.PopupInTree;
@@ -22,7 +25,7 @@ import com.dwarfeng.scheduler.typedef.desint.Editable;
  * @author DwArFeng
  * @since 1.8
  */
-abstract class PNote<T extends Document,S extends EditorKit> extends PAbstractObjectInProjectTree 
+abstract class PNote<T extends Document,S extends EditorKit> extends AbstractObjectInProjectTree 
 implements Editable,PopupInTree,Moveable,Deleteable,Searchable,SerialParamSetable{
 
 	/**ÎÄ±¾¸½¼þ*/
@@ -79,9 +82,9 @@ implements Editable,PopupInTree,Moveable,Deleteable,Searchable,SerialParamSetabl
 	@Override
 	public void setParent(PProjectTreeNode newParent){
 		super.setParent(newParent);
-		if(newParent instanceof PObjectInProject){
-			attachment.setContext((PObjectInProject) newParent);
-			serialParam.setContext((PObjectInProject) newParent);
+		if(newParent instanceof ObjectInProject){
+			attachment.setContext((ObjectInProject) newParent);
+			serialParam.setContext((ObjectInProject) newParent);
 		}
 	}
 	
@@ -122,8 +125,8 @@ implements Editable,PopupInTree,Moveable,Deleteable,Searchable,SerialParamSetabl
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees(){
-		Set<PObjectOutProjectTree> set = new HashSet<PObjectOutProjectTree>();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
+		Set<ObjectOutProjectTree> set = new HashSet<ObjectOutProjectTree>();
 		set.add(attachment);
 		set.add(serialParam);
 		return set;

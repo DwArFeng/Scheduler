@@ -2,13 +2,15 @@ package com.dwarfeng.scheduler.module;
 
 import com.dwarfeng.dwarffunction.cna.IDMap;
 import com.dwarfeng.dwarffunction.cna.IDMap.CodingType;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectOutProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 
 /**
  * ID-±Í«©”≥…‰¿‡°£
  * @author DwArFeng°£
  * @since 1.8°£
  */
-class PTagMap extends PAbstractObjectOutProjectTree implements PObjectInProject{
+class PTagMap extends AbstractObjectOutProjectTree implements ObjectInProject{
 	
 	/**º«¬ºID-Tag”≥…‰µƒID”≥…‰*/
 	private IDMap<PTag> map;

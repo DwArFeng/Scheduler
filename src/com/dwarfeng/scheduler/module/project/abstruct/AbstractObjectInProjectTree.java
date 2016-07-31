@@ -1,9 +1,12 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
 
 import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
+
+import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * 抽象工程树对象接口类。
@@ -11,7 +14,7 @@ import javax.swing.tree.TreeNode;
  * @author DwArFeng
  * @since 1.8
  */
-abstract class PAbstractObjectInProjectTree implements PProjectTreeNode{
+public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	
     /** true if the node is able to have children */
 	protected boolean allowsChildren;
@@ -24,7 +27,7 @@ abstract class PAbstractObjectInProjectTree implements PProjectTreeNode{
 	 * 生成一个新的抽象工程树对象接口。
 	 * @param allowsChildren 指示该接口是否允许拥有子节点。
 	 */
-	public PAbstractObjectInProjectTree(boolean allowsChildren){
+	public AbstractObjectInProjectTree(boolean allowsChildren){
 		this.allowsChildren = allowsChildren;
 		children = new Vector<PProjectTreeNode>();
 	}
@@ -43,9 +46,9 @@ abstract class PAbstractObjectInProjectTree implements PProjectTreeNode{
 		//如果自己不是Project，而且父亲是null，则没有所属的工程文件。
 		if(tn == null) return null;
 		//在自己不是工程文件的前提下父亲不属于该类，则没有所属的工程文件。
-		if(!(tn instanceof PAbstractObjectInProjectTree)) return null;
+		if(!(tn instanceof AbstractObjectInProjectTree)) return null;
 		//如果自己不是工程文件，而且父亲是该类，则返回父亲的工程根，递归。
-		return ((PAbstractObjectInProjectTree) tn).getRootProject();
+		return ((AbstractObjectInProjectTree) tn).getRootProject();
 	}
 	
 	/*

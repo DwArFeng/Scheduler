@@ -20,6 +20,9 @@ import javax.swing.text.PlainDocument;
 
 import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.scheduler.core.Scheduler133;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.project.funcint.Deleteable;
 import com.dwarfeng.scheduler.project.funcint.Moveable;
 import com.dwarfeng.scheduler.project.funcint.PopupInTree;
@@ -37,7 +40,7 @@ import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
  * @author DwArFeng
  * @since 1.8
  */
-final class PImprovisedPlant extends PAbstractObjectInProjectTree 
+final class PImprovisedPlant extends AbstractObjectInProjectTree 
 implements Editable, Deleteable, Moveable,PopupInTree,Searchable,SerialParamSetable {
 	
 	/**XML¸½¼þ*/
@@ -135,8 +138,8 @@ implements Editable, Deleteable, Moveable,PopupInTree,Searchable,SerialParamSeta
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees(){
-		Set<PObjectOutProjectTree> set = new HashSet<PObjectOutProjectTree>();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
+		Set<ObjectOutProjectTree> set = new HashSet<ObjectOutProjectTree>();
 		set.add(attachment);
 		set.add(serialParam);
 		return set;
@@ -201,8 +204,8 @@ implements Editable, Deleteable, Moveable,PopupInTree,Searchable,SerialParamSeta
 	@Override
 	public void setParent(PProjectTreeNode newParent){
 		super.setParent(newParent);
-		if(newParent instanceof PObjectInProject){
-			attachment.setContext((PObjectInProject) newParent);
+		if(newParent instanceof ObjectInProject){
+			attachment.setContext((ObjectInProject) newParent);
 		}
 	}
 	

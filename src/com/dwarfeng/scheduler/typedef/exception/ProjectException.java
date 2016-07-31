@@ -1,6 +1,6 @@
 package com.dwarfeng.scheduler.typedef.exception;
 
-import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * π§≥Ã“Ï≥£°£

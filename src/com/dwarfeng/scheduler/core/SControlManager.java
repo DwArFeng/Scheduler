@@ -6,7 +6,7 @@ import com.dwarfeng.scheduler.project.abstruct.SControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
 import com.dwarfeng.scheduler.typedef.conmod.OutputMessagePack;
 
-public final class SDefControlManager implements ControlManager<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort>{
+public final class SControlManager implements ControlManager<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort>{
 	
 	private final SControlPort controlPort = new SControlPort() {
 		
@@ -19,6 +19,26 @@ public final class SDefControlManager implements ControlManager<SProgramControlP
 			if(viewControlPort != null){
 				viewControlPort.showMessage(pack);
 			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.dwarfeng.dwarffunction.program.mvc.ControlPort#startProgram()
+		 */
+		@Override
+		public void startProgram() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.dwarfeng.dwarffunction.program.mvc.ControlPort#endProgram()
+		 */
+		@Override
+		public void endProgram() {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 

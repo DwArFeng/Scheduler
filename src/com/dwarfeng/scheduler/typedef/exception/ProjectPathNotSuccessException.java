@@ -3,8 +3,8 @@ package com.dwarfeng.scheduler.typedef.exception;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dwarfeng.scheduler.module.Project;
 import com.dwarfeng.scheduler.module.Scpath;
+import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * 工程路径不成功异常。

@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.module.PTag;
-import com.dwarfeng.scheduler.module.Project;
+import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * 标签管理对话框。

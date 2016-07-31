@@ -48,6 +48,9 @@ import org.dom4j.Element;
 import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.module.Im.ImTag;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.project.funcint.PopupInTree;
 import com.dwarfeng.scheduler.project.funcint.SerialParam;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
@@ -64,7 +67,7 @@ import com.sun.glass.events.KeyEvent;
  * @author DwArFeng
  * @since 1.8
  */
-final class PImprovisedPlantCol extends PAbstractObjectInProjectTree
+final class PImprovisedPlantCol extends AbstractObjectInProjectTree
 implements PopupInTree,Editable{
 
 	/**即兴计划列表的固定不变的XML附件的地址*/
@@ -133,8 +136,8 @@ implements PopupInTree,Editable{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees(){
-		Set<PObjectOutProjectTree> set = new HashSet<PObjectOutProjectTree>();
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
+		Set<ObjectOutProjectTree> set = new HashSet<ObjectOutProjectTree>();
 		set.add(attachment);
 		return set;
 	}
@@ -186,8 +189,8 @@ implements PopupInTree,Editable{
 	@Override
 	public void setParent(PProjectTreeNode newParent){
 		super.setParent(newParent);
-		if(newParent instanceof PObjectInProject){
-			attachment.setContext((PObjectInProject) newParent);
+		if(newParent instanceof ObjectInProject){
+			attachment.setContext((ObjectInProject) newParent);
 		}
 	}
 

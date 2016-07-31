@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import com.dwarfeng.scheduler.core.Scheduler133;
+import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
+import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
 import com.dwarfeng.scheduler.project.funcint.PopupInTree;
 import com.dwarfeng.scheduler.project.funcint.SerialParam;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
@@ -23,7 +25,7 @@ import com.dwarfeng.scheduler.tools.UserInput;
  * @author DwArFeng
  * @since 1.8
  */
-final class PNotebookCol extends PAbstractObjectInProjectTree implements PopupInTree{
+final class PNotebookCol extends AbstractObjectInProjectTree implements PopupInTree{
 	
 	/**
 	 * 笔记本集合的构造者类。
@@ -109,7 +111,7 @@ final class PNotebookCol extends PAbstractObjectInProjectTree implements PopupIn
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#getObjectOutProjectTrees()
 	 */
 	@Override
-	public Set<PObjectOutProjectTree> getObjectOutProjectTrees(){
+	public Set<ObjectOutProjectTree> getObjectOutProjectTrees(){
 		return null;
 	}
 	

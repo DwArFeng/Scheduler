@@ -1,9 +1,11 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.dwarfeng.dwarffunction.io.CT;
+import com.dwarfeng.scheduler.module.SProjectIoHelper;
+import com.dwarfeng.scheduler.module.Scpath;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
 
 /**
@@ -13,7 +15,7 @@ import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
  * @author DwArFeng
  * @since 1.8
  */
-abstract class PAbstractAttachment<T> extends PAbstractObjectOutProjectTree implements PAttachment<T>{
+public abstract class AbstractAttachment<T> extends AbstractObjectOutProjectTree implements Attachment<T>{
 
 	/**路径*/
 	protected final Scpath scpath;
@@ -23,7 +25,7 @@ abstract class PAbstractAttachment<T> extends PAbstractObjectOutProjectTree impl
 	 * @param scpath 抽象附件的工作路径，不能为null。
 	 * @throws NullPointerException 当工作路径为null时。
 	 */
-	public PAbstractAttachment(Scpath scpath) {
+	public AbstractAttachment(Scpath scpath) {
 		if(scpath == null) throw new NullPointerException("Scpath can't be null");
 		this.scpath = scpath;
 	}
