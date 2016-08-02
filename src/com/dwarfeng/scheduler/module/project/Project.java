@@ -8,10 +8,10 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
-import com.dwarfeng.scheduler.module.PScpathable;
 import com.dwarfeng.scheduler.module.Scpath;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
+import com.dwarfeng.scheduler.module.project.abstruct.Scpathable;
 
 /**
  * 项目类。
@@ -90,16 +90,16 @@ public final class Project extends AbstractObjectInProjectTree{
 		IMPROVISEDLANTCOL(1,PImprovisedPlantCol.class);
 		
 		private final int index;
-		private final Class<? extends PProjectTreeNode> cls;
+		private final Class<? extends ProjectTreeNode> cls;
 		
-		private ChildType(int index,Class<? extends PProjectTreeNode> cls ){
+		private ChildType(int index,Class<? extends ProjectTreeNode> cls ){
 			this.index = index;
 			this.cls = cls;
 		}
 		private int getIndex(){
 			return this.index;
 		}
-		private Class<? extends PProjectTreeNode> getCls(){
+		private Class<? extends ProjectTreeNode> getCls(){
 			return cls;
 		}
 	}
@@ -116,9 +116,9 @@ public final class Project extends AbstractObjectInProjectTree{
 		this.tagMap = tagMap;
 		this.tagMap.setContext(this);
 		//初始化全部笔记本
-		insert((PProjectTreeNode)notebookCol,ChildType.NOTEBOOKCOL.getIndex());
+		insert((ProjectTreeNode)notebookCol,ChildType.NOTEBOOKCOL.getIndex());
 		//初始化即兴计划
-		insert((PProjectTreeNode)improvisedPlain,ChildType.IMPROVISEDLANTCOL.getIndex());
+		insert((ProjectTreeNode)improvisedPlain,ChildType.IMPROVISEDLANTCOL.getIndex());
 		//TODO 随着功能的完善进行增加
 	}
 
@@ -131,8 +131,8 @@ public final class Project extends AbstractObjectInProjectTree{
 	public Set<Scpath> getScpaths(){
 		Set<Scpath> scpaths = new HashSet<Scpath>();
 		for(ObjectInProject objectInProject : getProjectItems()){
-			if(objectInProject instanceof PScpathable){
-				scpaths.add(((PScpathable) objectInProject).getScpath());
+			if(objectInProject instanceof Scpathable){
+				scpaths.add(((Scpathable) objectInProject).getScpath());
 			}
 		}
 		return scpaths;
@@ -153,11 +153,11 @@ public final class Project extends AbstractObjectInProjectTree{
 	public Set<ObjectInProject> getProjectItems(){
 		Set<ObjectInProject> pi = new HashSet<ObjectInProject>();
 		for(
-				Enumeration<PProjectTreeNode> enu = breadthFirstEnumeration();
+				Enumeration<ProjectTreeNode> enu = breadthFirstEnumeration();
 				enu.hasMoreElements();
 				//no expression
 		){
-			PProjectTreeNode obj = enu.nextElement();
+			ProjectTreeNode obj = enu.nextElement();
 			pi.add(obj);
 			if(obj.getObjectOutProjectTrees() != null){
 				for(ObjectOutProjectTree opt : obj.getObjectOutProjectTrees()){
@@ -168,16 +168,16 @@ public final class Project extends AbstractObjectInProjectTree{
 		return pi;
 	}
 
-	private Enumeration<PProjectTreeNode> breadthFirstEnumeration() {
+	private Enumeration<ProjectTreeNode> breadthFirstEnumeration() {
 		 return new BreadthFirstEnumeration(this);
 	}
 
-	final class BreadthFirstEnumeration implements Enumeration<PProjectTreeNode> {
+	final class BreadthFirstEnumeration implements Enumeration<ProjectTreeNode> {
 		protected Queue queue;
 		
-		public BreadthFirstEnumeration(PProjectTreeNode rootNode) {
+		public BreadthFirstEnumeration(ProjectTreeNode rootNode) {
 			super();
-			Vector<PProjectTreeNode> v = new Vector<PProjectTreeNode>(1);
+			Vector<ProjectTreeNode> v = new Vector<ProjectTreeNode>(1);
 			v.addElement(rootNode);     // PENDING: don't really need a vector
 			queue = new Queue();
 			queue.enqueue(v.elements());
@@ -190,10 +190,10 @@ public final class Project extends AbstractObjectInProjectTree{
 		}
 
 		@Override
-		public PProjectTreeNode nextElement() {
-			Enumeration<PProjectTreeNode> enumer = queue.firstObject();
-			PProjectTreeNode node = enumer.nextElement();
-			Enumeration<PProjectTreeNode> children = node.children();
+		public ProjectTreeNode nextElement() {
+			Enumeration<ProjectTreeNode> enumer = queue.firstObject();
+			ProjectTreeNode node = enumer.nextElement();
+			Enumeration<ProjectTreeNode> children = node.children();
 
 			if (!enumer.hasMoreElements()) {
 					queue.dequeue();
@@ -211,15 +211,15 @@ public final class Project extends AbstractObjectInProjectTree{
 			QNode tail;
 
 			final class QNode {
-				public Enumeration<PProjectTreeNode> object;
+				public Enumeration<ProjectTreeNode> object;
 				public QNode next;   // null if end
-				public QNode(Enumeration<PProjectTreeNode> object, QNode next) {
+				public QNode(Enumeration<ProjectTreeNode> object, QNode next) {
 						this.object = object;
 						this.next = next;
 				}
 			}
 
-			public void enqueue(Enumeration<PProjectTreeNode> anObject) {
+			public void enqueue(Enumeration<ProjectTreeNode> anObject) {
 				if (head == null) {
 					head = tail = new QNode(anObject, null);
 				} else {
@@ -243,7 +243,7 @@ public final class Project extends AbstractObjectInProjectTree{
 				return retval;
 			}
 
-			public Enumeration<PProjectTreeNode> firstObject() {
+			public Enumeration<ProjectTreeNode> firstObject() {
 				if (head == null) {
 					throw new NoSuchElementException("No more elements");
 				}
@@ -280,7 +280,7 @@ public final class Project extends AbstractObjectInProjectTree{
 	 * @return 指定的类的子节点。
 	 * @throws ClassNotFoundException 指定的类不是任何一个子节点的类。
 	 */
-	public<T extends PProjectTreeNode> T getChildFromType(Class<T> type) throws ClassNotFoundException{
+	public<T extends ProjectTreeNode> T getChildFromType(Class<T> type) throws ClassNotFoundException{
 		if(type == null) throw new NullPointerException("Type can't be null");
 		for(ChildType childType : ChildType.values()){
 			if(type.equals(childType.getCls())){
@@ -315,7 +315,7 @@ public final class Project extends AbstractObjectInProjectTree{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#canInsert(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	protected boolean canInsert(PProjectTreeNode newChild) {
+	protected boolean canInsert(ProjectTreeNode newChild) {
 		for(ChildType childType : ChildType.values()){
 			if(childType.cls.equals(newChild.getClass())) return true;
 		}

@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.dwarfeng.dwarffunction.io.CT;
-import com.dwarfeng.scheduler.module.PTag;
+import com.dwarfeng.scheduler.module.project.PTag;
 import com.dwarfeng.scheduler.module.project.Project;
 
 /**

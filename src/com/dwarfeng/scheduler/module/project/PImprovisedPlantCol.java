@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -47,12 +47,15 @@ import org.dom4j.Element;
 
 import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
 import com.dwarfeng.scheduler.core.Scheduler133;
-import com.dwarfeng.scheduler.module.Im.ImTag;
+import com.dwarfeng.scheduler.module.SProjectIoHelper;
+import com.dwarfeng.scheduler.module.Scpath;
+import com.dwarfeng.scheduler.module.project.Im.ImTag;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.tools.UserInput;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
@@ -187,7 +190,7 @@ implements PopupInTree,Editable{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#setParent(javax.swing.tree.MutableTreeNode)
 	 */
 	@Override
-	public void setParent(PProjectTreeNode newParent){
+	public void setParent(ProjectTreeNode newParent){
 		super.setParent(newParent);
 		if(newParent instanceof ObjectInProject){
 			attachment.setContext((ObjectInProject) newParent);
@@ -208,7 +211,7 @@ implements PopupInTree,Editable{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#canInsert(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	protected boolean canInsert(PProjectTreeNode newChild) {
+	protected boolean canInsert(ProjectTreeNode newChild) {
 		return newChild instanceof PImprovisedPlant;
 	}
 	

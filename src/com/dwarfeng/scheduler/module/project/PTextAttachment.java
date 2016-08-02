@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
+import com.dwarfeng.scheduler.module.Scpath;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractAttachment;
 
 /**

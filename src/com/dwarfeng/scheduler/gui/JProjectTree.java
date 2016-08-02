@@ -15,8 +15,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
 import com.dwarfeng.scheduler.module.project.Project;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.view.SchedulerGui;
 
 public class JProjectTree extends JTree {
 	
@@ -71,7 +72,7 @@ public class JProjectTree extends JTree {
 	 * <br> 如果入口参数<code>selectNode</code>不为<code>null</code>，则再将指定的路径展开并选中。
 	 * @param selectNode 需要展开并选中的节点，可以为<code>null</code>，表示不选中任何节点。
 	 */
-	public void refresh(PProjectTreeNode selectNode){
+	public void refresh(ProjectTreeNode selectNode){
 		Enumeration<TreePath> tps = getExpandedDescendants(new TreePath(getProject()));
 		this.model.reload();
 		if(tps != null){
@@ -86,17 +87,17 @@ public class JProjectTree extends JTree {
 		}
 	}
 	
-	private PProjectTreeNode[] getPath2Root(PProjectTreeNode objectInProjectTree){
-        List<PProjectTreeNode> list = new ArrayList<PProjectTreeNode>();
+	private ProjectTreeNode[] getPath2Root(ProjectTreeNode objectInProjectTree){
+        List<ProjectTreeNode> list = new ArrayList<ProjectTreeNode>();
         for(
-        		Enumeration<PProjectTreeNode> enu = 
+        		Enumeration<ProjectTreeNode> enu = 
         				new PathBetweenNodesEnumeration(objectInProjectTree.getRootProject(), objectInProjectTree);
         		enu.hasMoreElements();
         		//no expression
         ){
         	list.add(enu.nextElement());
         }
-        return list.toArray(new PProjectTreeNode[0]);
+        return list.toArray(new ProjectTreeNode[0]);
 	}
 	
 	/**
@@ -105,20 +106,20 @@ public class JProjectTree extends JTree {
 	 * @author DwArFeng
 	 * @since 1.8
 	 */
-	private static class PathBetweenNodesEnumeration implements Enumeration<PProjectTreeNode>{
+	private static class PathBetweenNodesEnumeration implements Enumeration<ProjectTreeNode>{
 		
-		  protected Stack<PProjectTreeNode> stack;
+		  protected Stack<ProjectTreeNode> stack;
 		  
-		  public PathBetweenNodesEnumeration(PProjectTreeNode ancestor,PProjectTreeNode descendant) {
+		  public PathBetweenNodesEnumeration(ProjectTreeNode ancestor,ProjectTreeNode descendant) {
 			  super();
 
 	        if (ancestor == null || descendant == null) {
 	            throw new IllegalArgumentException("argument is null");
 	        }
 
-	        PProjectTreeNode current;
+	        ProjectTreeNode current;
 
-	        stack = new Stack<PProjectTreeNode>();
+	        stack = new Stack<ProjectTreeNode>();
 	        stack.push(descendant);
 
 	        current = descendant;
@@ -138,7 +139,7 @@ public class JProjectTree extends JTree {
 		}
 
 		@Override
-		public PProjectTreeNode nextElement() {
+		public ProjectTreeNode nextElement() {
 			 try {
 	           return stack.pop();
 	       } catch (EmptyStackException e) {
@@ -183,7 +184,7 @@ final class ProjectTreeRender extends DefaultTreeCellRenderer{
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
 		JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-		if(value instanceof PProjectTreeNode) ((PProjectTreeNode) value).renderLabel(label);
+		if(value instanceof ProjectTreeNode) ((ProjectTreeNode) value).renderLabel(label);
 		return label;
 	}
 }

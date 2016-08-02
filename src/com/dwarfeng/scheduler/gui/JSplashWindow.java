@@ -11,6 +11,7 @@ import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 
 import com.dwarfeng.dwarffunction.gui.JImagePanel;
+import com.dwarfeng.scheduler.view.SchedulerGui;
 import com.sun.awt.AWTUtilities;
 
 public class JSplashWindow extends JWindow {

@@ -8,7 +8,7 @@ import com.dwarfeng.scheduler.module.project.Project;
  * @author DwArFeng
  * @since 1.8
  */
-interface ObjectOutProjectTree extends ObjectInProject {
+public interface ObjectOutProjectTree extends ObjectInProject {
 
 	/**
 	 * 获取该类的工程对象上文。

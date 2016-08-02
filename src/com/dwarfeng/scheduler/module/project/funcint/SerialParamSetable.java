@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 

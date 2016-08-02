@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +10,13 @@ import javax.swing.text.EditorKit;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
-import com.dwarfeng.scheduler.project.funcint.Deleteable;
-import com.dwarfeng.scheduler.project.funcint.Moveable;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.Searchable;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
-import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.module.project.funcint.Moveable;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.Searchable;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 
@@ -80,7 +81,7 @@ implements Editable,PopupInTree,Moveable,Deleteable,Searchable,SerialParamSetabl
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#setParent(javax.swing.tree.MutableTreeNode)
 	 */
 	@Override
-	public void setParent(PProjectTreeNode newParent){
+	public void setParent(ProjectTreeNode newParent){
 		super.setParent(newParent);
 		if(newParent instanceof ObjectInProject){
 			attachment.setContext((ObjectInProject) newParent);

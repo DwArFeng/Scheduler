@@ -11,8 +11,8 @@ import javax.swing.KeyStroke;
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.module.SProjectOperationHelper;
-import com.dwarfeng.scheduler.project.funcint.Deleteable;
-import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 
 /**

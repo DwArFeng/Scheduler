@@ -1,8 +1,8 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
 import javax.swing.JPopupMenu;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
 
 /**
  * 示意着能够在主界面的工程树中右击可弹出一个菜单。
@@ -10,7 +10,7 @@ import com.dwarfeng.scheduler.module.PProjectTreeNode;
  * @author DwArFeng
  * @since 1.8
  */
-public interface PopupInTree extends PProjectTreeNode{
+public interface PopupInTree extends ProjectTreeNode{
 	
 	public JPopupMenu getJPopupMenu();
 }

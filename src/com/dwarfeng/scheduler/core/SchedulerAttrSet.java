@@ -3,6 +3,7 @@ package com.dwarfeng.scheduler.core;
 import java.awt.Image;
 
 import com.dwarfeng.dwarffunction.program.Version;
+import com.dwarfeng.dwarffunction.program.mvc.ProgramAttrSet;
 import com.dwarfeng.dwarffunction.program.mvc.ProgramConstField;
 import com.dwarfeng.scheduler.info.ImageKeys;
 import com.dwarfeng.scheduler.info.StringFieldKey;
@@ -12,7 +13,7 @@ import com.dwarfeng.scheduler.info.StringFieldKey;
  * @author DwArFeng
  * @since 1.8
  */
-public interface SProgramConstField extends ProgramConstField {
+public interface SchedulerAttrSet extends ProgramAttrSet {
 	
 	/**
 	 * 返回程序的版本。

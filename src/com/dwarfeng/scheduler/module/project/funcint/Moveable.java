@@ -1,6 +1,6 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
 
 /**
  * 可移动接口。
@@ -11,4 +11,4 @@ import com.dwarfeng.scheduler.module.PProjectTreeNode;
  * @author DwArFeng
  * @since 1.8
  */
-public interface Moveable extends PProjectTreeNode {}
+public interface Moveable extends ProjectTreeNode {}

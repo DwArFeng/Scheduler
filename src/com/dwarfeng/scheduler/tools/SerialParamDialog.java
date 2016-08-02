@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
 import com.sun.glass.events.KeyEvent;
 
 /**

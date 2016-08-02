@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,8 +14,9 @@ import javax.swing.JPopupMenu;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.tools.UserInput;
 
@@ -132,7 +133,7 @@ final class PNotebookCol extends AbstractObjectInProjectTree implements PopupInT
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#canInsert(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	protected boolean canInsert(PProjectTreeNode newChild) {
+	protected boolean canInsert(ProjectTreeNode newChild) {
 		return newChild instanceof PNotebook;
 	}
 }

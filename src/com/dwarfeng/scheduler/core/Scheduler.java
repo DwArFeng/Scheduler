@@ -13,7 +13,7 @@ import com.dwarfeng.scheduler.info.StringFieldKey;
 import com.dwarfeng.scheduler.module.SModuleManager;
 import com.dwarfeng.scheduler.module.SModuleControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SControlPort;
-import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
+import com.dwarfeng.scheduler.view.SViewControlPort;
 import com.dwarfeng.scheduler.view.SViewManager;
 
 /**
@@ -26,7 +26,7 @@ import com.dwarfeng.scheduler.view.SViewManager;
  * @author DwArFeng
  * @since 1.8
  */
-public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort, SProgramConstField>{
+public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort, SchedulerAttrSet>{
 	
 	private final SProgramControlPort programControlPort = new SProgramControlPort() {
 		/*
@@ -66,7 +66,7 @@ public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleCont
 		}
 		
 	};
-	private final SProgramConstField programConstField = new SProgramConstField() {
+	private final SchedulerAttrSet programConstField = new SchedulerAttrSet() {
 		
 		/*
 		 * (non-Javadoc)
@@ -152,7 +152,7 @@ public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleCont
 	 * @see com.dwarfeng.dwarffunction.program.mvc.ProgramManager#getProgramConstField()
 	 */
 	@Override
-	public SProgramConstField getProgramConstField() {
+	public SchedulerAttrSet getProgramConstField() {
 		return programConstField;
 	}
 }

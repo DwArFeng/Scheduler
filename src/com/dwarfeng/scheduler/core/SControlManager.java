@@ -3,8 +3,8 @@ package com.dwarfeng.scheduler.core;
 import com.dwarfeng.dwarffunction.program.mvc.ControlManager;
 import com.dwarfeng.scheduler.module.SModuleControlPort;
 import com.dwarfeng.scheduler.project.abstruct.SControlPort;
-import com.dwarfeng.scheduler.project.abstruct.SViewControlPort;
 import com.dwarfeng.scheduler.typedef.conmod.OutputMessagePack;
+import com.dwarfeng.scheduler.view.SViewControlPort;
 
 public final class SControlManager implements ControlManager<SProgramControlPort, SModuleControlPort, SViewControlPort, SControlPort>{
 	

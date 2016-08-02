@@ -1,7 +1,9 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import javax.swing.text.StyledDocument;
 import javax.swing.text.rtf.RTFEditorKit;
+
+import com.dwarfeng.scheduler.module.Scpath;
 
 /**
  * XXX 如果之后额外添加了HTML文本的话，该类变为一个抽象类。

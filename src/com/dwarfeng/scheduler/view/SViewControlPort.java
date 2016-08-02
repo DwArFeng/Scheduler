@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.project.abstruct;
+package com.dwarfeng.scheduler.view;
 
 import com.dwarfeng.dwarffunction.program.mvc.ViewControlPort;
 import com.dwarfeng.scheduler.typedef.conmod.OutputMessagePack;

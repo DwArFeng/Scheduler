@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import com.dwarfeng.dwarffunction.interfaces.Describeable;
 import com.dwarfeng.dwarffunction.interfaces.Nameable;

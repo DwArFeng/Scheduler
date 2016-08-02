@@ -1,8 +1,8 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
 import java.util.Map;
 
-import com.dwarfeng.scheduler.project.funcint.SerialParam.Serial;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam.Serial;
 
 /**
  * 标识着一个工程树对象能够被搜索的接口。

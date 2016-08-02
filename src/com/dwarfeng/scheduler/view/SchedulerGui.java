@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.gui;
+package com.dwarfeng.scheduler.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -55,16 +55,20 @@ import com.dwarfeng.dwarffunction.gui.JOutOnlyConsolePanel;
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.dwarffunction.threads.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler133;
+import com.dwarfeng.scheduler.gui.EditorDesktopPane;
+import com.dwarfeng.scheduler.gui.JProjectTree;
+import com.dwarfeng.scheduler.gui.JTagManager;
+import com.dwarfeng.scheduler.gui.JTimer;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.module.PTag;
 import com.dwarfeng.scheduler.module.SProjectIoHelper;
 import com.dwarfeng.scheduler.module.SProjectOperationHelper;
+import com.dwarfeng.scheduler.module.project.PTag;
 import com.dwarfeng.scheduler.module.project.Project;
-import com.dwarfeng.scheduler.project.funcint.Deleteable;
-import com.dwarfeng.scheduler.project.funcint.Moveable;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.module.project.funcint.Moveable;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 
 

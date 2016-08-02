@@ -11,16 +11,16 @@ import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.gui.JCrashFrame;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.gui.JSplashWindow;
-import com.dwarfeng.scheduler.gui.SchedulerGui;
 import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.info.FileInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
 import com.dwarfeng.scheduler.module.SProjectIoHelper;
 import com.dwarfeng.scheduler.module.SProjectOperationHelper;
 import com.dwarfeng.scheduler.module.project.Project;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
 import com.dwarfeng.scheduler.typedef.exception.ProjectPathNotSuccessException;
+import com.dwarfeng.scheduler.view.SchedulerGui;
 
 /**
  * 计划管理程序。
@@ -363,7 +363,7 @@ public class Scheduler133 {
 	 * @param expand 指定的节点。
 	 */
 	//XXX 是否封装为接口待讨论。
-	public void refreshProjectTrees(Project project,PProjectTreeNode expand){
+	public void refreshProjectTrees(Project project,ProjectTreeNode expand){
 		
 		if(project == null) throw new NullPointerException("Project can't be null");
 		

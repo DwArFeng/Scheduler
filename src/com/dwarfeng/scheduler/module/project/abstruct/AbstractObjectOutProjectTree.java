@@ -1,8 +1,5 @@
 package com.dwarfeng.scheduler.module.project.abstruct;
 
-
-
-
 /**
  * 抽象的不在工程树内的工程对象。
  * <p> 该类最大程度的实现{@linkplain ObjectOutProjectTree} 接口。

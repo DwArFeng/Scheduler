@@ -5,23 +5,22 @@ import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
 import com.dwarfeng.scheduler.module.project.Project;
 
 /**
  * 抽象工程树对象接口类。
- * <p> 此类最大程度上实现了 {@linkplain PProjectTreeNode}接口。
+ * <p> 此类最大程度上实现了 {@linkplain ProjectTreeNode}接口。
  * @author DwArFeng
  * @since 1.8
  */
-public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
+public abstract class AbstractObjectInProjectTree implements ProjectTreeNode{
 	
     /** true if the node is able to have children */
 	protected boolean allowsChildren;
     /** array of children, may be null if this node has no children */
-	protected final Vector<PProjectTreeNode> children;
+	protected final Vector<ProjectTreeNode> children;
     /** this node's parent, or null if this node has no parent */
-	protected PProjectTreeNode parent;
+	protected ProjectTreeNode parent;
 
 	/**
 	 * 生成一个新的抽象工程树对象接口。
@@ -29,7 +28,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 */
 	public AbstractObjectInProjectTree(boolean allowsChildren){
 		this.allowsChildren = allowsChildren;
-		children = new Vector<PProjectTreeNode>();
+		children = new Vector<ProjectTreeNode>();
 	}
 	
 	/*
@@ -56,7 +55,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see javax.swing.tree.DefaultMutableTreeNode#getParent()
 	 */
 	@Override
-	public PProjectTreeNode getParent(){
+	public ProjectTreeNode getParent(){
         return parent;
 	}
 	
@@ -65,7 +64,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#children()
 	 */
 	@Override
-	public Enumeration<PProjectTreeNode> children(){
+	public Enumeration<ProjectTreeNode> children(){
 		return children.elements();
 	}
 	
@@ -74,7 +73,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#insert(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree, int)
 	 */
 	@Override
-	public void insert(PProjectTreeNode newChild, int childIndex){
+	public void insert(ProjectTreeNode newChild, int childIndex){
 		
         if (!allowsChildren) {
             throw new IllegalStateException("node does not allow children");
@@ -86,7 +85,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
         
         if(!canInsert(newChild)) throw new IllegalArgumentException("Bad child : can't allowed to trans in");
 
-            PProjectTreeNode oldParent = newChild.getParent();
+            ProjectTreeNode oldParent = newChild.getParent();
 
             if (oldParent != null) {
                 oldParent.remove(newChild);
@@ -100,7 +99,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @param newChild 指定的工程树对象。
 	 * @return 是否能够被传进。
 	 */
-    protected abstract boolean canInsert(PProjectTreeNode newChild);
+    protected abstract boolean canInsert(ProjectTreeNode newChild);
 
 	/**
      * Returns true if <code>anotherNode</code> is an ancestor of this node
@@ -134,7 +133,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see javax.swing.tree.DefaultMutableTreeNode#getChildAt(int)
 	 */
 	@Override
-	public PProjectTreeNode getChildAt(int childIndex){
+	public ProjectTreeNode getChildAt(int childIndex){
         return children.elementAt(childIndex);
 	}
 	
@@ -143,7 +142,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#remove(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	public void remove(PProjectTreeNode child) {
+	public void remove(ProjectTreeNode child) {
         if (child == null) {
             throw new IllegalArgumentException("argument is null");
         }
@@ -161,7 +160,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
      * @return  true if <code>aNode</code> is a child of this node; false if
      *                  <code>aNode</code> is null
      */
-    public boolean isNodeChild(PProjectTreeNode aNode) {
+    public boolean isNodeChild(ProjectTreeNode aNode) {
         boolean retval;
 
         if (aNode == null) {
@@ -197,11 +196,11 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
         }
         
         //如果node不属于ObjectInTreeNode 则不可能是工程树中的元素。
-        if(!(node instanceof PProjectTreeNode)){
+        if(!(node instanceof ProjectTreeNode)){
         	return -1;
         }
         
-        PProjectTreeNode obj = (PProjectTreeNode) node;
+        ProjectTreeNode obj = (ProjectTreeNode) node;
 
         if (!isNodeChild(obj)) {
             return -1;
@@ -233,7 +232,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 */
 	@Override
 	public void remove(int index) {
-        PProjectTreeNode child = getChildAt(index);
+        ProjectTreeNode child = getChildAt(index);
         children.removeElementAt(index);
         child.setParent(null);
     }
@@ -243,7 +242,7 @@ public abstract class AbstractObjectInProjectTree implements PProjectTreeNode{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree#setParent(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	public void setParent(PProjectTreeNode newParent) {
+	public void setParent(ProjectTreeNode newParent) {
 		parent = newParent;
 	}
 	

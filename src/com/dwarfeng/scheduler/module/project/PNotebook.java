@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,15 +18,18 @@ import javax.swing.KeyStroke;
 
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler133;
+import com.dwarfeng.scheduler.module.SProjectIoHelper;
+import com.dwarfeng.scheduler.module.project.PRTFNote.Productor;
 import com.dwarfeng.scheduler.module.project.abstruct.AbstractObjectInProjectTree;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectInProject;
 import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
-import com.dwarfeng.scheduler.project.funcint.Deleteable;
-import com.dwarfeng.scheduler.project.funcint.Moveable;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.Searchable;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
-import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.module.project.funcint.Moveable;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.Searchable;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.tools.PopupMenuActions;
 import com.dwarfeng.scheduler.tools.UserInput;
 
@@ -222,7 +225,7 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#setParent(javax.swing.tree.MutableTreeNode)
 	 */
 	@Override
-	public void setParent(PProjectTreeNode newParent){
+	public void setParent(ProjectTreeNode newParent){
 		super.setParent(newParent);
 		if(newParent instanceof ObjectInProject){
 			serialParam.setContext((ObjectInProject) newParent);
@@ -255,7 +258,7 @@ implements PopupInTree,Deleteable,Moveable,Searchable,SerialParamSetable{
 	}
 
 	@Override
-	protected boolean canInsert(PProjectTreeNode newChild) {
+	protected boolean canInsert(ProjectTreeNode newChild) {
 		return newChild instanceof PNote;
 	}
 }

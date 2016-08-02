@@ -1,6 +1,6 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
 
 /**
  * 系列参数接口。
@@ -9,7 +9,7 @@ import com.dwarfeng.scheduler.module.PProjectTreeNode;
  * @author DwArFeng
  * @since 1.8
  */
-public interface SerialParamable extends PProjectTreeNode{
+public interface SerialParamable extends ProjectTreeNode{
 	
 	/**
 	 * 获取该实例的序列参数。

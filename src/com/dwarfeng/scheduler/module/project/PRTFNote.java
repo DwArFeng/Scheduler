@@ -1,4 +1,4 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -56,11 +56,12 @@ import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.JLineWrapableTextPane;
 import com.dwarfeng.scheduler.gui.LineWrapableViewportLayout;
-import com.dwarfeng.scheduler.gui.SchedulerGui;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
 import com.dwarfeng.scheduler.typedef.desint.AbstractEditor;
 import com.dwarfeng.scheduler.typedef.desint.Editor;
 import com.dwarfeng.scheduler.typedef.exception.AttachmentException;
+import com.dwarfeng.scheduler.view.SchedulerGui;
 
 /**
  * RTF± º«¿‡°£
@@ -154,7 +155,7 @@ final class PRTFNote extends PNote<StyledDocument,RTFEditorKit>{
 	 * @see com.dwarfeng.scheduler.typedef.abstruct.AbstractObjectInProjectTree#canInsert(com.dwarfeng.scheduler.typedef.abstruct.ObjectInProjectTree)
 	 */
 	@Override
-	protected boolean canInsert(PProjectTreeNode newChild) {
+	protected boolean canInsert(ProjectTreeNode newChild) {
 		return false;
 	}
 	

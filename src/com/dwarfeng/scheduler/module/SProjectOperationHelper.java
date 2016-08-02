@@ -10,11 +10,12 @@ import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.scheduler.core.Scheduler133;
 import com.dwarfeng.scheduler.gui.JProjectTree;
 import com.dwarfeng.scheduler.module.project.Project;
-import com.dwarfeng.scheduler.project.funcint.Deleteable;
-import com.dwarfeng.scheduler.project.funcint.Moveable;
-import com.dwarfeng.scheduler.project.funcint.PopupInTree;
-import com.dwarfeng.scheduler.project.funcint.SerialParam;
-import com.dwarfeng.scheduler.project.funcint.SerialParamSetable;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
+import com.dwarfeng.scheduler.module.project.funcint.Moveable;
+import com.dwarfeng.scheduler.module.project.funcint.PopupInTree;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParam;
+import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.tools.UserInput;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 import com.dwarfeng.scheduler.typedef.exception.ProjectCloseException;
@@ -107,7 +108,7 @@ public final class SProjectOperationHelper {
 		);
 		if(sel == JOptionPane.YES_OPTION){
 			
-			PProjectTreeNode parent = deleteable.getParent();
+			ProjectTreeNode parent = deleteable.getParent();
 			
 			CT.trace("正在删除对象...");
 			//如果deleteable是可编辑对象，则先关闭课编辑对象的窗口（如果有的话）
@@ -133,7 +134,7 @@ public final class SProjectOperationHelper {
 
 		if(moveable == null) throw new NullPointerException("Moveable can't be null");
 		
-		PProjectTreeNode parent = moveable.getParent();
+		ProjectTreeNode parent = moveable.getParent();
 		//顶级元素强制不可移动，不管是否实现Moveable接口
 		if(parent == null) return;
 		int index = parent.getIndex(moveable);
@@ -156,7 +157,7 @@ public final class SProjectOperationHelper {
 		
 		if(moveable == null) throw new NullPointerException("Moveable can't be null");
 
-		PProjectTreeNode parent = moveable.getParent();
+		ProjectTreeNode parent = moveable.getParent();
 		//顶级元素强制不可移动，不管是否实现Moveable接口
 		if(parent == null) return;
 		int index = parent.getIndex(moveable);

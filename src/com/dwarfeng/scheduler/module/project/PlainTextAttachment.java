@@ -1,7 +1,9 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project;
 
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.PlainDocument;
+
+import com.dwarfeng.scheduler.module.Scpath;
 
 /**
  * 平面文本附件。

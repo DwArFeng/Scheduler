@@ -1,8 +1,8 @@
-package com.dwarfeng.scheduler.project.funcint;
+package com.dwarfeng.scheduler.module.project.funcint;
 
 import javax.swing.tree.TreeNode;
 
-import com.dwarfeng.scheduler.module.PProjectTreeNode;
+import com.dwarfeng.scheduler.module.project.abstruct.ProjectTreeNode;
 
 /**
  * 可删除接口。
@@ -11,7 +11,7 @@ import com.dwarfeng.scheduler.module.PProjectTreeNode;
  * @author DwArFeng
  * @since 1.8
  */
-public interface Deleteable extends PProjectTreeNode,TreeNode{
+public interface Deleteable extends ProjectTreeNode,TreeNode{
 	
 //	/**
 //	 * 对象进行自我删除的方法。

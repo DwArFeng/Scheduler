@@ -1,6 +1,6 @@
-package com.dwarfeng.scheduler.module;
+package com.dwarfeng.scheduler.module.project.abstruct;
 
-import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
+import com.dwarfeng.scheduler.module.Scpath;
 
 
 /**
@@ -9,7 +9,7 @@ import com.dwarfeng.scheduler.module.project.abstruct.ObjectOutProjectTree;
  * @author DwArFeng
  * @since 1.8
  */
-public interface PScpathable extends ObjectOutProjectTree{
+public interface Scpathable extends ObjectOutProjectTree{
 	
 	/**
 	 * 获取附件的路径。
