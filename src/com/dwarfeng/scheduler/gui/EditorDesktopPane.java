@@ -24,6 +24,8 @@ import com.dwarfeng.scheduler.typedef.desint.Editor;
  */
 public final class EditorDesktopPane extends JDesktopPane {
 	
+	private static final long serialVersionUID = 7097900520899700832L;
+
 	/**
 	 * 生成一个默认的桌面面板。
 	 */
@@ -219,6 +221,8 @@ public final class EditorDesktopPane extends JDesktopPane {
  * @since 1.8
  */
 final class JEditorInternalFrame extends JInternalFrame {
+	
+	private static final long serialVersionUID = -4756399624201324665L;
 	
 	/**指向的编辑器*/
 	private final Editor<?> editor;

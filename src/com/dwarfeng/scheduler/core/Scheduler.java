@@ -135,9 +135,9 @@ public class Scheduler {
 	 * 
 	 */
 	/**长版本号，用于显示在程序自述或者其他的地方*/
-	private final String longVersion = "alpha_0.3.1_20160702_build_A";
+	private final String longVersion = "alpha_0.3.2_20160813_build_A";
 	/**短版本号，用于显示在标题位置*/
-	private final String shortVersion = "alpha_0.3.1";
+	private final String shortVersion = "alpha_0.3.2";
 	/**默认的工作路径*/
 	private final String workspacePath;
 	/**默认的工程文档目录*/
