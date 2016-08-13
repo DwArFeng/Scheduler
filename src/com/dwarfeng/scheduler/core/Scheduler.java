@@ -149,10 +149,11 @@ public final class Scheduler extends MvcProgram<SProgramControlPort, SModuleCont
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.dwarfeng.dwarffunction.program.mvc.ProgramManager#getProgramConstField()
+	 * @see com.dwarfeng.dwarffunction.program.mvc.ProgramManager#getProgramAttrSet()
 	 */
 	@Override
-	public SchedulerAttrSet getProgramConstField() {
-		return programConstField;
+	public SchedulerAttrSet getProgramAttrSet() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

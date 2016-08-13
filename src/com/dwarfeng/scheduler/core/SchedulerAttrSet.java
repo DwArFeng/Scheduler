@@ -4,7 +4,6 @@ import java.awt.Image;
 
 import com.dwarfeng.dwarffunction.program.Version;
 import com.dwarfeng.dwarffunction.program.mvc.ProgramAttrSet;
-import com.dwarfeng.dwarffunction.program.mvc.ProgramConstField;
 import com.dwarfeng.scheduler.info.ImageKeys;
 import com.dwarfeng.scheduler.info.StringFieldKey;
 

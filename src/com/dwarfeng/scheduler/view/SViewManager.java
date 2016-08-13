@@ -18,6 +18,8 @@ public final class SViewManager implements ViewManager<SViewControlPort, SContro
 			// TODO Auto-generated method stub
 			
 		}
+		
+		
 	};
 	
 	private SControlPort controlPort;

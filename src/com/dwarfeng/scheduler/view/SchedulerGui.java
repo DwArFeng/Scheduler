@@ -50,8 +50,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreePath;
 
 import com.dwarfeng.dwarffunction.gui.JAdjustableBorderPanel;
+import com.dwarfeng.dwarffunction.gui.JConsole;
 import com.dwarfeng.dwarffunction.gui.JMenuItemAction;
-import com.dwarfeng.dwarffunction.gui.JOutOnlyConsolePanel;
 import com.dwarfeng.dwarffunction.io.CT;
 import com.dwarfeng.dwarffunction.threads.RunnerQueue;
 import com.dwarfeng.scheduler.core.Scheduler133;
@@ -63,7 +63,6 @@ import com.dwarfeng.scheduler.info.AppearanceInfo;
 import com.dwarfeng.scheduler.io.ConfigHelper;
 import com.dwarfeng.scheduler.module.SProjectIoHelper;
 import com.dwarfeng.scheduler.module.SProjectOperationHelper;
-import com.dwarfeng.scheduler.module.project.PTag;
 import com.dwarfeng.scheduler.module.project.Project;
 import com.dwarfeng.scheduler.module.project.funcint.Deleteable;
 import com.dwarfeng.scheduler.module.project.funcint.Moveable;
@@ -72,12 +71,12 @@ import com.dwarfeng.scheduler.module.project.funcint.SerialParamSetable;
 import com.dwarfeng.scheduler.typedef.desint.Editable;
 
 
-public class SchedulerGui extends JFrame {
+class SchedulerGui extends JFrame {
 	
 	private static final long serialVersionUID = -6917871614497310250L;
 	
 	/**控制台*/
-	private JOutOnlyConsolePanel console;
+	private JConsole console;
 	/**可调面板1*/
 	private JAdjustableBorderPanel mainPanel_1;
 	/**可调面板0*/
