@@ -172,6 +172,8 @@ public final class ProjectOperationHelper {
 	
 	/**
 	 * 新建一个标准的工程文档。
+	 * @param file 文档的指定位置。
+	 * @return 新建的文档。
 	 */
 	public static Project createNewProject(File file){
 		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
@@ -439,7 +441,7 @@ public final class ProjectOperationHelper {
 	 * @return 是否全部关闭成功，如果至少有一个界面没有关闭成功，则返回<code>false</code>。
 	 * @throws NullPointerException <code>project</code>为<code>null</code>。
 	 */
-	public static boolean disposeEditor(Project project,int i){
+	public static boolean disposeEditor(Project project){
 		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
 		
 		if(project == null) throw new NullPointerException("Project can't be null");
@@ -465,7 +467,7 @@ public final class ProjectOperationHelper {
 	 * @param editable 指定的可编辑对象。
 	 * @return 是否全部关闭成功，如果至少有一个界面没有关闭成功，则返回<code>false</code>。
 	 */
-	public static boolean disposeEditor(Editable editable,int i){
+	public static boolean disposeEditor(Editable editable){
 		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());
 
 		if(editable == null) throw new NullPointerException("Editable can't be null");
@@ -476,7 +478,6 @@ public final class ProjectOperationHelper {
 	/**
 	 * 关闭指定可编辑对象在桌面面板上的编辑器。
 	 * @param editable 指定的可编辑对象。
-	 * @return 是否全部关闭成功，如果至少有一个界面没有关闭成功，则返回<code>false</code>。
 	 */
 	public static void forceDisposeEditor(Editable editable){
 		if(Scheduler.getInstance().getGui() == null ) throw new IllegalStateException("Bad state : " + Scheduler.getInstance().getState());

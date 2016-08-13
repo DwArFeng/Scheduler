@@ -315,7 +315,7 @@ public class Scheduler {
 					ProjectOperationHelper.saveProject(project);
 					ProjectOperationHelper.closeProject(project);
 				}else{
-					if(!ProjectOperationHelper.disposeEditor(project,0)){
+					if(!ProjectOperationHelper.disposeEditor(project)){
 						JOptionPane.showMessageDialog(
 								schedulerGui, 
 								"一个或多个编辑器退出时发生异常，程序退出中止\n"

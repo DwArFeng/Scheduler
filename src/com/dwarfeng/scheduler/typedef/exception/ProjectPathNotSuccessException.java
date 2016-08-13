@@ -37,6 +37,7 @@ public final class ProjectPathNotSuccessException extends ProjectException{
 	 * @param project 失败的工程。
 	 * @param successList 工程中的成功路径列表。
 	 * @param failedList 工程中失败的路径列表。
+	 * @param failedType 失败的类型。
 	 */
 	public ProjectPathNotSuccessException(
 			Project project,List<Scpath> successList,

@@ -1,5 +1,7 @@
 package com.dwarfeng.scheduler.info;
 
+import javax.swing.JFrame;
+
 
 /**
  * 控制外观的类。
@@ -37,7 +39,7 @@ public class AppearanceInfo {
 		 * 设置程序界面的扩展模式。
 		 * @param val 扩展模式的按位值。
 		 * @return 构造器自身。
-		 * @see JFrame#getExtendedState();
+		 * @see JFrame#getExtendedState()
 		 */
 		public Productor frameExtension(int val){
 			this.frameExtension = val;

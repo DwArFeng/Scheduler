@@ -683,7 +683,7 @@ public class SchedulerGui extends JFrame {
 											ProjectOperationHelper.forceDisposeEditor(fp);
 											flag = true;
 										}else{
-											flag = ProjectOperationHelper.disposeEditor(fp,0);
+											flag = ProjectOperationHelper.disposeEditor(fp);
 										}
 										//判断关闭时是否出现了异常。
 										if(!flag){
@@ -755,7 +755,7 @@ public class SchedulerGui extends JFrame {
 											return;
 										}
 										//如果不是以上的极特殊情况，则需要先关闭前一个工程的编辑器。
-										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										boolean flag = ProjectOperationHelper.disposeEditor(fp);
 										if(!flag){
 											//如果前者的编辑器不能正常关闭，则还原前台工程，并返回。
 											Scheduler.getInstance().setFrontProject(fp);
@@ -809,7 +809,7 @@ public class SchedulerGui extends JFrame {
 								@Override
 								public void run() {
 									if(fp != null){
-										boolean flag = ProjectOperationHelper.disposeEditor(fp,0);
+										boolean flag = ProjectOperationHelper.disposeEditor(fp);
 										if(!flag){
 											Scheduler.getInstance().setFrontProject(fp);
 											return;

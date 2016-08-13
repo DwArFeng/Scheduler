@@ -146,12 +146,13 @@ public final class ProjectIoHelper {
 	}
 	
 	/**
-	 * 获取该工程文件映射的指定路径的文件输出流。
+	 * 获取指定工程文件映射的指定路径的文件输出流。
 	 * <p> 该方法会在工作路径的文件准备好之前一直阻塞。
 	 * <br>当文件不存在时，该输出流不会自动创建文件。
+	 * @param project 指定的工程。
 	 * @param scpath 指定的路径。
 	 * @return 指定路径对应的工作路径输出流。
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException 文件没有被找到时抛出的异常。
 	 */
 	public static OutputStream getOutputStream(Project project,Scpath scpath) throws FileNotFoundException{
 		return getOutputStream(project, scpath, false);
@@ -269,7 +270,7 @@ public final class ProjectIoHelper {
 	 * @param type 读取的方式，为泛型{@linkplain Operate}中的值。
 	 * @return 根据压缩文件路径读取出的工程文件。
 	 * @throws IOException 通信异常。
-	 * @throws UnhandledVersionExcepion 版本异常。 
+	 * @throws UnhandledVersionException 无法处理的版本异常。
 	 * @throws UnstructFailedException 结构异常。
 	 * @throws ProjectPathNotSuccessException 路径不成功异常。
 	 */

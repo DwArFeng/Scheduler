@@ -157,6 +157,8 @@ public abstract class AbstractObjectInProjectTree implements ObjectInProjectTree
      * Returns true if <code>aNode</code> is a child of this node.  If
      * <code>aNode</code> is null, this method returns false.
      *
+     * @param 	aNode 指定的节点。
+     * 
      * @return  true if <code>aNode</code> is a child of this node; false if
      *                  <code>aNode</code> is null
      */

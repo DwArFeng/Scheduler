@@ -51,8 +51,8 @@ public class FileInfo {
 	private final String lastProjectPath;
 	
 	/**
-	 * 
-	 * @param lastProjectPath
+	 * 构造一个具有指定最后文档路径的文件信息类。
+	 * @param lastProjectPath 最后一个被打开的文件的路径。
 	 */
 	public FileInfo(String lastProjectPath){
 		this.lastProjectPath = lastProjectPath;
