@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<appearance>
-  <frame extension="6" width="800" height="600"/>
-  <console visible="true" height="355"/>
-  <pTree visible="true" width="190"/>
-  <param visible="false" width="150"/>
-  <fPanel visible="false"/>
-</appearance>
